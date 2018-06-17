@@ -13,11 +13,11 @@ public class CameraMovementScript : MonoBehaviour {
 	void Start () {
 		float distance = transform.position.z - Camera.main.transform.position.z;
 		Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
-		Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
+		//Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
 		Vector3 upMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 1, distance));
 		Vector3 downMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
 		xmin = leftMost.x + padding;
-		xmax = rightMost.x - padding;
+		//xmax = rightMost.x - padding;
 		ymin = downMost.y + padding;
 		ymax = upMost.y - padding;
 	}
@@ -33,7 +33,7 @@ public class CameraMovementScript : MonoBehaviour {
 				Vector3 moveRight = Vector3.right * xSpeed * Time.deltaTime;
 				transform.position += moveRight;
 			}
-			float newX = Mathf.Clamp (transform.position.x, xmin, xmax);
+			float newX = Mathf.Clamp (transform.position.x, xmin, float.MaxValue);
 			transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 		} else 
 		if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow)) {
