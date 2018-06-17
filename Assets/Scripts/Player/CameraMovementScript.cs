@@ -9,6 +9,8 @@ public class CameraMovementScript : MonoBehaviour {
 	float xmax;
 	float ymin;
 	float ymax;
+	
+	public bool enableMovement = false;
 	// Use this for initialization
 	void Start () {
 		float distance = transform.position.z - Camera.main.transform.position.z;
@@ -49,6 +51,16 @@ public class CameraMovementScript : MonoBehaviour {
 			float newY = Mathf.Clamp (transform.position.y, ymin, ymax);
 			transform.position = new Vector3(transform.position.x, newY, transform.position.z);
 		}
-		
+		if (Input.GetKeyUp(KeyCode.Z)) {
+			//enableMovement = !enableMovement;
+			enableMovement = !enableMovement;
+		}
+		if (enableMovement) {
+			Vector3 moveRight = Vector3.right * xSpeed * Time.deltaTime;
+			transform.position += moveRight;
+			float newX = Mathf.Clamp (transform.position.x, xmin, float.MaxValue);
+			transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+		}
+			
 	}
 }
