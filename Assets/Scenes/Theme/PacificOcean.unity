@@ -176,7 +176,7 @@ GameObject:
   - 61: {fileID: 470389121}
   - 50: {fileID: 470389120}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,3 +342,4 @@ MonoBehaviour:
   xSpeed: 10
   ySpeed: 10
   padding: 1
+  enableMovement: 0
