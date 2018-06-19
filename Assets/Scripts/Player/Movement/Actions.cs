@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Swim : MonoBehaviour {
+public class Actions : MonoBehaviour {
 
     private float swimForce = 500f;
     public float xSpeed = 10.0f;
@@ -15,8 +15,11 @@ public class Swim : MonoBehaviour {
 
     private KeyCode swimKey;
     public bool enableMovement;
-    private int direction = 1; //0 = left, 1 = right;
-    public bool flyingOn = false;
+    private int direction; //0 = left, 1 = right;
+    public bool flyingOn;
+    private bool isJump;
+
+    private BaseClass baseClass;
 
     // Use this for initialization
     void Start () {
@@ -26,11 +29,19 @@ public class Swim : MonoBehaviour {
         rigidBody2D = GetComponent<Rigidbody2D>();
         swimKey = KeyCode.Space;
         enableMovement = true;
+        direction = 1;
+        flyingOn = false;
+        isJump = false;
+        baseClass = (BaseClass)GetComponent<BaseClass>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(swimKey)) swimUp();
+        if (Input.GetKeyDown(swimKey) && !isJump)
+        {
+            swimUp();
+            isJump = true;
+        }
 
         //If flying on some object, allowed to hold space to gain height
         if (Input.GetKey(swimKey) && flyingOn) swimUp();
@@ -39,7 +50,9 @@ public class Swim : MonoBehaviour {
            
         if (Input.GetKeyUp(KeyCode.X))  reverseDirection();
 
-        if (Input.GetKeyUp(KeyCode.C)) skillShootLaser();
+        // if (Input.GetKeyUp(KeyCode.C)) skillShootLaser();
+
+        if (Input.GetKeyUp(KeyCode.V)) useSkill();
 
         if (enableMovement)
         {
@@ -71,6 +84,11 @@ public class Swim : MonoBehaviour {
         //transform.position = new Vector3(newX, transform.position.y, transform.position.z);
     }
 
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Ground") isJump = false;
+    }
+
     private void swimUp()
     {
         rigidBody2D.velocity = Vector2.zero;
@@ -88,10 +106,10 @@ public class Swim : MonoBehaviour {
     //Spawn projectile or some martial arts skill
     private void useSkill()
     {
-
+        baseClass.basicAttack();
     }
 
-    private void skillShootLaser() {
-        Instantiate(skillProjectile, transform.position + new Vector3(2f, 0, -0.001f), Quaternion.Euler(new Vector3(0, 0, -90)));
-    }
+    // private void skillShootLaser() {
+    //    Instantiate(skillProjectile, transform.position + new Vector3(2f, 0, -0.001f), Quaternion.Euler(new Vector3(0, 0, -90)));
+    // }
 }
