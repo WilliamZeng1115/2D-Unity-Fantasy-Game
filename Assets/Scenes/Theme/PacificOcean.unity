@@ -179,6 +179,8 @@ GameObject:
   - component: {fileID: 470389121}
   - component: {fileID: 470389120}
   - component: {fileID: 470389122}
+  - component: {fileID: 470389124}
+  - component: {fileID: 470389123}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -306,7 +308,36 @@ MonoBehaviour:
   skillProjectile: {fileID: 1800227471959102, guid: 2fc1919164d348848bc4704489d543ed,
     type: 2}
   enableMovement: 0
-  flyingOn: 0
+  flyingOn: 1
+--- !u!114 &470389123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 470389117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbed6c7b82dd0f24994e1034c6d5a2f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillPoints: 0
+  str: 0
+  ds: 0
+  agi: 0
+  dex: 0
+  weapon: 
+  armor: 
+--- !u!114 &470389124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 470389117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4350b89d9b4f1e9438ec537e8b135712, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &676111514
 Prefab:
   m_ObjectHideFlags: 0
@@ -349,6 +380,18 @@ Prefab:
     - target: {fileID: 1941456283632680, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
       propertyPath: m_Name
       value: GrassPlatforms1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824651915458298, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1424802243820356, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402863600382246, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114722037719617406, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
