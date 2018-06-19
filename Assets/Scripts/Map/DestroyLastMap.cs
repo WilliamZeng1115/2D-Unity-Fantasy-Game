@@ -12,7 +12,6 @@ public class DestroyLastMap : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Maps");
-        Debug.Log(gos[0].name);
         if (gos.Length > 1) Destroy(gos[0]);
     }
 

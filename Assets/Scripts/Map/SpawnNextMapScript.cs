@@ -17,7 +17,7 @@ public class SpawnNextMapScript : MonoBehaviour {
 		Vector2 triggerPos = this.transform.position;
 		Vector2 mapPos = transform.parent.position;
 		Vector2 nextMapPos =  triggerPos - mapPos;
-		Instantiate(Map1, new Vector2 (MapWidth + this.transform.parent.position.x, 0), Quaternion.identity);
+		Instantiate(Map1, new Vector2 (MapWidth + this.transform.parent.position.x, this.transform.parent.position.y), Quaternion.identity);
 	}
 	
 	// Update is called once per frame

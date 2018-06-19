@@ -11,9 +11,12 @@ public class Swim : MonoBehaviour {
     float xmin;
     private Rigidbody2D rigidBody2D;
 
+    public GameObject skillProjectile;
+
     private KeyCode swimKey;
     public bool enableMovement;
     private int direction = 1; //0 = left, 1 = right;
+    public bool flyingOn = false;
 
     // Use this for initialization
     void Start () {
@@ -29,9 +32,14 @@ public class Swim : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(swimKey)) swimUp();
 
+        //If flying on some object, allowed to hold space to gain height
+        if (Input.GetKey(swimKey) && flyingOn) swimUp();
+
         if (Input.GetKeyUp(KeyCode.Z)) enableMovement = !enableMovement;
            
         if (Input.GetKeyUp(KeyCode.X))  reverseDirection();
+
+        if (Input.GetKeyUp(KeyCode.C)) skillShootLaser();
 
         if (enableMovement)
         {
@@ -81,5 +89,9 @@ public class Swim : MonoBehaviour {
     private void useSkill()
     {
 
+    }
+
+    private void skillShootLaser() {
+        Instantiate(skillProjectile, transform.position + new Vector3(2f, 0, -0.001f), Quaternion.Euler(new Vector3(0, 0, -90)));
     }
 }
