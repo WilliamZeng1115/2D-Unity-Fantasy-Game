@@ -47,7 +47,9 @@ public class Actions : MonoBehaviour {
            
         if (Input.GetKeyUp(directionKey))  direction = !direction;
 
-        if (Input.GetKeyDown(skillKey)) useSkill();
+        //if (Input.GetKeyDown(skillKey)) useSkill();
+        //Delay 1 second before using skill, waiting for animation to start
+        if (Input.GetKeyDown(skillKey)) Invoke("useSkill", 0.5f);
 
         move();
         clampPosition();

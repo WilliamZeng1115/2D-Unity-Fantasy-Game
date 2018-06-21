@@ -13,11 +13,13 @@ public class SpawnNextMapScript : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter2D(Collider2D other) {
-		
-		Vector2 triggerPos = this.transform.position;
-		Vector2 mapPos = transform.parent.position;
-		Vector2 nextMapPos =  triggerPos - mapPos;
-		Instantiate(Map1, new Vector2 (MapWidth + this.transform.parent.position.x, this.transform.parent.position.y), Quaternion.identity);
+        if (other.gameObject.tag == "Player")
+        {
+            Vector2 triggerPos = this.transform.position;
+            Vector2 mapPos = transform.parent.position;
+            Vector2 nextMapPos = triggerPos - mapPos;
+            Instantiate(Map1, new Vector2(MapWidth + this.transform.parent.position.x, this.transform.parent.position.y), Quaternion.identity);
+        }
 	}
 	
 	// Update is called once per frame

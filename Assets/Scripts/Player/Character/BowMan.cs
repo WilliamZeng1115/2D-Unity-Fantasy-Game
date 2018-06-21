@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class BowMan : BaseClass {
 
-	// Use this for initialization
-	void Start () {
+    public GameObject skillProjectile;
+    // Use this for initialization
+    void Start () {
 
     }
 	
@@ -24,7 +25,7 @@ public class BowMan : BaseClass {
     public override int basicAttack()
     {
         Debug.Log("Attacked");
-        // Instantiate(skillProjectile, transform.position + new Vector3(2f, 0, -0.001f), Quaternion.Euler(new Vector3(0, 0, -90)));
+         Instantiate(skillProjectile, transform.position + new Vector3(2f, 0, -0.001f), Quaternion.Euler(new Vector3(0, 0, -90)));
         return 0;
     }
 }
