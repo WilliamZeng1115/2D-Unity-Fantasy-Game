@@ -13,7 +13,7 @@ public class Actions : MonoBehaviour {
     private float jumpForce;
     private float xSpeed;
     private float ySpeed;
-    // max height
+    // max height and width
     private float clampX;
     private float clampY;
 
@@ -43,31 +43,14 @@ public class Actions : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //If flying on some object, allowed to hold space to gain height
-        if (Input.GetKey(jumpKey)) moveVertical();
-
         if (Input.GetKeyUp(autoMoveKey)) enableAutoMovement = !enableAutoMovement;
            
         if (Input.GetKeyUp(directionKey))  direction = !direction;
 
         if (Input.GetKeyDown(skillKey)) useSkill();
-        
-        if (enableAutoMovement)
-        {
-            var vectorDirection = direction ? Vector3.right : Vector3.left;
-            moveHorizontal(vectorDirection);
-        }
-        else if (Input.GetKey(moveRightKey))
-        {
-            moveHorizontal(Vector3.right);
-        }
-        else if (Input.GetKey(moveLeftKey))
-        {
-            moveHorizontal(Vector3.left);
-        }
-        var clampPosition = transform.position;
-        clampPosition.y = Mathf.Clamp(clampPosition.y, -clampY, clampY);
-        transform.position = clampPosition;
+
+        move();
+        clampPosition();
      }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -108,6 +91,26 @@ public class Actions : MonoBehaviour {
     }
 
     // Helpers
+    private void move()
+    {
+        //If flying on some object, allowed to hold space to gain height
+        if (Input.GetKey(jumpKey)) moveVertical();
+
+        if (enableAutoMovement)
+        {
+            var vectorDirection = direction ? Vector3.right : Vector3.left;
+            moveHorizontal(vectorDirection);
+        }
+        else if (Input.GetKey(moveRightKey))
+        {
+            moveHorizontal(Vector3.right);
+        }
+        else if (Input.GetKey(moveLeftKey))
+        {
+            moveHorizontal(Vector3.left);
+        }
+    }
+
     private void moveHorizontal(Vector3 direction)
     {
         var displacement = direction * xSpeed * Time.deltaTime;
@@ -122,6 +125,13 @@ public class Actions : MonoBehaviour {
             rigidBody2D.AddForce(new Vector2(0, jumpForce));
             isJumping = true;
         }
+    }
+
+    private void clampPosition()
+    {
+        var clampPosition = transform.position;
+        clampPosition.y = Mathf.Clamp(clampPosition.y, -clampY, clampY);
+        transform.position = clampPosition;
     }
     
     private void useSkill()
