@@ -12,7 +12,7 @@ public class DestroyLastMap : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         GameObject[] gos;
         gos = GameObject.FindGameObjectsWithTag("Maps");
-        if (gos.Length > 1) Destroy(gos[0]);
+        if (gos.Length > 2) Destroy(gos[0]);
     }
 
         // Update is called once per frame

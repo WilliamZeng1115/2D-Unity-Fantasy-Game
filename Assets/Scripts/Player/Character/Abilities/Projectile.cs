@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public float xSpeed = 15f;
+    public float xSpeed = 50f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +29,6 @@ public class Projectile : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        transform.position += Vector3.right * xSpeed * Time.deltaTime;
+        transform.position += Vector3.right * xSpeed * (Time.deltaTime* 1.75f);
     }
 }
