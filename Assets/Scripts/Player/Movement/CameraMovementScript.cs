@@ -13,6 +13,8 @@ public class CameraMovementScript : MonoBehaviour {
 
     // Update is called once per frame
     void LateUpdate () {
-        transform.position = player.transform.position + offset;
+        var position = transform.position;
+        position.x = player.transform.position.x + offset.x;
+        transform.position = position;
     }
 }
