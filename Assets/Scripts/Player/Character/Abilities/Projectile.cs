@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     public float xSpeed = 50f;
+    public int damage = 25;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +26,11 @@ public class Projectile : MonoBehaviour {
         Debug.Log("!!!!!");
         Destroy(gameObject);
        
+    }
+
+    public int getDamage()
+    {
+        return damage;
     }
 
     // Update is called once per frame

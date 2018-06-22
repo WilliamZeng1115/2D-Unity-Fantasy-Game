@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseEnemy : MonoBehaviour {
+public abstract class BaseEnemy : BaseEntity {
 
-    public readonly int baseHealth, baseDamage, baseEnergy;
+    public readonly int baseEnergy;
     public int health, energy, damage, difficultyMultipler;
     private bool isBoss;
 
 
-    private void useSkill()
-    {
+    //private abstract void useSkill(); already in BaseEntity
 
+    protected int takeDamage(int damageTaken)
+    {
+        health -= damageTaken;
+        return damageTaken;
     }
 
-    public abstract int takeDamage(int damageTaken);
 
-
-    public abstract int useBasicAttack();
+    //public abstract int useBasicAttack(); already in BaseEntity
 
     private void setDifficulty(int difficultylevel)
     {
