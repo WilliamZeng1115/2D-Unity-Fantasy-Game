@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Maps
   - Ground
+  - BasicAttack
   layers:
   - Default
   - TransparentFX
