@@ -32,7 +32,8 @@ public class MapManager : MonoBehaviour {
         var position = new Vector2(topCorner, currMap.transform.position.y);
 
         var numOfMaps = maps.Length;
-        var index = Random.Range(0, numOfMaps - 1);
+        var index = Random.Range(0, numOfMaps);
+        Debug.Log(index);
 
         var newMap = Instantiate(maps[index], position, Quaternion.identity);
         newMap.transform.parent = transform;
@@ -47,6 +48,7 @@ public class MapManager : MonoBehaviour {
 
     private void deleteMap(bool direction) // true is right, false is left
     {
+        Debug.Log(direction);
         if (!direction)
         {
             if (leftMap != null) Destroy(leftMap);

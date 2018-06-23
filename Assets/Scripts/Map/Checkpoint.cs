@@ -11,6 +11,7 @@ public class Checkpoint : MonoBehaviour {
         mapManager = GetComponentInParent(typeof(MapManager)) as MapManager;
     }
 
+    
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Player")
         {
@@ -24,4 +25,22 @@ public class Checkpoint : MonoBehaviour {
             }
         }
     }
+
+    /*
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            if (transform.position.x < other.transform.position.x)
+            {
+                mapManager.createNewMap(true); // create right
+            }
+            else if (transform.position.x > other.transform.position.x)
+            {
+                mapManager.createNewMap(false); // create left
+            }
+        }
+    }
+    */
+
 }

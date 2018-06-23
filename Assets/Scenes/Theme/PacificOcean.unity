@@ -288,16 +288,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &461499831 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1941456283632680, guid: edac3384e02be474da9ef2a6b10048d5,
-    type: 2}
-  m_PrefabInternal: {fileID: 676111514}
---- !u!4 &461499833 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4859046465581586, guid: edac3384e02be474da9ef2a6b10048d5,
-    type: 2}
-  m_PrefabInternal: {fileID: 676111514}
 --- !u!1 &470389117
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +361,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 470389117}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.68, y: -0.05, z: 0}
+  m_LocalPosition: {x: -28.92, y: 6.75, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children:
   - {fileID: 33914528}
@@ -576,7 +566,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 565213003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.151321, y: 2.63, z: 0}
+  m_LocalPosition: {x: 9.31, y: 2.63, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -602,7 +592,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 1
---- !u!1001 &676111514
+--- !u!1001 &842954937
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -641,10 +631,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1941456283632680, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
-      propertyPath: m_Name
-      value: GrassPlatforms1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: edac3384e02be474da9ef2a6b10048d5, type: 2}
   m_IsPrefabParent: 0
@@ -675,7 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaece678bf959904ea9d82c0069f2075, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightMap: {fileID: 461499831}
+  rightMap: {fileID: 1492605730}
   leftMap: {fileID: 0}
 --- !u!4 &1284946697
 Transform:
@@ -684,10 +670,10 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1284946695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.659119, y: -0.9456887, z: -0.15981035}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 461499833}
+  - {fileID: 1492605732}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -763,9 +749,19 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1437426292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.1, y: -1.6, z: -10}
+  m_LocalPosition: {x: -17.05, y: 0.34, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1492605730 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1941456283632680, guid: edac3384e02be474da9ef2a6b10048d5,
+    type: 2}
+  m_PrefabInternal: {fileID: 842954937}
+--- !u!4 &1492605732 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4859046465581586, guid: edac3384e02be474da9ef2a6b10048d5,
+    type: 2}
+  m_PrefabInternal: {fileID: 842954937}
