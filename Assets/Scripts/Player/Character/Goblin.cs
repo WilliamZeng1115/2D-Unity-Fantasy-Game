@@ -19,8 +19,17 @@ public class Goblin : BaseEnemy {
     {
         if (other.gameObject.tag == "BasicAttack") {
             Projectile projectileScript = other.gameObject.GetComponent<Projectile>();
-            Debug.Log("Hit monster!");
-            Debug.Log("Damage taken: " + takeDamage(projectileScript.getDamage()));
+            
+            
+            if (health - projectileScript.getDamage() <= 0)
+            {
+                Destroy(gameObject);
+                Debug.Log(health);
+            } else
+            {
+                Debug.Log("Damage taken: " + takeDamage(projectileScript.getDamage()));
+                Debug.Log(health);
+            }
         }
     }
 
