@@ -7,10 +7,10 @@ public class EnemyManager : MonoBehaviour {
     public GameObject enemyObject;
 	// Use this for initialization
 	void Start () {
-		
-	}
+        
+    }
 	
-    void setEnemyPosition(GameObject newMap)
+    public void setEnemyPosition(GameObject newMap)
     {
         //var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
         var corner = newMap.transform.position.x;
@@ -19,12 +19,13 @@ public class EnemyManager : MonoBehaviour {
         var mapWidth = newMap.GetComponent<SpriteRenderer>().bounds.size.x;
         var topCorner = corner + mapWidth;
 
-        
+        Debug.Log(mapWidth);
+        Debug.Log(corner);
 
         for (int i = 0; i <= 3; i++)
         {
-            var randXPos = Random.Range(corner, mapWidth);
-            var position = new Vector2(randXPos, newMap.transform.position.y);
+            var randXPos = Random.Range(corner - (mapWidth / 2), (mapWidth / 2) + corner);
+            var position = new Vector2(randXPos, newMap.transform.position.y) + (Vector2.up * 2);
             spawnEnemy(position, enemyObject);
         }
 
@@ -34,7 +35,7 @@ public class EnemyManager : MonoBehaviour {
     void spawnEnemy(Vector2 position, GameObject enemyObject)
     {
         Debug.Log("Spawning enemy in pos: " + position);
-        //Instantiate(enemyObject, position, Quaternion.identity);
+        Instantiate(enemyObject, position, Quaternion.identity);
     }
 
 	// Update is called once per frame

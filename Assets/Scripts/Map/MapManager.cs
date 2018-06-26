@@ -44,6 +44,7 @@ public class MapManager : MonoBehaviour {
         {
             leftMap = newMap;
         }
+        this.transform.Find("EnemyManager").gameObject.GetComponent<EnemyManager>().setEnemyPosition(newMap);
     }
 
     private void deleteMap(bool direction) // true is right, false is left

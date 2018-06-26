@@ -7,8 +7,8 @@ public class Goblin : BaseEnemy {
 	// Use this for initialization
 	void Start () {
         health = 100 + baseHealth;
-        
-	}
+        Destroy(gameObject, 5f);
+    }
 	
 	// Update is called once per frame
 	void Update () {
