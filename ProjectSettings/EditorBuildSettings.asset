@@ -9,9 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Start Menu.unity
     guid: 29f4e5107808f2c4a9232830f5fdc925
   - enabled: 1
+    path: Assets/Scenes/Select Class.unity
+    guid: d6699f3926d8fcb40b0d3afc7e46b130
+  - enabled: 1
     path: Assets/Scenes/Theme/PacificOcean.unity
     guid: 0ef4488112ddb4d4e84730245a4064bb
   - enabled: 1
     path: Assets/Scenes/Loss.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/CharInfo.unity
+    guid: 2b11193be9937964593f380fa4f13695
+  - enabled: 1
+    path: Assets/Scenes/BagPopup.unity
+    guid: d3eb13c41fb89d745948f6ae53d6f273
   m_configObjects: {}
