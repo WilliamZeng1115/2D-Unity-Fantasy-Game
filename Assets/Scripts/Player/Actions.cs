@@ -26,7 +26,7 @@ public class Actions : MonoBehaviour {
     private KeyCode moveRightKey;
 
     // components
-    private BaseClass playerClass;
+    private ClassManager classManager;
     private Rigidbody2D rigidBody2D;
 
     // Use this for initialization
@@ -64,7 +64,7 @@ public class Actions : MonoBehaviour {
     private void initializeComponents()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        playerClass = (BaseClass)GetComponent<BaseClass>();
+        classManager = (ClassManager)GetComponent<ClassManager>();
     }
 
     private void initializeKeys()
@@ -138,6 +138,7 @@ public class Actions : MonoBehaviour {
     
     private void useSkill()
     {
-        playerClass.basicAttack();
+        var currentClass = classManager.getClass();
+        currentClass.basicAttack();
     }
 }

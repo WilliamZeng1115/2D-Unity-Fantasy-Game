@@ -21,10 +21,10 @@ GameObject:
   - component: {fileID: 4424060942245364}
   - component: {fileID: 212108368382018366}
   - component: {fileID: 61218724802589448}
-  - component: {fileID: 114033838945354526}
   - component: {fileID: 50125208346083820}
+  - component: {fileID: 114273176501508190}
   m_Layer: 0
-  m_Name: Laser Projectile
+  m_Name: Laser_Projectile
   m_TagString: BasicAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.09, y: 0.37}
   m_EdgeRadius: 0
---- !u!114 &114033838945354526
+--- !u!114 &114273176501508190
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,11 +96,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1800227471959102}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae785c069c8a4542be216d0990a6d26, type: 3}
+  m_Script: {fileID: 11500000, guid: b369659c55825424eb909bc8ed1216c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSpeed: 15
-  damage: 25
 --- !u!212 &212108368382018366
 SpriteRenderer:
   m_ObjectHideFlags: 1

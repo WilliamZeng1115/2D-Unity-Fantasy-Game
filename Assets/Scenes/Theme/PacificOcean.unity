@@ -301,9 +301,8 @@ GameObject:
   - component: {fileID: 470389120}
   - component: {fileID: 470389122}
   - component: {fileID: 470389124}
-  - component: {fileID: 470389123}
   m_Layer: 0
-  m_Name: Character
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -424,26 +423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31dc34fa471a611418f52b7bc53856be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &470389123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 470389117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbed6c7b82dd0f24994e1034c6d5a2f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillPoints: 0
-  str: 0
-  ds: 0
-  agi: 0
-  dex: 0
-  weapon: 
-  armor: 
-  skillProjectile: {fileID: 1800227471959102, guid: 2fc1919164d348848bc4704489d543ed,
-    type: 2}
 --- !u!114 &470389124
 MonoBehaviour:
   m_ObjectHideFlags: 0

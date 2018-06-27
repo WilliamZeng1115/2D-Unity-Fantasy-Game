@@ -17,7 +17,7 @@ public class Goblin : BaseEnemy {
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "BasicAttack") {
+        /*if (other.gameObject.tag == "BasicAttack") {
             Projectile projectileScript = other.gameObject.GetComponent<Projectile>();
             
             
@@ -30,7 +30,7 @@ public class Goblin : BaseEnemy {
                 Debug.Log("Damage taken: " + takeDamage(projectileScript.getDamage()));
                 Debug.Log(health);
             }
-        }
+        }*/
     }
 
     public override void useBasicAtt() {

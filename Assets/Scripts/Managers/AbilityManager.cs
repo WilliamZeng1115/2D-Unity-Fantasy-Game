@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClassManager : MonoBehaviour {
+public class AbilityManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

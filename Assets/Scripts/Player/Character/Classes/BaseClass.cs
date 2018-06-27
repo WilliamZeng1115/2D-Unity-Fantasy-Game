@@ -15,8 +15,8 @@ public abstract class BaseClass : MonoBehaviour {
     public string armor; // adds to health
 
     // different class use different combination of str, ds, agi, dex to determine attack
-    public abstract int ultimate();
-    public abstract int basicAttack();
+    public abstract void ultimate();
+    public abstract void basicAttack();
 
     private void useSkillPoints(int skillPoints)
     {
