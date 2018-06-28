@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseClass : MonoBehaviour {
+public abstract class BaseClass {
 
     public int skillPoints;
     public int str, ds, agi, dex;

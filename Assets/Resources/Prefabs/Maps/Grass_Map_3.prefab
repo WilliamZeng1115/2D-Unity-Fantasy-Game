@@ -68,6 +68,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4261144786113538}
   - component: {fileID: 212240440024264692}
+  - component: {fileID: 114478637366659970}
   m_Layer: 0
   m_Name: Grass_Map_3
   m_TagString: Maps
@@ -316,6 +317,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.6730623, y: 0.6322535}
   m_EdgeRadius: 0
+--- !u!114 &114478637366659970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1587414066441708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca540b27faf130147a398578950449d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossObjects: []
+  enemyObjects: []
+  bosses: []
+  enemies: []
 --- !u!114 &114999868404977882
 MonoBehaviour:
   m_ObjectHideFlags: 1

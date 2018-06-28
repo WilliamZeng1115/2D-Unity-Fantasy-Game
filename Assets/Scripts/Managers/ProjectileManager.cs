@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileManager : MonoBehaviour {
+public class ProjectileManager {
 
     // none static
     public readonly GameObject projectile;
@@ -17,7 +17,7 @@ public class ProjectileManager : MonoBehaviour {
 
     public void newProjectile(GameObject player)
     {
-        var newProjectile = Instantiate(projectile, player.transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
+        var newProjectile = GameObject.Instantiate(projectile, player.transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
         newProjectile.transform.parent = player.transform;
         projectiles.Add(newProjectile);
     }

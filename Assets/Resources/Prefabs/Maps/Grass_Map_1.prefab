@@ -117,6 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4859046465581586}
   - component: {fileID: 212140021439017990}
+  - component: {fileID: 114659600457843932}
   m_Layer: 0
   m_Name: Grass_Map_1
   m_TagString: Maps
@@ -382,6 +383,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175106af156c12f4ab848b542c721992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114659600457843932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1941456283632680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca540b27faf130147a398578950449d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossObjects: []
+  enemyObjects: []
+  bosses: []
+  enemies: []
 --- !u!212 &212140021439017990
 SpriteRenderer:
   m_ObjectHideFlags: 1

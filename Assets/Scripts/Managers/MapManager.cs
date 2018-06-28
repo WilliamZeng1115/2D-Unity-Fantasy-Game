@@ -33,7 +33,6 @@ public class MapManager : MonoBehaviour {
 
         var numOfMaps = maps.Length;
         var index = Random.Range(0, numOfMaps);
-        Debug.Log(index);
 
         var newMap = Instantiate(maps[index], position, Quaternion.identity);
         newMap.transform.parent = transform;
@@ -44,12 +43,10 @@ public class MapManager : MonoBehaviour {
         {
             leftMap = newMap;
         }
-        this.transform.Find("EnemyManager").gameObject.GetComponent<EnemyManager>().setEnemyPosition(newMap);
-    }
+     }
 
     private void deleteMap(bool direction) // true is right, false is left
     {
-        Debug.Log(direction);
         if (!direction)
         {
             if (leftMap != null) Destroy(leftMap);

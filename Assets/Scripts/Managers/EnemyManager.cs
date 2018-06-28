@@ -4,42 +4,59 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour {
 
-    public GameObject enemyObject;
+    public GameObject[] bossObjects;
+    public GameObject[] enemyObjects;
+    public List<GameObject> bosses;
+    public List<GameObject> enemies;
+
+    // temp for now until we create an initialization so specify which folder
+    // (separated by levels) to load boss and enemy from prefabs
 	// Use this for initialization
 	void Start () {
-        
+        bosses = new List<GameObject>();
+        enemies = new List<GameObject>();
+        // hardcode for now
+        loadPrefabs("Prefabs/Enemy/Sect", "Prefabs/Enemy/Boss");
+        spawnEnemies(3);
     }
-	
-    public void setEnemyPosition(GameObject newMap)
+
+    private void loadPrefabs(string enemy, string boss)
     {
-        //var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
-        var corner = newMap.transform.position.x;
+        bossObjects = Resources.LoadAll<GameObject>(boss);
+        enemyObjects = Resources.LoadAll<GameObject>(enemy);
+    }
+
+    private void spawnEnemies(int num)
+    {
         //Use map width for the limiting range
         //always start spawning from left side of map, then direction of map being spawned in doesnt matter
-        var mapWidth = newMap.GetComponent<SpriteRenderer>().bounds.size.x;
-        var topCorner = corner + mapWidth;
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        var mapWidth = spriteRenderer.bounds.size.x;
+        var mapHeight = spriteRenderer.bounds.size.y;
 
-        Debug.Log(mapWidth);
-        Debug.Log(corner);
+        //var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
+        var leftCornerX = transform.position.x - mapWidth / 2;
 
-        for (int i = 0; i <= 3; i++)
-        {
-            var randXPos = Random.Range(corner - (mapWidth / 2), (mapWidth / 2) + corner);
-            var position = new Vector2(randXPos, newMap.transform.position.y) + (Vector2.up * 2);
-            spawnEnemy(position, enemyObject);
-        }
-
+        var rightCornerX = leftCornerX + mapWidth;
+        var topY = transform.position.y + mapHeight / 2;
         
+        for (int i = 0; i <= num; i++)
+        {
+            var randXPos = Random.Range(leftCornerX, rightCornerX);
+            var position = new Vector2(randXPos, topY);
+
+            // hard code which enemy to spawn for now -> should use level and progress to determine type of enemy
+            var enemy = Instantiate(enemyObjects[0], position, Quaternion.identity);
+            enemy.transform.parent = transform;
+            enemies.Add(enemy);
+        }
     }
 
-    void spawnEnemy(Vector2 position, GameObject enemyObject)
+    // stub
+    private void spawnBoss(Vector2 position)
     {
-        Debug.Log("Spawning enemy in pos: " + position);
-        Instantiate(enemyObject, position, Quaternion.identity);
+        var boss = Instantiate(bossObjects[0], position, Quaternion.identity);
+        boss.transform.parent = transform;
+        bosses.Add(boss);
     }
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

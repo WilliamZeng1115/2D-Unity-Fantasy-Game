@@ -16,7 +16,7 @@ public class PanelScript : MonoBehaviour {
 	public void showhidePanel()
     {
         counter++;
-        if (counter%2 == 1)
+        if (counter%2 == 0)
         {
             Panel.gameObject.SetActive(false);
         } else

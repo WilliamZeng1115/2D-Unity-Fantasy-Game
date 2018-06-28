@@ -9,7 +9,7 @@ public class BowMan : BaseClass {
 
     // Use this for initialization
     public BowMan (GameObject player) {
-        projectiles = new ProjectileManager("Prefabs/Laser_Projectile"); // get projectilie Manager
+        projectiles = new ProjectileManager("Prefabs/Projectile/Laser_Projectile"); // get projectilie Manager
         this.player = player;
     }
 
