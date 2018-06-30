@@ -15,8 +15,9 @@ public class ArrogantYoungMaster : BaseEnemy {
 	
 	// Update is called once per frame
 	void Update () {
-		// move towards a platform -> fly down TODO
-        
+        // move towards a platform -> fly down TODO
+        //transform.position += Vector3.right * Time.deltaTime * 2f;
+
         // if see player attack with chance of using skill TODO
 	}
 
@@ -29,8 +30,9 @@ public class ArrogantYoungMaster : BaseEnemy {
         }
     }
 
-    public override void useBasicAttack() {
-        
+
+    public override int useBasicAttack() {
+        return damage;
     }
 
     public override void useSkill() {

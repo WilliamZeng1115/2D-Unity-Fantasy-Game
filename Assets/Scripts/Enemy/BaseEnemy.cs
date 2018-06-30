@@ -8,7 +8,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected bool isBoss;
 
     public abstract void useSkill();
-    public abstract void useBasicAttack(); 
+    public abstract int useBasicAttack(); 
 
     protected void takeDamage(int damageTaken)
     {

@@ -58,6 +58,13 @@ public class Actions : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Ground") isJumping = false;
+        if (other.gameObject.tag == "Monster")
+        {
+            Debug.Log("Attacked Player!");
+            ArrogantYoungMaster monsterScript = other.gameObject.GetComponent<ArrogantYoungMaster>();
+
+            classManager.getClass().takeDamage(monsterScript.useBasicAttack());
+        }
     }
 
     // Initializers
@@ -141,4 +148,5 @@ public class Actions : MonoBehaviour {
         var currentClass = classManager.getClass();
         currentClass.basicAttack();
     }
+
 }

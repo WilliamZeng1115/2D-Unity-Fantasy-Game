@@ -39,7 +39,26 @@ public class EnemyManager : MonoBehaviour {
 
         var rightCornerX = leftCornerX + mapWidth;
         var topY = transform.position.y + mapHeight / 2;
-        
+
+        //Get positions a platform's box collider
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Ground"))
+            {
+                Vector2 platformSize = child.GetComponent<BoxCollider2D>().size;
+                if (Random.Range(0, 2) == 1)
+                {
+                    var randXPos = Random.Range(child.transform.position.x, child.transform.position.x + platformSize.x);
+                    var pos = new Vector2(randXPos, topY);
+                    var enemy = Instantiate(enemyObjects[0], pos, Quaternion.identity);
+                    enemy.transform.parent = transform;
+                    enemies.Add(enemy);
+                    Debug.Log("Newly spawned enemy position: " + enemy.transform.position);
+                }
+            }
+        }
+
+        /*
         for (int i = 0; i <= num; i++)
         {
             var randXPos = Random.Range(leftCornerX, rightCornerX);
@@ -50,6 +69,7 @@ public class EnemyManager : MonoBehaviour {
             enemy.transform.parent = transform;
             enemies.Add(enemy);
         }
+        */
     }
 
     // stub

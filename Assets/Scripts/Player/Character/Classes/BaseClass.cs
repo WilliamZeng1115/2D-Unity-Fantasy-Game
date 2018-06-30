@@ -17,6 +17,7 @@ public abstract class BaseClass {
     // different class use different combination of str, ds, agi, dex to determine attack
     public abstract void ultimate();
     public abstract void basicAttack();
+    public abstract void takeDamage(int damageTaken);
 
     private void useSkillPoints(int skillPoints)
     {

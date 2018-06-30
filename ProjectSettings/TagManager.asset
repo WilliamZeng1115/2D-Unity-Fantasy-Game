@@ -7,6 +7,7 @@ TagManager:
   - Maps
   - Ground
   - BasicAttack
+  - Monster
   layers:
   - Default
   - TransparentFX
