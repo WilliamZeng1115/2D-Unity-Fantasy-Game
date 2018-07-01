@@ -8,13 +8,9 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected bool isBoss;
 
     public abstract void useSkill();
-    public abstract int useBasicAttack(); 
+    public abstract int useBasicAttack();
 
-    protected void takeDamage(int damageTaken)
-    {
-        health -= damageTaken;
-        if (health <= 0) Destroy(gameObject);
-    }
+    protected abstract void takeDamage(int damageTaken);
 
     protected void addEnergy(int energyAdd)
     {

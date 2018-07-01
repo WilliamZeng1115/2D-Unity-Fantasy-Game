@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +37,17 @@ public class ArrogantYoungMaster : BaseEnemy {
     }
 
     public override void useSkill() {
+    }
+
+    protected override void takeDamage(int damageTaken)
+    {
+        health -= damageTaken;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            String currScore = GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>().text;
+            GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>().text = (Convert.ToInt32(currScore) + 1).ToString();
+        }
     }
 
 }
