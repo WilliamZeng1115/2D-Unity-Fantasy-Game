@@ -24,11 +24,13 @@ public class Actions : MonoBehaviour {
     private KeyCode skillKey;
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
+    private KeyCode charInfoKey;
 
     // components
     private ClassManager classManager;
     private Rigidbody2D rigidBody2D;
 
+    private bool created;
     // Use this for initialization
     void Start () {
         // movement
@@ -53,7 +55,19 @@ public class Actions : MonoBehaviour {
 
         move();
         clampPosition();
+
+        if (Input.GetKeyUp(charInfoKey)) openCharInfo();
      }
+
+    void Awake()
+    {
+        if (!created)
+        {
+            GameObject.DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Player"));
+            created = true;
+            Debug.Log("Awake: ");
+        }
+    }
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -82,6 +96,7 @@ public class Actions : MonoBehaviour {
         skillKey = KeyCode.V;
         moveLeftKey = KeyCode.LeftArrow;
         moveRightKey = KeyCode.RightArrow;
+        charInfoKey = KeyCode.LeftBracket;
     }
 
     private void initializeMovementVariables()
@@ -147,6 +162,11 @@ public class Actions : MonoBehaviour {
     {
         var currentClass = classManager.getClass();
         currentClass.basicAttack();
+    }
+
+    private void openCharInfo()
+    {
+        GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().LoadLevel("CharInfo");
     }
 
 }

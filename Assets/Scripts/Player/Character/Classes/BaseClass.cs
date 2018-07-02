@@ -60,4 +60,24 @@ public abstract class BaseClass {
     {
         this.dex += dex;
     }
+
+    protected int getStr()
+    {
+        return str;
+    }
+
+    protected int getDS()
+    {
+        return ds;
+    }
+
+    protected int getAgi()
+    {
+        return agi;
+    }
+
+    protected int getDex()
+    {
+        return dex;
+    }
 }

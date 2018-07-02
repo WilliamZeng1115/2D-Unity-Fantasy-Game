@@ -9,6 +9,7 @@ public class BowMan : BaseClass {
     private GameObject player;
     private float health;
     private float maxHealth;
+    private bool created;
 
     // Use this for initialization
     public BowMan (GameObject player) {
@@ -17,6 +18,8 @@ public class BowMan : BaseClass {
         maxHealth = 100f; //setting full health
         health = 100f;
     }
+
+    
 
     // override
     public override void ultimate()
