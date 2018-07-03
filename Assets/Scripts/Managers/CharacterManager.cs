@@ -22,7 +22,7 @@ public class CharacterManager : MonoBehaviour
     private KeyCode skillKey;
     private LevelManager levelManager;
 
-    //public static CharacterManager instance;
+    public static CharacterManager instance;
 
     // temp for now -> make it enum later
     private string weapon, armor;
@@ -55,7 +55,7 @@ public class CharacterManager : MonoBehaviour
         //Delay 1 second before using skill, waiting for animation to start
         if (Input.GetKeyDown(skillKey)) Invoke("useSkill", 0.5f);
     }
-    /*
+    
     void Awake()
     {
         if (instance == null)
@@ -69,7 +69,7 @@ public class CharacterManager : MonoBehaviour
             return;
         }
     }
-    */
+    
 
     void OnCollisionEnter2D(Collision2D other)
     {
