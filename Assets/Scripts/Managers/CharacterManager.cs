@@ -20,6 +20,8 @@ public class CharacterManager : MonoBehaviour {
     private KeyCode charInfoKey;
     private LevelManager levelManager;
 
+    //public static CharacterManager instance;
+
     // temp for now -> make it enum later
     private string weapon, armor;
 
@@ -45,6 +47,21 @@ public class CharacterManager : MonoBehaviour {
     {
         if (Input.GetKeyUp(charInfoKey)) levelManager.LoadLevel("CharInfo");
     }
+    /*
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+    }
+    */
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -104,7 +121,11 @@ public class CharacterManager : MonoBehaviour {
     {
         currHealth -= damageTaken;
         updateHealthDisplay();
-        if (currHealth <= 0) levelManager.LoadLevel("Loss");
+        if (currHealth <= 0)
+        {
+            Destroy(gameObject);
+            levelManager.LoadLevel("Loss");
+        }
     }
 
     private void updateHealthDisplay()
@@ -129,5 +150,10 @@ public class CharacterManager : MonoBehaviour {
     private void updateScoreDisplay()
     {
         scoreDisplay.text = score.ToString();
+    }
+
+    private void useSkill()
+    {
+        currentClass.basicAttack();
     }
 }

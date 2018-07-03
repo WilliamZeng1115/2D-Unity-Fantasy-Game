@@ -26,10 +26,9 @@ public class Actions : MonoBehaviour {
     private KeyCode moveRightKey;
 
     // components
-    private CharacterManager characterManager;
+    //private CharacterManager characterManager;
     private Rigidbody2D rigidBody2D;
 
-    // private bool created;
 
     // Use this for initialization
     void Start () {
@@ -57,16 +56,6 @@ public class Actions : MonoBehaviour {
         clampPosition();
      }
 
-    /*
-    void Awake()
-    {
-        if (!created)
-        {
-            GameObject.DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Player"));
-            created = true;
-            Debug.Log("Awake: ");
-        }
-    }*/
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -77,7 +66,7 @@ public class Actions : MonoBehaviour {
     private void initializeComponents()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        characterManager = (CharacterManager)GetComponent<CharacterManager>();
+        //characterManager = (CharacterManager)GetComponent<CharacterManager>();
     }
 
     private void initializeKeys()
@@ -149,9 +138,11 @@ public class Actions : MonoBehaviour {
         transform.position = clampPosition;
     }
     
+    /*
     private void useSkill()
     {
         var currentClass = characterManager.getClass();
         currentClass.basicAttack();
     }
+    */
 }

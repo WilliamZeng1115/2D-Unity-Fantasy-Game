@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - BasicAttack
   - Monster
+  - LevelManager
   layers:
   - Default
   - TransparentFX
