@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour {
+public class CharacterManager : MonoBehaviour
+{
 
     private BaseClass currentClass;
     private GameObject player;
-    
+
     // ui stuff -> should refactor it later
     private Text healthDisplay;
     private RectTransform[] hpTransform;
@@ -18,6 +19,7 @@ public class CharacterManager : MonoBehaviour {
     private int skillPoints, score;
 
     private KeyCode charInfoKey;
+    private KeyCode skillKey;
     private LevelManager levelManager;
 
     //public static CharacterManager instance;
@@ -26,7 +28,8 @@ public class CharacterManager : MonoBehaviour {
     private string weapon, armor;
 
     // Use this for initialization
-    void Start() {
+    void Start()
+    {
         player = GameObject.Find("Player");
         currentClass = new BowMan(player);
 
@@ -36,6 +39,7 @@ public class CharacterManager : MonoBehaviour {
         skillPoints = 5;
 
         charInfoKey = KeyCode.LeftBracket;
+        skillKey = KeyCode.V;
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         healthDisplay = GameObject.Find("HPText").GetComponent<UnityEngine.UI.Text>();
@@ -46,6 +50,10 @@ public class CharacterManager : MonoBehaviour {
     void Update()
     {
         if (Input.GetKeyUp(charInfoKey)) levelManager.LoadLevel("CharInfo");
+
+        //if (Input.GetKeyDown(skillKey)) useSkill();
+        //Delay 1 second before using skill, waiting for animation to start
+        if (Input.GetKeyDown(skillKey)) Invoke("useSkill", 0.5f);
     }
     /*
     void Awake()

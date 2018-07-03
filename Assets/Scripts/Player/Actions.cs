@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Actions : MonoBehaviour {
-  
+public class Actions : MonoBehaviour
+{
+
     // movement
     private bool enableAutoMovement;
     private bool direction; // false = left, true = right;
@@ -21,7 +22,6 @@ public class Actions : MonoBehaviour {
     private KeyCode jumpKey;
     private KeyCode directionKey;
     private KeyCode autoMoveKey;
-    private KeyCode skillKey;
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
 
@@ -31,7 +31,8 @@ public class Actions : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         // movement
         initializeMovementVariables();
 
@@ -41,20 +42,17 @@ public class Actions : MonoBehaviour {
         // components
         initializeComponents();
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetKeyUp(autoMoveKey)) enableAutoMovement = !enableAutoMovement;
-           
-        if (Input.GetKeyUp(directionKey))  direction = !direction;
 
-        //if (Input.GetKeyDown(skillKey)) useSkill();
-        //Delay 1 second before using skill, waiting for animation to start
-        if (Input.GetKeyDown(skillKey)) Invoke("useSkill", 0.5f);
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyUp(autoMoveKey)) enableAutoMovement = !enableAutoMovement;
+
+        if (Input.GetKeyUp(directionKey)) direction = !direction;
 
         move();
         clampPosition();
-     }
+    }
 
 
     void OnCollisionEnter2D(Collision2D other)
@@ -66,7 +64,6 @@ public class Actions : MonoBehaviour {
     private void initializeComponents()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        //characterManager = (CharacterManager)GetComponent<CharacterManager>();
     }
 
     private void initializeKeys()
@@ -74,7 +71,6 @@ public class Actions : MonoBehaviour {
         jumpKey = KeyCode.Space;
         directionKey = KeyCode.X;
         autoMoveKey = KeyCode.Z;
-        skillKey = KeyCode.V;
         moveLeftKey = KeyCode.LeftArrow;
         moveRightKey = KeyCode.RightArrow;
     }
@@ -137,12 +133,4 @@ public class Actions : MonoBehaviour {
         clampPosition.y = Mathf.Clamp(clampPosition.y, -clampY, clampY);
         transform.position = clampPosition;
     }
-    
-    /*
-    private void useSkill()
-    {
-        var currentClass = characterManager.getClass();
-        currentClass.basicAttack();
-    }
-    */
 }
