@@ -8,25 +8,39 @@ public class EnemyManager : MonoBehaviour {
     public GameObject[] enemyObjects;
     public List<GameObject> bosses;
     public List<GameObject> enemies;
+    public List<Transform> platforms;
 
     // temp for now until we create an initialization so specify which folder
     // (separated by levels) to load boss and enemy from prefabs
-	// Use this for initialization
-	void Start () {
+    void Start () {
         bosses = new List<GameObject>();
         enemies = new List<GameObject>();
+        platforms = new List<Transform>();
+        loadPlatforms();
         // hardcode for now
         loadPrefabs("Prefabs/Enemy/Sect", "Prefabs/Enemy/Boss");
-        spawnEnemies(3);
+        spawnEnemies(3, 0);
     }
 
-    private void loadPrefabs(string enemy, string boss)
+    private void loadPlatforms()
     {
-        bossObjects = Resources.LoadAll<GameObject>(boss);
-        enemyObjects = Resources.LoadAll<GameObject>(enemy);
+        foreach (Transform child in transform)
+        {
+            // if child type is platform add it
+            if (child.CompareTag("Ground"))
+            {
+                platforms.Add(child);
+            }
+        }
     }
 
-    private void spawnEnemies(int num)
+    private void loadPrefabs(string enemyFolder, string bossFolder)
+    {
+        bossObjects = Resources.LoadAll<GameObject>(bossFolder);
+        enemyObjects = Resources.LoadAll<GameObject>(enemyFolder);
+    }
+
+    private void spawnEnemies(int num, int type)
     {
         //Use map width for the limiting range
         //always start spawning from left side of map, then direction of map being spawned in doesnt matter
@@ -36,40 +50,21 @@ public class EnemyManager : MonoBehaviour {
 
         //var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
         var leftCornerX = transform.position.x - mapWidth / 2;
-
         var rightCornerX = leftCornerX + mapWidth;
         var topY = transform.position.y + mapHeight / 2;
-
-        //Get positions a platform's box collider
-        foreach (Transform child in transform)
+        
+        for(var i = 0; i < num; i++)
         {
-            if (child.CompareTag("Ground"))
-            {
-                Vector2 platformSize = child.GetComponent<BoxCollider2D>().size;
-                if (Random.Range(0, 2) == 1)
-                {
-                    var randXPos = Random.Range(child.transform.position.x, child.transform.position.x + platformSize.x);
-                    var pos = new Vector2(randXPos, topY);
-                    var enemy = Instantiate(enemyObjects[0], pos, Quaternion.identity);
-                    enemy.transform.parent = transform;
-                    enemies.Add(enemy);
-                    Debug.Log("Newly spawned enemy position: " + enemy.transform.position);
-                }
-            }
-        }
-
-        /*
-        for (int i = 0; i <= num; i++)
-        {
-            var randXPos = Random.Range(leftCornerX, rightCornerX);
-            var position = new Vector2(randXPos, topY);
-
-            // hard code which enemy to spawn for now -> should use level and progress to determine type of enemy
-            var enemy = Instantiate(enemyObjects[0], position, Quaternion.identity);
+            var randomPlatformNum = Random.Range(0, platforms.Count);
+            var randomPlatform = platforms[randomPlatformNum];
+            var platformCollider = randomPlatform.GetComponent<BoxCollider2D>();
+           
+            var randXPos = Random.Range(randomPlatform.transform.position.x, randomPlatform.transform.position.x + platformCollider.size.x);
+            var pos = new Vector2(randXPos, topY);
+            var enemy = Instantiate(enemyObjects[type], pos, Quaternion.identity);
             enemy.transform.parent = transform;
             enemies.Add(enemy);
         }
-        */
     }
 
     // stub

@@ -12,10 +12,11 @@ public class ArrogantYoungMaster : BaseEnemy {
         damage = 10;
         difficultyMultipler = 1;
         isBoss = false;
+        player = GameObject.Find("Player").GetComponent<CharacterManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         // move towards a platform -> fly down TODO
         //transform.position += Vector3.right * Time.deltaTime * 2f;
 
@@ -26,28 +27,15 @@ public class ArrogantYoungMaster : BaseEnemy {
     {
         if (other.gameObject.tag == "BasicAttack") {
             BaseProjectile projectileScript = other.gameObject.GetComponent<BaseProjectile>();
-            
             takeDamage(projectileScript.getDamage());
         }
     }
 
-
-    public override int useBasicAttack() {
+    public override int basicAttack() {
         return damage;
     }
 
-    public override void useSkill() {
-    }
+    public override void skill() {
 
-    protected override void takeDamage(int damageTaken)
-    {
-        health -= damageTaken;
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-            String currScore = GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>().text;
-            GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>().text = (Convert.ToInt32(currScore) + 1).ToString();
-        }
     }
-
 }

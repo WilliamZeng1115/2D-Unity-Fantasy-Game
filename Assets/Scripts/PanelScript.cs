@@ -6,23 +6,17 @@ using UnityEngine.UI;
 public class PanelScript : MonoBehaviour {
 
     public GameObject Panel;
-    private int counter = 0;
+    private bool isVisible;
 
     void Start ()
     {
-        Panel.gameObject.SetActive(false);
+        isVisible = false;
+        Panel.gameObject.SetActive(isVisible);
     }
 
 	public void showhidePanel()
     {
-        counter++;
-        if (counter%2 == 0)
-        {
-            Panel.gameObject.SetActive(false);
-        } else
-        {
-            Panel.gameObject.SetActive(true);
-        }
+        isVisible = !isVisible;
+        Panel.gameObject.SetActive(isVisible);
     }
-		
 }

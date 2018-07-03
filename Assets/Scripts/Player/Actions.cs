@@ -24,13 +24,13 @@ public class Actions : MonoBehaviour {
     private KeyCode skillKey;
     private KeyCode moveLeftKey;
     private KeyCode moveRightKey;
-    private KeyCode charInfoKey;
 
     // components
-    private ClassManager classManager;
+    private CharacterManager characterManager;
     private Rigidbody2D rigidBody2D;
 
-    private bool created;
+    // private bool created;
+
     // Use this for initialization
     void Start () {
         // movement
@@ -55,10 +55,9 @@ public class Actions : MonoBehaviour {
 
         move();
         clampPosition();
-
-        if (Input.GetKeyUp(charInfoKey)) openCharInfo();
      }
 
+    /*
     void Awake()
     {
         if (!created)
@@ -67,25 +66,18 @@ public class Actions : MonoBehaviour {
             created = true;
             Debug.Log("Awake: ");
         }
-    }
+    }*/
 
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag == "Ground") isJumping = false;
-        if (other.gameObject.tag == "Monster")
-        {
-            Debug.Log("Attacked Player!");
-            ArrogantYoungMaster monsterScript = other.gameObject.GetComponent<ArrogantYoungMaster>();
-
-            classManager.getClass().takeDamage(monsterScript.useBasicAttack());
-        }
     }
 
     // Initializers
     private void initializeComponents()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        classManager = (ClassManager)GetComponent<ClassManager>();
+        characterManager = (CharacterManager)GetComponent<CharacterManager>();
     }
 
     private void initializeKeys()
@@ -96,7 +88,6 @@ public class Actions : MonoBehaviour {
         skillKey = KeyCode.V;
         moveLeftKey = KeyCode.LeftArrow;
         moveRightKey = KeyCode.RightArrow;
-        charInfoKey = KeyCode.LeftBracket;
     }
 
     private void initializeMovementVariables()
@@ -160,13 +151,7 @@ public class Actions : MonoBehaviour {
     
     private void useSkill()
     {
-        var currentClass = classManager.getClass();
+        var currentClass = characterManager.getClass();
         currentClass.basicAttack();
     }
-
-    private void openCharInfo()
-    {
-        GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().LoadLevel("CharInfo");
-    }
-
 }
