@@ -10,42 +10,42 @@ public abstract class BaseClass {
     public abstract void ultimate();
     public abstract void basicAttack();
 
-    protected void addStrength(int str)
+    public void addStrength(int str)
     {
         this.str += str;
     }
 
-    protected void addDivineStrength(int ds)
+    public void addDivineStrength(int ds)
     {
         this.ds += ds;
     }
 
-    protected void addAgility(int agi)
+    public void addAgility(int agi)
     {
         this.agi += agi;
     }
 
-    protected void addDex(int dex)
+    public void addDex(int dex)
     {
         this.dex += dex;
     }
 
-    protected int getStr()
+    public int getStr()
     {
         return str;
     }
 
-    protected int getDS()
+    public int getDS()
     {
         return ds;
     }
 
-    protected int getAgi()
+    public int getAgi()
     {
         return agi;
     }
 
-    protected int getDex()
+    public int getDex()
     {
         return dex;
     }

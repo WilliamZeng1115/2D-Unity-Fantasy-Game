@@ -45,11 +45,12 @@ public class CharacterManager : MonoBehaviour
         healthDisplay = GameObject.Find("HPText").GetComponent<UnityEngine.UI.Text>();
         hpTransform = GameObject.Find("HP").GetComponents<RectTransform>();
         scoreDisplay = GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>();
+
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(charInfoKey)) levelManager.LoadLevel("CharInfo");
+        if (Input.GetKeyUp(charInfoKey)) levelManager.LoadLevelAdditive("CharInfo");
 
         //if (Input.GetKeyDown(skillKey)) useSkill();
         //Delay 1 second before using skill, waiting for animation to start
@@ -163,5 +164,11 @@ public class CharacterManager : MonoBehaviour
     private void useSkill()
     {
         currentClass.basicAttack();
+    }
+
+    private void setSpawnPoint()
+    {
+        Debug.Log("set spawn point");
+        player.transform.position = GameObject.Find("SpawnPoint").transform.position;
     }
 }

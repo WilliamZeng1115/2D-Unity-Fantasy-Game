@@ -9,6 +9,7 @@ TagManager:
   - BasicAttack
   - Monster
   - LevelManager
+  - Stats Value
   layers:
   - Default
   - TransparentFX
