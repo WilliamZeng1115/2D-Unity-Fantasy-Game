@@ -15,7 +15,7 @@ public abstract class BaseClass {
         this.str += str;
     }
 
-    public void addDivineStrength(int ds)
+    public void addDivineSense(int ds)
     {
         this.ds += ds;
     }
