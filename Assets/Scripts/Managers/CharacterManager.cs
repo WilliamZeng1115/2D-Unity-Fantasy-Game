@@ -7,7 +7,6 @@ public class CharacterManager : MonoBehaviour
 {
 
     private BaseClass currentClass;
-    private GameObject player;
 
     // ui stuff -> should refactor it later
     private Text healthDisplay;
@@ -30,8 +29,7 @@ public class CharacterManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameObject.Find("Player");
-        currentClass = new BowMan(player);
+        currentClass = new BowMan(gameObject);
 
         maxHealth = 100f; //setting full health
         currHealth = maxHealth;
@@ -62,6 +60,8 @@ public class CharacterManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            var spawnPoint = findSpawnPoint();
+            setPosition(spawnPoint.transform.position);
             DontDestroyOnLoad(instance);
         }
         else
@@ -166,9 +166,13 @@ public class CharacterManager : MonoBehaviour
         currentClass.basicAttack();
     }
 
-    private void setSpawnPoint()
+    private void setPosition(Vector2 spawnPoint)
     {
-        Debug.Log("set spawn point");
-        player.transform.position = GameObject.Find("SpawnPoint").transform.position;
+        transform.position = spawnPoint;
+    }
+
+    private GameObject findSpawnPoint()
+    {
+        return GameObject.Find("SpawnPoint");
     }
 }
