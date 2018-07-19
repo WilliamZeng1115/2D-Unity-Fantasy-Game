@@ -54,23 +54,6 @@ public class CharacterManager : MonoBehaviour
         //Delay 1 second before using skill, waiting for animation to start
         if (Input.GetKeyDown(skillKey)) Invoke("useSkill", 0.5f);
     }
-    
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            var spawnPoint = findSpawnPoint();
-            setPosition(spawnPoint.transform.position);
-            DontDestroyOnLoad(instance);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-    }
-    
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -164,15 +147,5 @@ public class CharacterManager : MonoBehaviour
     private void useSkill()
     {
         currentClass.basicAttack();
-    }
-
-    private void setPosition(Vector2 spawnPoint)
-    {
-        transform.position = spawnPoint;
-    }
-
-    private GameObject findSpawnPoint()
-    {
-        return GameObject.Find("SpawnPoint");
     }
 }
