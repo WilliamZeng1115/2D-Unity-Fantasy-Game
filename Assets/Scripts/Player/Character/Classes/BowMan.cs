@@ -5,12 +5,12 @@ using UnityEngine;
 public class BowMan : BaseClass {
 
     private ProjectileManager projectiles;
+    // private AbilityManager abilities;
     private GameObject player;
 
     // Use this for initialization
     public BowMan (GameObject player) {
-        projectiles = new ProjectileManager("Prefabs/Projectile/Laser_Projectile"); // get projectilie Manager
-        this.player = player;
+        projectiles = new ProjectileManager("Prefabs/Projectile/Laser_Projectile", player); // get projectilie Manager
     }
 
     // override
@@ -22,6 +22,6 @@ public class BowMan : BaseClass {
     // override
     public override void basicAttack()
     {
-        projectiles.newProjectile(player);
+        projectiles.newProjectile();
     }
 }

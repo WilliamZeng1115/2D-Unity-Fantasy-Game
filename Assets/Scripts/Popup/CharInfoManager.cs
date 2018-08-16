@@ -28,7 +28,7 @@ public class CharInfoManager : MonoBehaviour {
         addStrBtn.onClick.AddListener(delegate { addSkillPoint(SkillNames.Strength); });
 
         //Testing, set available skill points to 10 by default
-        availSkillPoints = 10;
+        availSkillPoints = 20;
         availSKillPointsText = GameObject.Find("SkillPoints Text").GetComponent<Text>();
         updateAvailSkillPts();
     }
@@ -69,7 +69,7 @@ public class CharInfoManager : MonoBehaviour {
                 }
                 if (statsValues[i].name == "SkillPoints Text")
                 {
-                    statsValues[i].GetComponent<Text>().text = player.GetComponent<CharacterManager>().getScore().ToString();
+                    statsValues[i].GetComponent<Text>().text = "0";
                 }
                 /*
                 if (statsValues[i].name == "CultivationLevel Text")
@@ -131,9 +131,7 @@ public class CharInfoManager : MonoBehaviour {
         }
 
     }
-
-
-
+    
 	// Update is called once per frame
 	void Update () {
 		

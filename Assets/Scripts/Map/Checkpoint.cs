@@ -17,11 +17,11 @@ public class Checkpoint : MonoBehaviour {
         {
             if ((transform.position.x - other.transform.position.x) < 0)
             {
-                mapManager.createNewMap(false); // create left
+                mapManager.createMap(false); // create left
             }
             else if ((transform.position.x - other.transform.position.x) > 0)
             {
-                mapManager.createNewMap(true); // create right
+                mapManager.createMap(true); // create right
             }
         }
     }

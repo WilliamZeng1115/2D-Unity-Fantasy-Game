@@ -12,23 +12,12 @@ public class ArrogantYoungMaster : BaseEnemy {
         damage = 10;
         difficultyMultipler = 1;
         isBoss = false;
-        player = GameObject.Find("Player").GetComponent<CharacterManager>();
+        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
     }
-
-    // Update is called once per frame
-    void Update () {
-        // move towards a platform -> fly down TODO
-        //transform.position += Vector3.right * Time.deltaTime * 2f;
-
-        // if see player attack with chance of using skill TODO
-	}
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "BasicAttack") {
-            BaseProjectile projectileScript = other.gameObject.GetComponent<BaseProjectile>();
-            takeDamage(projectileScript.getDamage());
-        }
+        levelManager.OnCollideForEnemy(gameObject, other.gameObject, this);
     }
 
     public override int basicAttack() {

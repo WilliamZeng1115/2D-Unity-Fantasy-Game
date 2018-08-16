@@ -4,22 +4,23 @@ using UnityEngine;
 
 public abstract class BaseEnemy : MonoBehaviour {
 
-    protected CharacterManager player;
-
+    //protected CharacterManager player;
     protected int health, energy, damage, difficultyMultipler, worth = 1;
     protected bool isBoss;
+    protected LevelManager levelManager;
 
     public abstract void skill();
     public abstract int basicAttack();
 
-    protected void takeDamage(int damageTaken)
+    public int takeDamage(int damageTaken)
     {
         health -= damageTaken;
-        if (health <= 0)
-        {
-            if (player != null) player.addScore(worth);
-            Destroy(gameObject);
-        }
+        return health;
+    }
+
+    public int getWorth()
+    {
+        return worth;
     }
 
     protected void addEnergy(int energyAdd)

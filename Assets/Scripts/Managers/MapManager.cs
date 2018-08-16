@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour {
 
-    public GameObject rightMap, leftMap;
+    public GameObject rightMap, leftMap, currMap;
     private GameObject[] maps;
 
     // temp for now... until we figure out how big a map we want so we can just set a default map width like
@@ -19,12 +19,8 @@ public class MapManager : MonoBehaviour {
         renderer = maps[0].GetComponent<SpriteRenderer>();
     }
 
-    public void createNewMap(bool direction) // true is right, false is left
+    public GameObject createMap(bool direction) // true is right, false is left
     {
-        // delete the opposite direction map
-        deleteMap(!direction);
-        var currMap = direction ? leftMap : rightMap;
-
         // temp with renderer...change it to global width later -> discuss
         var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
         var corner = currMap.transform.position.x;
@@ -38,24 +34,26 @@ public class MapManager : MonoBehaviour {
         newMap.transform.parent = transform;
         if (direction)
         {
-            rightMap = newMap;
+            leftMap = currMap;
+            currMap = newMap;
         } else
         {
-            leftMap = newMap;
+            rightMap = currMap;
+            currMap = newMap;
         }
+        return newMap;
      }
 
-    private void deleteMap(bool direction) // true is right, false is left
+    public void deleteMap(bool direction) // true is right, false is left
     {
         if (!direction)
         {
+            Debug.Log("hit");
             if (leftMap != null) Destroy(leftMap);
-            leftMap = rightMap;
         }
         if (direction)
         {
             if (rightMap != null) Destroy(rightMap);
-            rightMap = leftMap;
         }
     }
 }
