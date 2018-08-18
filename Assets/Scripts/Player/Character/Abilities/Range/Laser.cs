@@ -26,4 +26,5 @@ public class Laser : BaseProjectile {
     {
         Destroy(gameObject);
     }
+
 }

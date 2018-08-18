@@ -72,6 +72,19 @@ public class LevelManager : MonoBehaviour {
                LoadLevel("Loss");
             }
         }
+
+        if (o.tag == "EnemySkill")
+        {
+            var monsterScript = o.GetComponent<BaseEnemy>();
+            var characterHealth = characterManager.takeDamage(monsterScript.skillAttack());
+            updateHealthDisplay(characterHealth);
+            if (characterHealth <= 0)
+            {
+                Destroy(character);
+                LoadLevel("Loss");
+            }
+        }
+
         if (o.tag.Contains("Checkpoint"))
         {
             GameObject newMap = null;

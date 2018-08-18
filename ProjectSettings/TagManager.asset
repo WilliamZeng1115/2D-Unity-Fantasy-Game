@@ -14,6 +14,8 @@ TagManager:
   - RightCheckpoint
   - Option
   - CharInfo
+  - Undefined
+  - EnemySkill
   layers:
   - Default
   - TransparentFX

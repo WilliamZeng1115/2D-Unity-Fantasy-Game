@@ -9,7 +9,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected bool isBoss;
     protected LevelManager levelManager;
 
-    public abstract void skill();
+    public abstract int skillAttack();
     public abstract int basicAttack();
 
     public int takeDamage(int damageTaken)

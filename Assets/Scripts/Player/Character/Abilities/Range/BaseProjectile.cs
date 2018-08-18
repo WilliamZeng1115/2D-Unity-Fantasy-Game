@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class BaseProjectile : MonoBehaviour {
 
-    protected float xSpeed = 50f;
+    protected float xSpeed = 10f;
     protected int damage = 25;
 
     public int getDamage()
     {
         return damage;
+    }
+
+    public void changeDirection()
+    {
+        xSpeed *= -1;
     }
 }
