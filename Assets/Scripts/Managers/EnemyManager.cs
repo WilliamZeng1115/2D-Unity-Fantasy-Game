@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour {
+public class EnemyManager : Manager
+{
 
     private GameObject[] bossObjects;
     private GameObject[] enemyObjects;

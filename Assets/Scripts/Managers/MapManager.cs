@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour {
+public class MapManager : Manager
+{
 
     public GameObject rightMap, leftMap, currMap;
     private GameObject[] maps;
@@ -48,7 +49,6 @@ public class MapManager : MonoBehaviour {
     {
         if (!direction)
         {
-            Debug.Log("hit");
             if (leftMap != null) Destroy(leftMap);
         }
         if (direction)

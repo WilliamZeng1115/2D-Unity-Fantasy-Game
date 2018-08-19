@@ -4,15 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour {
+public class LevelManager : Manager
+{
+    // Managers
+    private Dictionary<string, Manager> managers;
 
-    private GameObject spawnPoint;
-
-    private CharacterManager characterManager;
-    private MapManager mapManager;
-    private EnemyManager enemyManager;
-    private PopupManager popupManager;
-
+    // Keys
     private KeyCode charInfoKey;
     private KeyCode skillKey;
 
@@ -21,15 +18,18 @@ public class LevelManager : MonoBehaviour {
     private RectTransform[] hpTransform;
     private Text scoreDisplay;
 
+    // Variables
     private int score;
+    private GameObject spawnPoint;
 
     void Start()
     {
         // Managers
-        popupManager = GameObject.Find("PopupManager").GetComponent<PopupManager>();
-        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
-        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-        characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
+        // Load Managers by batch
+        // Load specific Manager that can't be by batch
+        managers = new Dictionary<string, Manager>();
+        loadManagers();
+        loadSpecialManagers();
 
         //Display
         healthDisplay = GameObject.Find("HPText").GetComponent<UnityEngine.UI.Text>();
@@ -45,12 +45,26 @@ public class LevelManager : MonoBehaviour {
         spawnPoint = GameObject.Find("SpawnPoint");
     }
 
+    private void loadManagers()
+    {
+        var managerObjects = GameObject.FindGameObjectsWithTag("Manager");
+        foreach (var manager in managerObjects)
+        {
+            Debug.Log(manager.name);
+            managers.Add(manager.name, manager.GetComponent<Manager>());
+        }
+    }
+
+    private void loadSpecialManagers()
+    {
+        managers.Add("CharacterManager", GameObject.Find("Player").GetComponent<CharacterManager>());
+    }
+
     void Update()
     {
-        // For now - have to be a popup
-        if (Input.GetKeyUp(charInfoKey)) popupManager.showhidePopup("CharInfo");
+        if (Input.GetKeyUp(charInfoKey)) ((PopupManager)managers["PopupManager"]).showhidePopup("CharInfo");
 
-        if (Input.GetKeyDown(skillKey)) characterManager.Invoke("useSkill", 0.5f);
+        if (Input.GetKeyDown(skillKey)) ((CharacterManager)managers["CharacterManager"]).Invoke("useSkill", 0.5f);
     }
 
     // can load scene with data and pass it to new scene
@@ -61,11 +75,15 @@ public class LevelManager : MonoBehaviour {
 
     public void OnCollideForCharacter(GameObject character, GameObject o)
     {
+        var characterManager = ((CharacterManager)managers["CharacterManager"]);
+        var mapManager = ((MapManager)managers["MapManager"]);
+        var enemyManager = ((EnemyManager)managers["EnemyManager"]);
+
         if (o.tag == "Monster")
         {
             var monsterScript = o.GetComponent<BaseEnemy>();
             var characterHealth = characterManager.takeDamage(monsterScript.basicAttack());
-            updateHealthDisplay(characterHealth);
+            updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
             if (characterHealth <= 0)
             {
                Destroy(character);
@@ -77,7 +95,7 @@ public class LevelManager : MonoBehaviour {
         {
             var monsterScript = o.GetComponent<BaseEnemy>();
             var characterHealth = characterManager.takeDamage(monsterScript.skillAttack());
-            updateHealthDisplay(characterHealth);
+            updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
             if (characterHealth <= 0)
             {
                 Destroy(character);
@@ -132,11 +150,6 @@ public class LevelManager : MonoBehaviour {
     {
     }
 
-    public void OnOptionClick()
-    {
-        popupManager.showhidePopup("Option");
-    }
-
     public void QuitRequest()
     {
 		Application.Quit();
@@ -147,9 +160,8 @@ public class LevelManager : MonoBehaviour {
         return spawnPoint;
     }
     
-    private void updateHealthDisplay(float currHealth)
+    private void updateHealthDisplay(float currHealth, float maxHealth)
     {
-        var maxHealth = characterManager.getMaxHealth();
         float healthRatio = currHealth / maxHealth;
         hpTransform[0].localScale = new Vector3(1, healthRatio, 1);
         healthDisplay.text = (Mathf.Round(healthRatio * 100)) + "%";

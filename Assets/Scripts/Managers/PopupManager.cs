@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupManager : MonoBehaviour {
-
+public class PopupManager : Manager
+{
     Dictionary<string, GameObject> popups;
     Dictionary<string, bool> popupsEnable;
 
@@ -11,20 +11,23 @@ public class PopupManager : MonoBehaviour {
     {
         popups = new Dictionary<string, GameObject>();
         popupsEnable = new Dictionary<string, bool>();
-
         loadPopups();
-        showhidePopup("CharInfo");
-        showhidePopup("Option");
+        // Set each popup to hidden
+        foreach (var popupName in popups.Keys)
+        {
+            showhidePopup(popupName);
+        }
     }
     
     private void loadPopups()
     {
-        var charInfo = GameObject.Find("CharInfo");
-        var option = GameObject.Find("Option");
-        popups["CharInfo"] = charInfo;
-        popups["Option"] = option;
-        popupsEnable["CharInfo"] = false;
-        popupsEnable["Option"] = false;
+        var popupObjects = GameObject.FindGameObjectsWithTag("Popup");
+        foreach (var popup in popupObjects)
+        {
+            var popupObject = GameObject.Find(popup.name);
+            popups.Add(popup.name, popupObject);
+            popupsEnable.Add(popup.name, false);
+        }
     }
 
     public void showhidePopup(string popup)

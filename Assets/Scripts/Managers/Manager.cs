@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityManager : Manager
-{
+public abstract class Manager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
