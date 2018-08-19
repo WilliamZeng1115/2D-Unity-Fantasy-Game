@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BowMan : BaseClass {
 
-    private ProjectileManager projectiles;
+    private ProjectileManager projectileManager;
     // private AbilityManager abilities;
 
     // Use this for initialization
@@ -15,7 +15,7 @@ public class BowMan : BaseClass {
         skills["Divine Sense"] = 4;
         skills["Dexterity"] = 8;
         maxHealth = 100f;
-        projectiles = new ProjectileManager("Prefabs/Projectile/Laser_Projectile", player); // get projectilie Manager
+        projectileManager = new ProjectileManager("Prefabs/Projectile/Laser_Projectile", player); // get projectilie Manager
     }
 
     // override
@@ -27,6 +27,6 @@ public class BowMan : BaseClass {
     // override
     public override void basicAttack()
     {
-        projectiles.newProjectile();
+        projectileManager.newProjectile();
     }
 }

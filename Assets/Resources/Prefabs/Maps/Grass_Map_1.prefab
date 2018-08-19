@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4046624795573708}
   - component: {fileID: 61340908273655126}
   m_Layer: 0
-  m_Name: RightCheckpoint
-  m_TagString: RightCheckpoint
+  m_Name: Checkpoint
+  m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,22 +55,6 @@ GameObject:
   m_Layer: 0
   m_Name: Platform2Rigid
   m_TagString: Ground
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1455822303689344
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4159941380093100}
-  - component: {fileID: 61922005664298946}
-  m_Layer: 0
-  m_Name: LeftCheckpoint
-  m_TagString: LeftCheckpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,11 +130,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1402262753780236}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.23, y: 0, z: 0}
+  m_LocalPosition: {x: 1.17, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4859046465581586}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4049293960477512
 Transform:
@@ -176,21 +160,8 @@ Transform:
   m_LocalScale: {x: 1.9103014, y: 1.79403, z: 1}
   m_Children: []
   m_Father: {fileID: 4859046465581586}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.037}
---- !u!4 &4159941380093100
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1455822303689344}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.44, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4859046465581586}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4214006175185346
 Transform:
   m_ObjectHideFlags: 1
@@ -202,7 +173,7 @@ Transform:
   m_LocalScale: {x: 1.5112498, y: 1.79403, z: 1}
   m_Children: []
   m_Father: {fileID: 4859046465581586}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4446700069083946
 Transform:
@@ -215,7 +186,7 @@ Transform:
   m_LocalScale: {x: 0.36897346, y: 1.79403, z: 1}
   m_Children: []
   m_Father: {fileID: 4859046465581586}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.037}
 --- !u!4 &4821674807730842
 Transform:
@@ -228,7 +199,7 @@ Transform:
   m_LocalScale: {x: 0.5231244, y: 1.79403, z: 1}
   m_Children: []
   m_Father: {fileID: 4859046465581586}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4859046465581586
 Transform:
@@ -237,11 +208,10 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1941456283632680}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3408813, y: -0.6443113, z: 0.15881035}
+  m_LocalPosition: {x: -450.9519, y: -303.7316, z: 6.03381}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4049293960477512}
-  - {fileID: 4159941380093100}
   - {fileID: 4214006175185346}
   - {fileID: 4821674807730842}
   - {fileID: 4446700069083946}
@@ -374,31 +344,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 5.6730623, y: 0.6322535}
-  m_EdgeRadius: 0
---- !u!61 &61922005664298946
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1455822303689344}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.050073657, y: 0.034706116}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.01112359, y: 11.008776}
   m_EdgeRadius: 0
 --- !u!61 &61964228829613906
 BoxCollider2D:

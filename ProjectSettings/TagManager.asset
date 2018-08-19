@@ -10,14 +10,13 @@ TagManager:
   - Monster
   - LevelManager
   - Stats Value
-  - LeftCheckpoint
-  - RightCheckpoint
   - Option
   - CharInfo
   - Undefined
   - EnemySkill
   - Popup
   - Manager
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

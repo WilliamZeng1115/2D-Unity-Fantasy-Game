@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapManager : Manager
 {
 
-    public GameObject rightMap, leftMap, currMap;
+    public GameObject rightMap, leftMap;
     private GameObject[] maps;
 
     // temp for now... until we figure out how big a map we want so we can just set a default map width like
@@ -22,6 +22,9 @@ public class MapManager : Manager
 
     public GameObject createMap(bool direction) // true is right, false is left
     {
+        deleteMap(!direction);
+        var currMap = direction ? leftMap : rightMap;
+
         // temp with renderer...change it to global width later -> discuss
         var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
         var corner = currMap.transform.position.x;
@@ -35,12 +38,10 @@ public class MapManager : Manager
         newMap.transform.parent = transform;
         if (direction)
         {
-            leftMap = currMap;
-            currMap = newMap;
+            rightMap = newMap;
         } else
         {
-            rightMap = currMap;
-            currMap = newMap;
+            leftMap = newMap;
         }
         return newMap;
      }
@@ -50,10 +51,12 @@ public class MapManager : Manager
         if (!direction)
         {
             if (leftMap != null) Destroy(leftMap);
+            leftMap = rightMap;
         }
         if (direction)
         {
             if (rightMap != null) Destroy(rightMap);
+            rightMap = leftMap;
         }
     }
 }

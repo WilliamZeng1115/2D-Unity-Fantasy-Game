@@ -46,7 +46,7 @@ public class EnemyManager : Manager
            
             var randXPos = Random.Range(randomPlatform.transform.position.x, randomPlatform.transform.position.x + platformCollider.size.x);
             var pos = new Vector2(randXPos, topY);
-            var enemy = Instantiate(enemyObjects[type], pos, Quaternion.identity);
+            var enemy = Instantiate(enemyObjects[type], pos, enemyObjects[type].transform.rotation);
             enemy.transform.parent = map.transform;
             enemies.Add(enemy);
         }
@@ -55,7 +55,7 @@ public class EnemyManager : Manager
     // stub
     public void spawnBoss(Vector2 position)
     {
-        var boss = Instantiate(bossObjects[0], position, Quaternion.identity);
+        var boss = Instantiate(bossObjects[0], position, bossObjects[0].transform.rotation);
         boss.transform.parent = transform;
         bosses.Add(boss);
     }

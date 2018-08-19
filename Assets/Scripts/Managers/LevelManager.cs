@@ -50,7 +50,6 @@ public class LevelManager : Manager
         var managerObjects = GameObject.FindGameObjectsWithTag("Manager");
         foreach (var manager in managerObjects)
         {
-            Debug.Log(manager.name);
             managers.Add(manager.name, manager.GetComponent<Manager>());
         }
     }
@@ -93,8 +92,8 @@ public class LevelManager : Manager
 
         if (o.tag == "EnemySkill")
         {
-            var monsterScript = o.GetComponent<BaseEnemy>();
-            var characterHealth = characterManager.takeDamage(monsterScript.skillAttack());
+            var projectileScript = o.GetComponent<BaseProjectile>();
+            var characterHealth = characterManager.takeDamage(projectileScript.getDamage());
             updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
             if (characterHealth <= 0)
             {
@@ -109,16 +108,14 @@ public class LevelManager : Manager
             
             if ((character.transform.position.x - o.transform.position.x) < 0)
             {
-                mapManager.deleteMap(false);
-                if (o.tag == "RightCheckpoint")
+                if (o.tag == "Checkpoint")
                 {
                     newMap = mapManager.createMap(true);
                 }
             }
             else if ((character.transform.position.x - o.transform.position.x) > 0)
             {
-                mapManager.deleteMap(true);
-                if (o.tag == "LeftCheckpoint")
+                if (o.tag == "Checkpoint")
                 {
                     newMap = mapManager.createMap(false);
                 }

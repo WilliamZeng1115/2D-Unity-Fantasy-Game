@@ -7,24 +7,27 @@ public class Laser : BaseProjectile {
 	// Update is called once per frame
 	void Update ()
     {
-        transform.position += Vector3.right * xSpeed * (Time.deltaTime * 1.75f);
+        transform.Translate(Vector2.up * xSpeed * (Time.deltaTime * 1.75f));
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        //Destory the projectile immediately upon hitting another game object
-        Destroy(gameObject);
+        if (col.collider.tag != "Player")
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnCollisionStay2D(Collision2D col)
     {
-        //Destory the projectile immediately upon hitting another game object
-        Destroy(gameObject);
+        if (col.collider.tag != "Player")
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnBecameInvisible()
     {
         Destroy(gameObject);
     }
-
 }

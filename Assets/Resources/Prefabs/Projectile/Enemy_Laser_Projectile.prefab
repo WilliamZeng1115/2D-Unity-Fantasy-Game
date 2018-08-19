@@ -22,10 +22,10 @@ GameObject:
   - component: {fileID: 212592629985975484}
   - component: {fileID: 61303490065937180}
   - component: {fileID: 50202420916265942}
-  - component: {fileID: 114995871487270366}
+  - component: {fileID: 114594605260283396}
   m_Layer: 0
   m_Name: Enemy_Laser_Projectile
-  m_TagString: Monster
+  m_TagString: EnemySkill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,13 +36,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1655719669342094}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50202420916265942
 Rigidbody2D:
   serializedVersion: 4
@@ -88,7 +88,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.13, y: 0.54}
   m_EdgeRadius: 0
---- !u!114 &114995871487270366
+--- !u!114 &114594605260283396
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1655719669342094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b369659c55825424eb909bc8ed1216c5, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e68dfd52d7f02d4eac552ad373fd282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212592629985975484

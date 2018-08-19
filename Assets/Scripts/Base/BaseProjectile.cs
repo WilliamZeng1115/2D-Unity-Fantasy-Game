@@ -11,9 +11,4 @@ public class BaseProjectile : MonoBehaviour {
     {
         return damage;
     }
-
-    public void changeDirection()
-    {
-        xSpeed *= -1;
-    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ArrogantYoungMaster : BaseEnemy {
 
-    private ProjectileManager projectiles;
+    private ProjectileManager projectileManager;
 
     // Use this for initialization
     void Start () {
@@ -15,7 +15,7 @@ public class ArrogantYoungMaster : BaseEnemy {
         difficultyMultipler = 1;
         isBoss = false;
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        projectiles = new ProjectileManager("Prefabs/Projectile/Enemy_Laser_Projectile", this.gameObject); // get projectilie Manager
+        projectileManager = new ProjectileManager("Prefabs/Projectile/Enemy_Laser_Projectile", gameObject); // get projectilie Manager
         InvokeRepeating("skillAttack", 2.0f, 1.0f);
     }
 
@@ -35,6 +35,6 @@ public class ArrogantYoungMaster : BaseEnemy {
 
     private void instantiateSkill()
     {
-        projectiles.newProjectile(false);
+        projectileManager.newProjectile();
     }
 }
