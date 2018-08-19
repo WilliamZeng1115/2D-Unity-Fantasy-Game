@@ -10,6 +10,7 @@ public class BowMan : BaseClass {
 
     // Use this for initialization
     public BowMan (GameObject player) {
+        maxHealth = 100f;
         projectiles = new ProjectileManager("Prefabs/Projectile/Laser_Projectile", player); // get projectilie Manager
     }
 

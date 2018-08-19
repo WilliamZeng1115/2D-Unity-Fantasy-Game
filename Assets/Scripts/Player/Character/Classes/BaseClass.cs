@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class BaseClass {
     
     protected int str, ds, agi, dex;
+    protected float maxHealth;
 
     // different class use different combination of str, ds, agi, dex to determine attack
     public abstract void ultimate();
@@ -48,5 +49,10 @@ public abstract class BaseClass {
     public int getDex()
     {
         return dex;
+    }
+
+    public float getMaxHealth()
+    {
+        return maxHealth;
     }
 }

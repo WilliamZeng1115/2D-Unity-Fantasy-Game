@@ -64,7 +64,7 @@ public class LevelManager : Manager
     {
         if (Input.GetKeyUp(charInfoKey)) ((PopupManager)managers["PopupManager"]).showhidePopup("CharInfo");
 
-        if (Input.GetKeyDown(skillKey)) ((CharacterManager)managers["CharacterManager"]).Invoke("useSkill", 0.5f);
+        if (Input.GetKeyDown(skillKey)) ((CharacterManager)managers["CharacterManager"]).Invoke("useAbility", 0.5f);
     }
 
     // can load scene with data and pass it to new scene

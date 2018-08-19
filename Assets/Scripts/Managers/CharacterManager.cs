@@ -10,21 +10,19 @@ public class CharacterManager : Manager
     private int skillPoints;
     
     private LevelManager levelManager;
-
-    // temp for now -> make it enum later
-    private string weapon, armor;
+    private CharInfoManager charInfoManager;
 
     // Use this for initialization
     void Start()
     {
         currentClass = new BowMan(gameObject);
-
-        maxHealth = 100f; 
+        maxHealth = currentClass.getMaxHealth();
         currHealth = maxHealth;
         skillPoints = 5;
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-     }
+        charInfoManager = GameObject.Find("CharInfo").GetComponent<CharInfoManager>();
+    }
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -36,21 +34,9 @@ public class CharacterManager : Manager
         levelManager.OnCollideForCharacter(gameObject, other.gameObject);
     }
 
-    public void switchClass(BaseClass newClass)
-    {
-        currentClass = newClass;
-    }
-
     public BaseClass getClass()
     {
         return currentClass;
-    }
-    
-    public void useSkillPoints(int skillPoints)
-    {
-        // TODO handle error
-        if (skillPoints > this.skillPoints) return;
-        this.skillPoints -= skillPoints;
     }
 
     public void addSkillPoints(int skillPoints)
@@ -58,17 +44,7 @@ public class CharacterManager : Manager
         this.skillPoints += skillPoints;
     }
 
-    public void equipWeapon(string weapon)
-    {
-        this.weapon = weapon;
-    }
-
-    public void equipArmor(string armor)
-    {
-        this.armor = armor;
-    }
-
-    public void useSkill()
+    public void useAbility()
     {
         currentClass.basicAttack();
     }
