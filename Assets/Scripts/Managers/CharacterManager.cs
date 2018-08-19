@@ -6,8 +6,8 @@ public class CharacterManager : Manager
 {
     private BaseClass currentClass;
     
-    private float currHealth, maxHealth;
-    private int skillPoints;
+    private float currHealth;
+    private int skillpoints;
     
     private LevelManager levelManager;
     private CharInfoManager charInfoManager;
@@ -16,9 +16,8 @@ public class CharacterManager : Manager
     void Start()
     {
         currentClass = new BowMan(gameObject);
-        maxHealth = currentClass.getMaxHealth();
-        currHealth = maxHealth;
-        skillPoints = 5;
+        currHealth = currentClass.getMaxHealth();
+        skillpoints = 5;
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         charInfoManager = GameObject.Find("CharInfo").GetComponent<CharInfoManager>();
@@ -39,11 +38,6 @@ public class CharacterManager : Manager
         return currentClass;
     }
 
-    public void addSkillPoints(int skillPoints)
-    {
-        this.skillPoints += skillPoints;
-    }
-
     public void useAbility()
     {
         currentClass.basicAttack();
@@ -57,6 +51,34 @@ public class CharacterManager : Manager
 
     public float getMaxHealth()
     {
-        return maxHealth;
+        return currentClass.getMaxHealth();
+    }
+
+    public Dictionary<string, int> getSkills()
+    {
+        return currentClass.getSkills();
+    }
+
+    public bool isSkillValid(string id, int value)
+    {
+        var skills = currentClass.getSkills();
+        var oldValue = skills[id];
+
+        return value >= oldValue;
+    }
+
+    public int getSkillpoints()
+    {
+        return skillpoints;
+    }
+
+    public void setSkillpoints(int skillpoints)
+    {
+        this.skillpoints = skillpoints;
+    }
+
+    public void setSkill(string id, int value)
+    {
+        currentClass.setSkill(id, value);
     }
 }

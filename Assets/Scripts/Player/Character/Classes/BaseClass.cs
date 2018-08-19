@@ -3,52 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseClass {
-    
-    protected int str, ds, agi, dex;
+
+    protected Dictionary<string, int> skills;
     protected float maxHealth;
 
     // different class use different combination of str, ds, agi, dex to determine attack
     public abstract void ultimate();
     public abstract void basicAttack();
 
-    public void addStrength(int str)
+    // TODO - add a check if its one of the attribute we want str, ds, agi, dex
+    public void setSkill(string id, int value)
     {
-        this.str += str;
+        skills[id] = value;
     }
 
-    public void addDivineSense(int ds)
+    // TODO - add a check if its one of the attribute we want str, ds, agi, dex
+    public void addSkill(string id, int value)
     {
-        this.ds += ds;
+        skills[id] += value;
     }
 
-    public void addAgility(int agi)
+    public Dictionary<string, int> getSkills()
     {
-        this.agi += agi;
-    }
-
-    public void addDex(int dex)
-    {
-        this.dex += dex;
-    }
-
-    public int getStr()
-    {
-        return str;
-    }
-
-    public int getDS()
-    {
-        return ds;
-    }
-
-    public int getAgi()
-    {
-        return agi;
-    }
-
-    public int getDex()
-    {
-        return dex;
+        return skills;
     }
 
     public float getMaxHealth()

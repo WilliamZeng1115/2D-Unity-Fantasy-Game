@@ -6,10 +6,14 @@ public class BowMan : BaseClass {
 
     private ProjectileManager projectiles;
     // private AbilityManager abilities;
-    private GameObject player;
 
     // Use this for initialization
     public BowMan (GameObject player) {
+        skills = new Dictionary<string, int>();
+        skills["Strength"] = 3;
+        skills["Agility"] = 6;
+        skills["Divine Sense"] = 4;
+        skills["Dexterity"] = 8;
         maxHealth = 100f;
         projectiles = new ProjectileManager("Prefabs/Projectile/Laser_Projectile", player); // get projectilie Manager
     }
