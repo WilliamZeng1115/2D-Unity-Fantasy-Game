@@ -22,6 +22,9 @@ public class LevelManager : Manager
     private int score;
     private GameObject spawnPoint;
 
+    // Camera screen shake
+    public ScreenShake screenShake;
+
     void Start()
     {
         // Managers
@@ -63,7 +66,10 @@ public class LevelManager : Manager
     {
         if (Input.GetKeyUp(charInfoKey)) ((PopupManager)managers["PopupManager"]).showhidePopup("CharInfo");
 
-        if (Input.GetKeyDown(skillKey)) ((CharacterManager)managers["CharacterManager"]).Invoke("useAbility", 0.5f);
+        if (Input.GetKeyDown(skillKey)) {
+            ((CharacterManager)managers["CharacterManager"]).Invoke("useAbility", 0.5f);
+            StartCoroutine(screenShake.Shake(0.4f, 0.2f));
+        };
     }
 
     // can load scene with data and pass it to new scene
@@ -83,6 +89,7 @@ public class LevelManager : Manager
             var monsterScript = o.GetComponent<BaseEnemy>();
             var characterHealth = characterManager.takeDamage(monsterScript.basicAttack());
             updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
+            StartCoroutine(screenShake.Shake(0.1f, 0.5f));
             if (characterHealth <= 0)
             {
                Destroy(character);
@@ -95,6 +102,7 @@ public class LevelManager : Manager
             var projectileScript = o.GetComponent<BaseProjectile>();
             var characterHealth = characterManager.takeDamage(projectileScript.getDamage());
             updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
+            StartCoroutine(screenShake.Shake(0.1f, 0.5f));
             if (characterHealth <= 0)
             {
                 Destroy(character);

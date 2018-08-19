@@ -52,7 +52,7 @@ public class Actions : MonoBehaviour
         if (Input.GetKeyUp(directionKey)) direction = !direction;
 
         move();
-        clampPosition();
+        // clampPosition();
     }
 
 
