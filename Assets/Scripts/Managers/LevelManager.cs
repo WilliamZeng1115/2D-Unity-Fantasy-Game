@@ -15,7 +15,7 @@ public class LevelManager : Manager
 
     // Display
     private Text healthDisplay;
-    private RectTransform[] hpTransform;
+    private Slider hpTransform;
     private Text scoreDisplay;
 
     // Variables
@@ -32,8 +32,8 @@ public class LevelManager : Manager
         loadSpecialManagers();
 
         //Display
-        healthDisplay = GameObject.Find("HPText").GetComponent<UnityEngine.UI.Text>();
-        hpTransform = GameObject.Find("HP").GetComponents<RectTransform>();
+        healthDisplay = GameObject.Find("HealthText").GetComponent<UnityEngine.UI.Text>();
+        hpTransform = GameObject.Find("Health").GetComponent<Slider>();
         scoreDisplay = GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>();
 
         // Keys
@@ -160,7 +160,7 @@ public class LevelManager : Manager
     private void updateHealthDisplay(float currHealth, float maxHealth)
     {
         float healthRatio = currHealth / maxHealth;
-        hpTransform[0].localScale = new Vector3(1, healthRatio, 1);
+        hpTransform.value = 1 - healthRatio;
         healthDisplay.text = (Mathf.Round(healthRatio * 100)) + "%";
     }
 
