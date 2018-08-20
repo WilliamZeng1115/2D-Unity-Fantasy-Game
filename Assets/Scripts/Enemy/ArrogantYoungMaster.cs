@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class ArrogantYoungMaster : BaseEnemy {
 
-    private ProjectileManager projectileManager;
-
-    // Use this for initialization
     void Start () {
         health = 100;
         energy = 100;
@@ -15,8 +12,11 @@ public class ArrogantYoungMaster : BaseEnemy {
         difficultyMultipler = 1;
         isBoss = false;
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        projectileManager = new ProjectileManager("Prefabs/Projectile/Enemy_Laser_Projectile", gameObject); // get projectilie Manager
-        InvokeRepeating("skillAttack", 2.0f, 1.0f);
+
+        weaponManagers = new Dictionary<string, WeaponManager>();
+        loadWeaponManagers();
+
+        InvokeRepeating("abilityAttack", 2.0f, 1.0f);
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -24,17 +24,11 @@ public class ArrogantYoungMaster : BaseEnemy {
         levelManager.OnCollideForEnemy(gameObject, other.gameObject, this);
     }
 
-    public override int basicAttack() {
+    public override int touchAttack() {
         return damage;
     }
 
-    public override int skillAttack() {
-        instantiateSkill();
-        return damage * 2;
-    }
-
-    private void instantiateSkill()
-    {
-        projectileManager.newProjectile();
+    public override void abilityAttack() {
+        selectedWeapon.attack();
     }
 }

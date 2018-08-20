@@ -2,28 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileManager {
+public class ProjectileManager : WeaponManager {
 
     // none static
-    private readonly GameObject projectile;
-    private GameObject owner;
+    public GameObject projectile;
     private Transform shotPos;
     private List<GameObject> projectiles;
-    private Vector3 offset;
-
-
-    public ProjectileManager(string sprite, GameObject owner)
+    
+    void Start()
     {
-        projectile = Resources.Load<GameObject>(sprite);
-        this.owner = owner;
-        shotPos = owner.transform.FindChild("ShotPosition");
+        anim = GetComponent<Animator>();
+        shotPos = transform.FindChild("ShotPosition");
         projectiles = new List<GameObject>();
     }
 
-    public void newProjectile()
+    public override void attack()
     {
-        var newProjectile = GameObject.Instantiate(projectile, shotPos.position, owner.transform.rotation);
-        newProjectile.transform.parent = owner.transform;
+        if (animationName != "None")
+        {
+            anim.Play(animationName);
+        }
+        newProjectile();
+    }
+
+    private void newProjectile()
+    {
+        var newProjectile = GameObject.Instantiate(projectile, shotPos.position, transform.parent.gameObject.transform.rotation);
+        newProjectile.transform.parent = transform;
         projectiles.Add(newProjectile);
     }
 }

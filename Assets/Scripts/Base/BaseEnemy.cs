@@ -9,8 +9,28 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected bool isBoss;
     protected LevelManager levelManager;
 
-    public abstract int skillAttack();
-    public abstract int basicAttack();
+    // Weapon Manager
+    protected Dictionary<string, WeaponManager> weaponManagers;
+    protected WeaponManager selectedWeapon;
+
+    public abstract void abilityAttack();
+    public abstract int touchAttack();
+
+    protected void loadWeaponManagers()
+    {
+        var allChild = gameObject.GetComponentsInChildren<Transform>();
+        foreach (var child in allChild)
+        {
+            if (child.CompareTag("WeaponManager"))
+            {
+                weaponManagers.Add(child.gameObject.name, child.gameObject.GetComponent<WeaponManager>());
+                if (child.gameObject.activeSelf)
+                {
+                    selectedWeapon = child.gameObject.GetComponent<WeaponManager>();
+                }
+            }
+        }
+    }
 
     public int takeDamage(int damageTaken)
     {

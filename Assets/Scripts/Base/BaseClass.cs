@@ -9,7 +9,6 @@ public abstract class BaseClass {
 
     // different class use different combination of str, ds, agi, dex to determine attack
     public abstract void ultimate();
-    public abstract void basicAttack();
 
     // TODO - add a check if its one of the attribute we want str, ds, agi, dex
     public void setSkill(string id, int value)

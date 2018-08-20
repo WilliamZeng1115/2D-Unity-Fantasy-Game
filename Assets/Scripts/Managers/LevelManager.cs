@@ -84,10 +84,11 @@ public class LevelManager : Manager
         var mapManager = ((MapManager)managers["MapManager"]);
         var enemyManager = ((EnemyManager)managers["EnemyManager"]);
 
+        // When running into/touching the enemy take damage
         if (o.tag == "Monster")
         {
             var monsterScript = o.GetComponent<BaseEnemy>();
-            var characterHealth = characterManager.takeDamage(monsterScript.basicAttack());
+            var characterHealth = characterManager.takeDamage(monsterScript.touchAttack());
             updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
             StartCoroutine(screenShake.Shake(0.1f, 0.5f));
             if (characterHealth <= 0)
@@ -96,8 +97,9 @@ public class LevelManager : Manager
                LoadLevel("Loss");
             }
         }
-
-        if (o.tag == "EnemySkill")
+        
+        // one for melee and one for projectile
+        if (o.tag == "EnemyRangeAttack")
         {
             var projectileScript = o.GetComponent<BaseProjectile>();
             var characterHealth = characterManager.takeDamage(projectileScript.getDamage());
@@ -108,6 +110,11 @@ public class LevelManager : Manager
                 Destroy(character);
                 LoadLevel("Loss");
             }
+        }
+
+        if (o.tag == "EnemyMeleeAttack")
+        {
+
         }
 
         if (o.tag.Contains("Checkpoint"))
@@ -138,7 +145,7 @@ public class LevelManager : Manager
 
     public void OnCollideForEnemy(GameObject enemy, GameObject o, BaseEnemy enemyClass)
     {
-        if (o.tag == "BasicAttack")
+        if (o.tag == "PlayerRangeAttack")
         {
             var projectileScript = o.GetComponent<BaseProjectile>();
             var enemyHealth = enemyClass.takeDamage(projectileScript.getDamage());
@@ -149,10 +156,34 @@ public class LevelManager : Manager
                 Destroy(enemy);
             }
         }
+        if (o.tag == "PlayerMeleeAttack")
+        {
+            var meleeScript = o.GetComponent<BaseMelee>();
+            var enemyHealth = enemyClass.takeDamage(meleeScript.getDamage());
+            if (enemyHealth <= 0)
+            {
+                score += enemyClass.getWorth();
+                updateScoreDisplay();
+                Destroy(enemy);
+            }
+        }
+        // one for melee and one for projectile
     }
 
     public void OnCollideForObject(GameObject o1, GameObject o2)
     {
+        if (o2.tag == "Monster")
+        {
+            var meleeScript = o1.GetComponent<BaseMelee>();
+            var enemyClass = o2.GetComponent<BaseEnemy>();
+            var enemyHealth = enemyClass.takeDamage(meleeScript.getDamage());
+            if (enemyHealth <= 0)
+            {
+                score += enemyClass.getWorth();
+                updateScoreDisplay();
+                Destroy(o2);
+            }
+        }
     }
 
     public void QuitRequest()

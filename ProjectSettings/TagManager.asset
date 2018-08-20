@@ -13,10 +13,14 @@ TagManager:
   - Option
   - CharInfo
   - Undefined
-  - EnemySkill
   - Popup
   - Manager
   - Checkpoint
+  - WeaponManager
+  - EnemyRangeAttack
+  - EnemyMeleeAtack
+  - PlayerRangeAttack
+  - PlayerMeleeAttack
   layers:
   - Default
   - TransparentFX
@@ -27,8 +31,8 @@ TagManager:
   - 
   - 
   - CharInfo
-  - 
-  - 
+  - Sword
+  - Enemy
   - 
   - 
   - 

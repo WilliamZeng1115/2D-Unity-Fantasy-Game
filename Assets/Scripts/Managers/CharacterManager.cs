@@ -5,7 +5,11 @@ using UnityEngine;
 public class CharacterManager : Manager
 {
     private BaseClass currentClass;
-    
+
+    // Weapon Managers
+    private Dictionary<string, WeaponManager> weaponManagers;
+    private WeaponManager selectedWeapon;
+
     private float currHealth;
     private int skillpoints;
     
@@ -15,12 +19,32 @@ public class CharacterManager : Manager
     // Use this for initialization
     void Start()
     {
+        weaponManagers = new Dictionary<string, WeaponManager>();
+        loadWeaponManagers();
+
         currentClass = new BowMan(gameObject);
         currHealth = currentClass.getMaxHealth();
         skillpoints = 5;
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         charInfoManager = GameObject.Find("CharInfo").GetComponent<CharInfoManager>();
+    }
+
+    void loadWeaponManagers()
+    {
+        var allChild = gameObject.GetComponentsInChildren<Transform>();
+        foreach (var child in allChild)
+        {
+            if (child.CompareTag("WeaponManager")) {
+                weaponManagers.Add(child.gameObject.name, child.gameObject.GetComponent<WeaponManager>());
+                if (child.gameObject.activeSelf)
+                {
+                    selectedWeapon = child.gameObject.GetComponent<WeaponManager>();
+                }
+            }
+        }
+
+        // Char Info load ability in with selected weapon
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -40,7 +64,8 @@ public class CharacterManager : Manager
 
     public void useAbility()
     {
-        currentClass.basicAttack();
+        // selected weapon attack
+        selectedWeapon.attack();
     }
 
     public float takeDamage(float damage)
