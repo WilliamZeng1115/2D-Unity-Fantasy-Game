@@ -11,6 +11,7 @@ public class MeleeManager : WeaponManager {
 
     public override void attack()
     {
+        anim.SetFloat("AttackSpeed", atkSpeed);
         anim.Play(animationName);
     }
 }

@@ -22,6 +22,11 @@ public abstract class BaseClass {
         skills[id] += value;
     }
 
+    public int getSkillPoints(string id)
+    {
+        return skills[id];
+    }
+
     public Dictionary<string, int> getSkills()
     {
         return skills;

@@ -19,11 +19,12 @@ public class CharacterManager : Manager
     // Use this for initialization
     void Start()
     {
+        currentClass = new BowMan(gameObject);
+        currHealth = currentClass.getMaxHealth();
+
         weaponManagers = new Dictionary<string, WeaponManager>();
         loadWeaponManagers();
 
-        currentClass = new BowMan(gameObject);
-        currHealth = currentClass.getMaxHealth();
         skillpoints = 5;
 
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
@@ -40,6 +41,7 @@ public class CharacterManager : Manager
                 if (child.gameObject.activeSelf)
                 {
                     selectedWeapon = child.gameObject.GetComponent<WeaponManager>();
+                    selectedWeapon.applyStats(currentClass.getSkillPoints("Dexterity"));
                 }
             }
         }

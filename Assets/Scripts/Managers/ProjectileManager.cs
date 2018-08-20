@@ -12,7 +12,7 @@ public class ProjectileManager : WeaponManager {
     void Start()
     {
         anim = GetComponent<Animator>();
-        shotPos = transform.FindChild("ShotPosition");
+        shotPos = transform.Find("ShotPosition");
         projectiles = new List<GameObject>();
     }
 
