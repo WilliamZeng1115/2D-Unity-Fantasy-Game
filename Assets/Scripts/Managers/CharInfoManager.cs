@@ -40,7 +40,8 @@ public class CharInfoManager
 
     private void RenderAbility()
     {
-
+        var weaponManagers = characterManager.getWeaponManagers();
+        var selectedWeapon = characterManager.getSelectedWeapon();
     }
 
     private void RenderSkill()

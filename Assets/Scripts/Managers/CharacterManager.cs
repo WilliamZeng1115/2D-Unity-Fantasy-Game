@@ -53,8 +53,6 @@ public class CharacterManager : Manager
                 }
             }
         }
-
-        // Char Info load ability in with selected weapon
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -152,5 +150,15 @@ public class CharacterManager : Manager
     {
         var skillpoints = currentClass.getSkillpoints();
         return sp <= skillpoints && sp >= 0;
+    }
+
+    public Dictionary<string, WeaponManager> getWeaponManagers()
+    {
+        return weaponManagers;
+    }
+
+    public WeaponManager getSelectedWeapon()
+    {
+        return selectedWeapon;
     }
 }
