@@ -4,7 +4,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharInfoManager : Manager
+// not extending manager because its special - only used in character manager
+public class CharInfoManager
 {
     private delegate void ButtonDelegateForSkill(string id, int value);
     private DefaultControls.Resources uiResources;
@@ -20,16 +21,16 @@ public class CharInfoManager : Manager
     private ButtonDelegateForSkill methodOnClick;
 
     // Use this for initialization
-    void Start () {
+    public CharInfoManager(CharacterManager characterManager, GameObject abilityContentHolder, GameObject skillContentHolder) {
         // Initialize
-        methodOnClick = UpdateSkill;
+        methodOnClick = characterManager.UpdateSkill;
         uiResources = new DefaultControls.Resources();
         skillUI = new Dictionary<string, GameObject>();
 
         // GameObject
-        characterManager = GameObject.Find("Player").GetComponent<CharacterManager>();
-        abilityContentHolder = GameObject.Find("Ability").transform.Find("ContentHolder").gameObject;
-        skillContentHolder = GameObject.Find("Skill").transform.Find("ContentHolder").gameObject;
+        this.characterManager = characterManager;
+        this.abilityContentHolder = abilityContentHolder;
+        this.skillContentHolder = skillContentHolder;
 
         // Render
         RenderAbility();
@@ -82,59 +83,39 @@ public class CharInfoManager : Manager
 
     }
 
-    // These are called when button is clicked 
-    public void ApplySkill()
+    // Update local change (UI update only)
+    public void UpdateSkill(string id, string sp, string skill)
     {
-        foreach (KeyValuePair<string, GameObject> skill in skillUI)
-        {
-            var skillValue = int.Parse(skill.Value.GetComponent<Text>().text);
-            characterManager.setSkill(skill.Key, skillValue);
-        }
-        var skillpoints = int.Parse(skillpointUI.GetComponent<Text>().text);
-        characterManager.setSkillpoints(skillpoints);
+        var textSkillElement = skillUI[id].GetComponent<Text>();
+        var textSPElement = skillpointUI.GetComponent<Text>();
+        textSPElement.text = sp;
+        textSkillElement.text = skill;
     }
 
-    public void ResetSkill()
+    // These are called when button is clicked 
+    public void UpdateSkills(Dictionary<string, int> skills, int skillpoints)
     {
-        var skills = characterManager.getSkills();
         foreach (KeyValuePair<string, int> skill in skills)
         {
-            SetSkill(skill.Key, skill.Value);
+            var textSkillElement = skillUI[skill.Key].GetComponent<Text>();
+            textSkillElement.text = skill.Value.ToString();
         }
-        skillpointUI.GetComponent<Text>().text = characterManager.getSkillpoints().ToString();
+        skillpointUI.GetComponent<Text>().text = skillpoints.ToString();
     }
 
-    public void LearnAbility()
+    public void UpdateAbility()
+    {
+
+    }
+
+    public void UpdateLearnOrBuyButton()
     {
 
     } 
     
-    public void EquipOrUnEquipAbility()
+    public void UpdateEquipOrUnEquipButton()
     {
         // Depend if selected is equip or not
-    }
-
-    private void SetSkill(string id, int value)
-    {
-        var textSkillElement = skillUI[id].GetComponent<Text>();
-        textSkillElement.text = value.ToString();
-    }
-
-    // Update local change (UI update only)
-    private void UpdateSkill(string id, int value)
-    {
-        var textSkillElement = skillUI[id].GetComponent<Text>();
-        var newSkillValue = int.Parse(textSkillElement.text) + value;
-
-        var textSPElement = skillpointUI.GetComponent<Text>();
-        var newSPValue = int.Parse(textSPElement.text) - value;
-
-        var isValid = characterManager.isSkillValid(id, newSkillValue);
-        if (newSPValue >= 0 && isValid)
-        {
-            textSPElement.text = newSPValue.ToString();
-            textSkillElement.text = newSkillValue.ToString();
-        }
     }
 
     private GameObject CreateUIText(string value, int fontsize, float xPos, float yPos)

@@ -5,15 +5,20 @@ using UnityEngine;
 public abstract class BaseClass {
 
     protected Dictionary<string, int> skills;
+    protected int skillpoints;
     protected float maxHealth;
 
     // different class use different combination of str, ds, agi, dex to determine attack
     public abstract void ultimate();
 
     // TODO - add a check if its one of the attribute we want str, ds, agi, dex
-    public void setSkill(string id, int value)
+    public void setSkillsAndSP(Dictionary<string, int> skills, int skillpoints)
     {
-        skills[id] = value;
+        foreach (KeyValuePair<string, int> skill in skills)
+        {
+            this.skills[skill.Key] = skill.Value;
+        }
+        this.skillpoints = skillpoints;
     }
 
     // TODO - add a check if its one of the attribute we want str, ds, agi, dex
@@ -35,5 +40,10 @@ public abstract class BaseClass {
     public float getMaxHealth()
     {
         return maxHealth;
+    }
+    
+    public int getSkillpoints()
+    {
+        return skillpoints;
     }
 }

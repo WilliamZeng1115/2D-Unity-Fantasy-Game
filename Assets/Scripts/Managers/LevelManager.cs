@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : Manager
+public class LevelManager : MonoBehaviour
 {
     // Managers
     private Dictionary<string, Manager> managers;
@@ -158,7 +158,7 @@ public class LevelManager : Manager
         }
         if (o.tag == "PlayerMeleeAttack")
         {
-            var meleeScript = o.GetComponent<BaseMelee>();
+            var meleeScript = o.GetComponent<MeleeManager>();
             var enemyHealth = enemyClass.takeDamage(meleeScript.getDamage());
             if (enemyHealth <= 0)
             {
@@ -174,7 +174,7 @@ public class LevelManager : Manager
     {
         if (o2.tag == "Monster")
         {
-            var meleeScript = o1.GetComponent<BaseMelee>();
+            var meleeScript = o1.GetComponent<MeleeManager>();
             var enemyClass = o2.GetComponent<BaseEnemy>();
             var enemyHealth = enemyClass.takeDamage(meleeScript.getDamage());
             if (enemyHealth <= 0)

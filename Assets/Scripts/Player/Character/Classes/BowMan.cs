@@ -15,6 +15,7 @@ public class BowMan : BaseClass {
         skills["Divine Sense"] = 4;
         skills["Dexterity"] = 8;
         maxHealth = 100f;
+        skillpoints = 5;
     }
 
     // override

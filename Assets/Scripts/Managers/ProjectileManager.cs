@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileManager : WeaponManager {
-
-    // none static
+    
     public GameObject projectile;
     private Transform shotPos;
     private List<GameObject> projectiles;
@@ -13,6 +12,7 @@ public class ProjectileManager : WeaponManager {
     {
         anim = GetComponent<Animator>();
         shotPos = transform.Find("ShotPosition");
+        stats = new Dictionary<string, float>();
         projectiles = new List<GameObject>();
     }
 

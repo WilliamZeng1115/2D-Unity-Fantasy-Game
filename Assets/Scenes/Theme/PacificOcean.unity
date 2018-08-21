@@ -510,7 +510,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1580607947}
+      - m_Target: {fileID: 1998614044}
         m_MethodName: ResetSkill
         m_Mode: 1
         m_Arguments:
@@ -1306,7 +1306,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1580607947}
+      - m_Target: {fileID: 1998614044}
         m_MethodName: ApplySkill
         m_Mode: 1
         m_Arguments:
@@ -1501,7 +1501,13 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114266973201674202, guid: 7ed1ccd07597f104fa4f25379e700ad5,
+        type: 2}
+      propertyPath: animationName
+      value: SwordSwing
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114877938728749800, guid: 7ed1ccd07597f104fa4f25379e700ad5, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 7ed1ccd07597f104fa4f25379e700ad5, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1253997670
@@ -1645,7 +1651,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Learn
+  m_Text: Learn/Buy
 --- !u!222 &1292353181
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1958,7 +1964,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1580607947}
+      - m_Target: {fileID: 1998614044}
         m_MethodName: LearnAbility
         m_Mode: 1
         m_Arguments:
@@ -2057,7 +2063,6 @@ GameObject:
   - component: {fileID: 1563862762}
   - component: {fileID: 1563862761}
   - component: {fileID: 1563862760}
-  - component: {fileID: 1563862764}
   - component: {fileID: 1563862763}
   - component: {fileID: 1563862765}
   - component: {fileID: 1563862766}
@@ -2180,17 +2185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f150c4ac7250edb41adec528447b5800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1563862764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1563862758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afd7d412c8056ed47b93ea3580fdb5ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   animationName: SwordSwing3
 --- !u!50 &1563862765
 Rigidbody2D:
@@ -2236,7 +2230,6 @@ GameObject:
   - component: {fileID: 1580607944}
   - component: {fileID: 1580607946}
   - component: {fileID: 1580607945}
-  - component: {fileID: 1580607947}
   m_Layer: 8
   m_Name: CharInfo
   m_TagString: Popup
@@ -2300,17 +2293,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1580607943}
---- !u!114 &1580607947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1580607943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37ae134e3f6c09042a7d04cd705c9c97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1582370379
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,6 +3086,12 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1998614044 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114029555636831160, guid: d57f99ddcc6623a4eade9e2f854a92a7,
+    type: 2}
+  m_PrefabInternal: {fileID: 2111734363}
+  m_Script: {fileID: 11500000, guid: 4350b89d9b4f1e9438ec537e8b135712, type: 3}
 --- !u!1 &2046445576
 GameObject:
   m_ObjectHideFlags: 0
@@ -3180,7 +3168,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1580607947}
+      - m_Target: {fileID: 1998614044}
         m_MethodName: EquipOrUnEquipAbility
         m_Mode: 1
         m_Arguments:
