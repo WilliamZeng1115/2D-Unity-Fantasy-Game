@@ -7,7 +7,8 @@ using UnityEngine.UI;
 // not extending manager because its special - only used in character manager
 public class CharInfoManager
 {
-    private delegate void ButtonDelegateForSkill(string id, int value);
+    private delegate void ButtonDelegate<T>(string id, T value);
+    //private delegate void ButtonDelegate(string id, WeaponManager value);
     private DefaultControls.Resources uiResources;
 
     private GameObject selected;
@@ -18,12 +19,14 @@ public class CharInfoManager
     private Dictionary<string, GameObject> skillUI;
     private GameObject skillpointUI;
 
-    private ButtonDelegateForSkill methodOnClick;
+    private ButtonDelegate<int> methodOnClick;
+    private ButtonDelegate<WeaponManager> methodOnClick_two;
 
     // Use this for initialization
     public CharInfoManager(CharacterManager characterManager, GameObject abilityContentHolder, GameObject skillContentHolder) {
         // Initialize
         methodOnClick = characterManager.UpdateSkill;
+        methodOnClick_two = test;
         uiResources = new DefaultControls.Resources();
         skillUI = new Dictionary<string, GameObject>();
 
@@ -38,9 +41,24 @@ public class CharInfoManager
         RenderEverythingElse();
     }
 
+    public void test(string id, WeaponManager weaponManager)
+    {
+        Debug.Log("test");
+    }
+
     private void RenderAbility()
     {
+        var yPos = 140;
         var weaponManagers = characterManager.getWeaponManagers();
+        foreach (KeyValuePair<string, WeaponManager> weaponManager in weaponManagers)
+        {
+            var weapon = weaponManager.Value;
+            var icon = weapon.getIcon();
+            var button = CreateUIButton<WeaponManager>("", 60, 60, -125, yPos, abilityContentHolder, weaponManager.Key, weaponManager.Value, methodOnClick_two);
+            var newSprite = Sprite.Create(icon, new Rect(0.0f, 0.0f, icon.width, icon.height), new Vector2(0.5f, 0.5f), 100.0f);
+            button.GetComponent<Image>().sprite = newSprite;
+            yPos -= 75;
+        }
         var selectedWeapon = characterManager.getSelectedWeapon();
     }
 
@@ -60,8 +78,8 @@ public class CharInfoManager
             skillUI.Add(skill.Key, CreateUIText(skill.Value.ToString(), 24, textXPos, yPos));
 
             // Create button
-            CreateUIButton("+", 20, 20, buttonAddXPos, yPos, skill.Key, 1, methodOnClick);
-            CreateUIButton("-", 20, 20, buttonMinusXPos, yPos, skill.Key, -1, methodOnClick);
+            CreateUIButton<int>("+", 20, 20, buttonAddXPos, yPos, skillContentHolder, skill.Key, 1, methodOnClick);
+            CreateUIButton<int>("-", 20, 20, buttonMinusXPos, yPos, skillContentHolder, skill.Key, -1, methodOnClick);
 
             yPos -= 50;
         }
@@ -129,13 +147,13 @@ public class CharInfoManager
         return uiTextElement;
     }
 
-    private GameObject CreateUIButton(string type, float xSize, float ySize, float xPos, float yPos, string id, int value, ButtonDelegateForSkill func)
+    private GameObject CreateUIButton<T>(string text, float xSize, float ySize, float xPos, float yPos, GameObject contentHolder, string id, T value, ButtonDelegate<T> func)
     {
         var uiButton = DefaultControls.CreateButton(uiResources);
-        uiButton.transform.SetParent(skillContentHolder.transform, false);
+        uiButton.transform.SetParent(contentHolder.transform, false);
         uiButton.GetComponent<RectTransform>().sizeDelta = new Vector2(xSize, ySize);
         uiButton.GetComponent<RectTransform>().localPosition = new Vector2(xPos, yPos);
-        uiButton.GetComponentInChildren<Text>().text = type;
+        uiButton.GetComponentInChildren<Text>().text = text;
         uiButton.GetComponent<Button>().onClick.AddListener(() => func(id, value));
         return uiButton;
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class WeaponManager : Manager
 {
     public string animationName;
+    public Texture icon;
     protected Animator anim;
     protected Dictionary<string, float> stats;
 
@@ -32,5 +33,10 @@ public abstract class WeaponManager : Manager
     public void applyStat(string id, int stat)
     {
         this.stats[id] = stat / 10.0f;
+    }
+
+    public Texture2D getIcon()
+    {
+        return (Texture2D)icon;
     }
 }

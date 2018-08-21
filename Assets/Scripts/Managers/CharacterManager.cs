@@ -41,15 +41,18 @@ public class CharacterManager : Manager
 
     void loadWeaponManagers()
     {
-        var allChild = gameObject.GetComponentsInChildren<Transform>();
-        foreach (var child in allChild)
+        var childs = transform.GetComponentsInChildren<Transform>();
+        foreach (var child in childs)
         {
             if (child.CompareTag("WeaponManager")) {
                 weaponManagers.Add(child.gameObject.name, child.gameObject.GetComponent<WeaponManager>());
-                if (child.gameObject.activeSelf)
-                {
+                if (child.gameObject.name == "BasicSword2") {
                     selectedWeapon = child.gameObject.GetComponent<WeaponManager>();
                     selectedWeapon.applyStats(currentClass.getSkills());
+                }
+                else 
+                {
+                    child.gameObject.active = false;
                 }
             }
         }
