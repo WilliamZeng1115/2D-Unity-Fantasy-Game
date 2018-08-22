@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Actions : MonoBehaviour
 {
-
     // movement
     private bool enableAutoMovement;
     private bool direction; // false = left, true = right;
@@ -27,21 +26,22 @@ public class Actions : MonoBehaviour
     private KeyCode moveRightKey;
 
     // components
-    //private CharacterManager characterManager;
     private Rigidbody2D rigidBody2D;
 
+    // animation
+    private Animator anim;
 
     // Use this for initialization
     void Start()
     {
+        // components
+        initializeComponents();
+
         // movement
         initializeMovementVariables();
 
         // keys
         initializeKeys();
-
-        // components
-        initializeComponents();
     }
 
     // Update is called once per frame
@@ -58,13 +58,18 @@ public class Actions : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Ground") isJumping = false;
+        if (other.gameObject.tag == "Ground")
+        {
+            anim.SetBool("landed", true);
+            isJumping = false;
+        }
     }
 
     // Initializers
     private void initializeComponents()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     private void initializeKeys()
@@ -89,14 +94,25 @@ public class Actions : MonoBehaviour
 
         clampX = 8;
         clampY = 8;
+            
+        // Start animation
+        anim.Play("player_movement_right");
     }
 
     // Helpers
     private void move()
     {
         //If flying on some object, allowed to hold space to gain height
-        if (Input.GetKey(jumpKey)) moveVertical();
-
+        if (Input.GetKey(jumpKey))
+        {
+            anim.SetBool("landed", false);
+            anim.SetBool("jump", true);
+            moveVertical();
+        }
+        else if (Input.GetKeyUp(jumpKey))
+        {
+            anim.SetBool("jump", false);
+        }
         if (enableAutoMovement)
         {
             var vectorDirection = direction ? Vector3.right : Vector3.left;
@@ -105,8 +121,13 @@ public class Actions : MonoBehaviour
         else if (Input.GetKey(moveRightKey))
         {
             moveHorizontal(Vector3.right);
+            anim.SetFloat("speed", Mathf.Abs(xSpeed));
         }
-        else if (Input.GetKey(moveLeftKey))
+        else if (Input.GetKeyUp(moveRightKey))
+        {
+            anim.SetFloat("speed", 0);
+        }
+        else if (Input.GetKeyDown(moveLeftKey))
         {
             moveHorizontal(Vector3.left);
         }

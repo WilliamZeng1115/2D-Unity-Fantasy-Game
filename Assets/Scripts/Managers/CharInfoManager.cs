@@ -8,16 +8,17 @@ using UnityEngine.UI;
 public class CharInfoManager
 {
     private delegate void ButtonDelegate<T>(string id, T value);
-    //private delegate void ButtonDelegate(string id, WeaponManager value);
     private DefaultControls.Resources uiResources;
-
-    private GameObject selected;
+    
     private CharacterManager characterManager;
     private GameObject abilityContentHolder, skillContentHolder;
 
     // Save text ui element to update on button click
     private Dictionary<string, GameObject> skillUI;
+    private Dictionary<string, GameObject> abilityUI;
     private GameObject skillpointUI;
+    private GameObject selectedWeapon;
+    private GameObject equipedWeapon;
 
     private ButtonDelegate<int> methodOnClick;
     private ButtonDelegate<WeaponManager> methodOnClick_two;
@@ -29,6 +30,7 @@ public class CharInfoManager
         methodOnClick_two = test;
         uiResources = new DefaultControls.Resources();
         skillUI = new Dictionary<string, GameObject>();
+        abilityUI = new Dictionary<string, GameObject>();
 
         // GameObject
         this.characterManager = characterManager;
@@ -43,7 +45,16 @@ public class CharInfoManager
 
     public void test(string id, WeaponManager weaponManager)
     {
-        Debug.Log("test");
+        // update ui of selected and equiped
+        selectedWeapon = abilityUI[id];
+
+        // update content based on weapon manager
+        UpdateAbilityContent(weaponManager);
+    }
+
+    private void UpdateAbilityContent(WeaponManager selected)
+    {
+
     }
 
     private void RenderAbility()
@@ -57,9 +68,11 @@ public class CharInfoManager
             var button = CreateUIButton<WeaponManager>("", 60, 60, -125, yPos, abilityContentHolder, weaponManager.Key, weaponManager.Value, methodOnClick_two);
             var newSprite = Sprite.Create(icon, new Rect(0.0f, 0.0f, icon.width, icon.height), new Vector2(0.5f, 0.5f), 100.0f);
             button.GetComponent<Image>().sprite = newSprite;
+            abilityUI.Add(weaponManager.Key, button);
             yPos -= 75;
         }
-        var selectedWeapon = characterManager.getSelectedWeapon();
+        var equipedWeaponName = characterManager.getSelectedWeapon().getName();
+        equipedWeapon = abilityUI[equipedWeaponName];
     }
 
     private void RenderSkill()

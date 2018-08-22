@@ -4,12 +4,19 @@ using UnityEngine;
 
 public abstract class WeaponManager : Manager
 {
+    // temp for now as well... later find a way to find the parent (player, enemy, etc)
+    public GameObject parent;
+    // temp for now as well ... initialize later in constructor according to weapon's name
     public string animationName;
+    // temp for now... initialize in constructor later in basic sword/firebow/etc
+    public string name;
     public Texture icon;
     protected Animator anim;
     protected Dictionary<string, float> stats;
 
-    public abstract void attack();
+    public virtual void attack() {
+        if (anim == null) anim = parent.GetComponent<Animator>();
+    }
     
     public void drop()
     {
@@ -38,5 +45,10 @@ public abstract class WeaponManager : Manager
     public Texture2D getIcon()
     {
         return (Texture2D)icon;
+    }
+
+    public string getName()
+    {
+        return name;
     }
 }

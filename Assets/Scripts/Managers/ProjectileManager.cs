@@ -18,6 +18,7 @@ public class ProjectileManager : WeaponManager {
 
     public override void attack()
     {
+        base.attack();
         if (animationName != "None")
         {
             anim.Play(animationName);
