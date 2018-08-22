@@ -127,7 +127,7 @@ public class Actions : MonoBehaviour
         {
             anim.SetFloat("speed", 0);
         }
-        else if (Input.GetKeyDown(moveLeftKey))
+        else if (Input.GetKey(moveLeftKey))
         {
             moveHorizontal(Vector3.left);
         }
