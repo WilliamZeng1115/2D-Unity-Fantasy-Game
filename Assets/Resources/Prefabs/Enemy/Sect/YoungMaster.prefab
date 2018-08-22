@@ -158,7 +158,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dae785c069c8a4542be216d0990a6d26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 1272751748689808}
   animationName: None
+  name: Rocks
+  icon: {fileID: 2800000, guid: 59a661093a487e94dbd252775022bdc4, type: 3}
   projectile: {fileID: 1655719669342094, guid: 377f0320c0c1a5348897e6b36ac1e73d, type: 2}
 --- !u!114 &114644701316043076
 MonoBehaviour:
