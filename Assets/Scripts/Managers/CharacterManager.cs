@@ -46,7 +46,7 @@ public class CharacterManager : Manager
         {
             if (child.CompareTag("WeaponManager")) {
                 weaponManagers.Add(child.gameObject.name, child.gameObject.GetComponent<WeaponManager>());
-                if (child.gameObject.name == "BasicSword2") {
+                if (child.gameObject.name == "FireBow") {
                     selectedWeapon = child.gameObject.GetComponent<WeaponManager>();
                     selectedWeapon.applyStats(currentClass.getSkills());
                 }

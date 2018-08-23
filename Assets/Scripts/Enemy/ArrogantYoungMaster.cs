@@ -16,7 +16,8 @@ public class ArrogantYoungMaster : BaseEnemy {
         weaponManagers = new Dictionary<string, WeaponManager>();
         loadWeaponManagers();
 
-        InvokeRepeating("abilityAttack", 2.0f, 1.0f);
+        //InvokeRepeating("abilityAttack", 2.0f, 1.0f); Using enemy animation even trigger instead
+        //InvokeRepeating("changeDirections", 2.0f, 3.0f); //Changes direction of enemy every 3 seconds
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -30,5 +31,10 @@ public class ArrogantYoungMaster : BaseEnemy {
 
     public override void abilityAttack() {
         selectedWeapon.attack();
+    }
+
+    void Update()
+    {
+        enemyMovement();
     }
 }

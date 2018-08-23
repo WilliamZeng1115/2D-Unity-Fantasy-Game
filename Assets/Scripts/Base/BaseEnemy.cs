@@ -9,6 +9,10 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected bool isBoss;
     protected LevelManager levelManager;
 
+    // Enemy movement
+    private bool direction = true;
+    private float xSpeed = 3.0f;
+    private float spriteWidth;
     // Weapon Manager
     protected Dictionary<string, WeaponManager> weaponManagers;
     protected WeaponManager selectedWeapon;
@@ -56,5 +60,47 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected void addHealth(int healthAdd)
     {
         health += healthAdd;
+    }
+
+    protected void enemyMovement()
+    {
+        if (direction)
+        {
+            var displacement = Vector3.right * xSpeed * Time.deltaTime;
+            transform.position +=  displacement;
+        } else
+        {
+            var displacement = Vector3.left * xSpeed * Time.deltaTime;
+            transform.position += displacement;
+        }
+    }
+
+    protected void changeDirections()
+    {
+        direction = !direction;
+    }
+
+    void Start()
+    {
+        spriteWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
+    }
+    public LayerMask EnemyMask;
+
+    protected void checkPlatformEnd()
+    {
+
+        Vector2 lineCastPos = transform.position - transform.up * spriteWidth;
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down);
+        bool isPlatform = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down, LayerMask.GetMask("Default"));
+
+        if (!isPlatform)
+        {
+            changeDirections();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        checkPlatformEnd();
     }
 }
