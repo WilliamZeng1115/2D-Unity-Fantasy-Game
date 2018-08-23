@@ -80,6 +80,11 @@ public abstract class BaseEnemy : MonoBehaviour {
         direction = !direction;
     }
 
+    protected void setDirection(bool newDirection)
+    {
+        direction = newDirection;
+    }
+
     void Start()
     {
         spriteWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
@@ -99,8 +104,36 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
     }
 
+    protected void checkInAttackRange()
+    {
+        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 20f, transform.position);
+        if (isInRange && isInRange.transform.gameObject.tag == "Player")
+        {
+            if (isInRange.transform.position.x - this.transform.position.x > 0)
+            {
+                // Rotate enemy object
+                if (transform.eulerAngles.y == 0)
+                    rotateTransformY(180f);
+            }
+            else
+            {
+                if (transform.eulerAngles.y == 180)
+                    rotateTransformY(-180f);
+            }
+            Debug.Log("In range to attack");
+        }
+    }
+
+    private void rotateTransformY(float degree)
+    {
+        Vector3 currRotation = transform.eulerAngles;
+        currRotation.y += degree;
+        transform.eulerAngles = currRotation;
+    }
+
     void FixedUpdate()
     {
         checkPlatformEnd();
+        checkInAttackRange();
     }
 }

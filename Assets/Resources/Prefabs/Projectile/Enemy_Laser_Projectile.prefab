@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61303490065937180}
   - component: {fileID: 50202420916265942}
   - component: {fileID: 114594605260283396}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Enemy_Laser_Projectile
   m_TagString: EnemyRangeAttack
   m_Icon: {fileID: 0}
