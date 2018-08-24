@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterManager : Manager
@@ -7,8 +8,9 @@ public class CharacterManager : Manager
     private BaseClass currentClass;
 
     // Weapon Managers
-    private Dictionary<string, WeaponManager> weaponManagers;
-    private WeaponManager selectedWeapon;
+    private Dictionary<string, GameObject> weaponManagers;
+    private string equipedWeapon;
+    private string selectedWeapon;
 
     // Attributes
     private float currHealth;
@@ -28,15 +30,16 @@ public class CharacterManager : Manager
         skills = new Dictionary<string, int>(currentClass.getSkills());
 
         // Weapons and current weapon
-        weaponManagers = new Dictionary<string, WeaponManager>();
+        weaponManagers = new Dictionary<string, GameObject>();
         loadWeaponManagers();
 
         // Managers
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         var charInfo = GameObject.Find("Popups").transform.Find("CharInfo");
-        var abilityContentHolder = charInfo.transform.Find("Ability").transform.Find("ContentHolder").gameObject;
-        var skillContentHolder = charInfo.transform.Find("Skill").transform.Find("ContentHolder").gameObject;
-        charInfoManager = new CharInfoManager(this, abilityContentHolder, skillContentHolder);
+        var abilityUI = charInfo.transform.Find("Ability").gameObject;
+        var skillUI = charInfo.transform.Find("Skill").gameObject;
+        charInfoManager = new CharInfoManager(this, abilityUI, skillUI);
+        charInfoManager.UpdateEquipOrUnEquipItem(null, equipedWeapon, true);
     }
 
     void loadWeaponManagers()
@@ -44,17 +47,20 @@ public class CharacterManager : Manager
         var childs = transform.GetComponentsInChildren<Transform>();
         foreach (var child in childs)
         {
-            if (child.CompareTag("WeaponManager")) {
-                weaponManagers.Add(child.gameObject.name, child.gameObject.GetComponent<WeaponManager>());
-                if (child.gameObject.name == "FireBow") {
-                    selectedWeapon = child.gameObject.GetComponent<WeaponManager>();
-                    selectedWeapon.applyStats(currentClass.getSkills());
-                }
-                else 
-                {
-                    child.gameObject.active = false;
-                }
+            if (child.CompareTag("WeaponManager"))
+            {
+                var weaponManager = child.gameObject.GetComponent<WeaponManager>();
+                weaponManagers.Add(weaponManager.getName(), child.gameObject);
+                child.gameObject.active = false;
             }
+        }
+        var wp = weaponManagers.First().Value;
+        if (wp != null)
+        {
+            wp.gameObject.active = true;
+            var weapon = wp.GetComponent<WeaponManager>();
+            weapon.applyStats(currentClass.getSkills());
+            equipedWeapon = weapon.getName();
         }
     }
 
@@ -76,7 +82,9 @@ public class CharacterManager : Manager
     public void useAbility()
     {
         // selected weapon attack
-        selectedWeapon.attack();
+        if (equipedWeapon == null) return;
+        var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
+        weaponManager.attack();
     }
 
     public float takeDamage(float damage)
@@ -105,7 +113,9 @@ public class CharacterManager : Manager
     {
         currentClass.setSkillsAndSP(skills, skillpoints);
         charInfoManager.UpdateSkills(skills, skillpoints);
-        selectedWeapon.applyStats(skills);
+        if (equipedWeapon == null) return;
+        var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
+        weaponManager.applyStats(skills);
     }
 
     public void ResetSkill()
@@ -119,12 +129,27 @@ public class CharacterManager : Manager
 
     public void LearnAbility()
     {
-
+        // TODO
     }
 
     public void EquipOrUnEquipAbility()
     {
-        // Depend if selected is equip or not
+        if (selectedWeapon == null) return;
+        var equip = (equipedWeapon != selectedWeapon);
+        charInfoManager.UpdateEquipOrUnEquipItem(equipedWeapon, selectedWeapon, equip);
+        if (equip)
+        {
+            weaponManagers[selectedWeapon].active = true;
+            if (equipedWeapon != null) weaponManagers[equipedWeapon].active = false;
+            equipedWeapon = selectedWeapon;
+            var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
+            weaponManager.applyStats(skills);
+        }
+        else if (!equip)
+        {
+            weaponManagers[equipedWeapon].active = false;
+            equipedWeapon = null;
+        }
     }
 
     public void UpdateSkill(string id, int value)
@@ -155,13 +180,28 @@ public class CharacterManager : Manager
         return sp <= skillpoints && sp >= 0;
     }
 
-    public Dictionary<string, WeaponManager> getWeaponManagers()
+    public Dictionary<string, GameObject> getWeaponManagers()
     {
         return weaponManagers;
     }
 
     public WeaponManager getSelectedWeapon()
     {
-        return selectedWeapon;
+        if (equipedWeapon == null) return null;
+        var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
+        return weaponManager;
+    }
+
+    public WeaponManager getEquipedWeapon()
+    {
+        if (equipedWeapon == null) return null;
+        var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
+        return weaponManager;
+    }
+
+    public void SelectWeapon(string id, WeaponManager weaponManager)
+    {
+        selectedWeapon = id;
+        charInfoManager.selectWeapon(id, weaponManager);
     }
 }

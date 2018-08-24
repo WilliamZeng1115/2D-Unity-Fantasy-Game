@@ -13,6 +13,9 @@ public class CharInfoManager
     private CharacterManager characterManager;
     private GameObject abilityContentHolder, skillContentHolder;
 
+    // buttons
+    private GameObject equipOrUnequip;
+
     // Save text ui element to update on button click
     private Dictionary<string, GameObject> skillUI;
     private Dictionary<string, GameObject> abilityUI;
@@ -27,10 +30,10 @@ public class CharInfoManager
     private ButtonDelegate<WeaponManager> methodOnClick_two;
 
     // Use this for initialization
-    public CharInfoManager(CharacterManager characterManager, GameObject abilityContentHolder, GameObject skillContentHolder) {
+    public CharInfoManager(CharacterManager characterManager, GameObject abilityContent, GameObject skillContent) {
         // Initialize
         methodOnClick = characterManager.UpdateSkill;
-        methodOnClick_two = test;
+        methodOnClick_two = characterManager.SelectWeapon;
         uiResources = new DefaultControls.Resources();
         skillUI = new Dictionary<string, GameObject>();
         abilityUI = new Dictionary<string, GameObject>();
@@ -40,8 +43,9 @@ public class CharInfoManager
 
         // GameObject
         this.characterManager = characterManager;
-        this.abilityContentHolder = abilityContentHolder;
-        this.skillContentHolder = skillContentHolder;
+        this.abilityContentHolder = abilityContent.transform.Find("ContentHolder").gameObject;
+        this.skillContentHolder = skillContent.transform.Find("ContentHolder").gameObject;
+        this.equipOrUnequip = abilityContent.transform.Find("ItemButton").transform.Find("EquipOrUnEquip").gameObject;
 
         // Render
         RenderAbility();
@@ -49,16 +53,24 @@ public class CharInfoManager
         RenderEverythingElse();
     }
 
-    public void test(string id, WeaponManager weaponManager)
+    public void selectWeapon(string id, WeaponManager weaponManager)
     {
-        // update ui of selected and equiped -> already updated on button press
+        
+        // set previous selected color to default
+        if (selectedItem != null && equipedWeapon != selectedItem)
+        {
+            abilityUI[selectedItem].GetComponent<Image>().color = defaultColor;
+        }
         selectedItem = id;
+        // set new selected item to selected color
+        if (equipedWeapon != selectedItem) abilityUI[selectedItem].GetComponent<Image>().color = selectedColor;
         if (selectedItem == equipedWeapon)
         {
             // change button text to unequip;
+            this.equipOrUnequip.GetComponent<Text>().text = "Unequip";
         } else
         {
-            // change button text to equip
+            this.equipOrUnequip.GetComponent<Text>().text = "Equip";
         }
 
         // update content based on weapon manager
@@ -72,24 +84,25 @@ public class CharInfoManager
 
     private void RenderAbility()
     {
-        var yPos = 140;
-        var panelBottom = 308;
+        var top = -5;
+        var bottom = 295;
         var weaponManagers = characterManager.getWeaponManagers();
-        foreach (KeyValuePair<string, WeaponManager> weaponManager in weaponManagers)
+        foreach (KeyValuePair<string, GameObject> weaponManager in weaponManagers)
         {
-            var weapon = weaponManager.Value;
+            var weapon = weaponManager.Value.GetComponent<WeaponManager>();
             var icon = weapon.getIcon();
             var newSprite = Sprite.Create(icon, new Rect(0.0f, 0.0f, icon.width, icon.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-            var panel = CreateUIPanel<WeaponManager>(390, panelBottom, 0, yPos, abilityContentHolder, weaponManager.Key, weaponManager.Value, methodOnClick_two);
-            var image = CreateUIImage(60, 60, -125, yPos, panel, newSprite);
-            var text = CreateUIText(weapon.getName(), 24, -125, yPos, panel);
+            var panel = CreateUIPanel<WeaponManager>(5, top, -200, bottom, abilityContentHolder, weaponManager.Key, weapon, methodOnClick_two);
+            var image = CreateUIImage(60, 60, -40, 0, panel, newSprite);
+            var text = CreateUIText(weapon.getName(), 12, 80, 15, panel);
 
             abilityUI.Add(weaponManager.Key, panel);
-            yPos -= 75;
-            panelBottom -= 75;
+            top -= 95;
+            bottom -= 95;
         }
-        equipedWeapon = characterManager.getSelectedWeapon().getName();
+        var currWeapon = characterManager.getEquipedWeapon();
+        if (currWeapon != null) equipedWeapon = currWeapon.getName();
     }
 
     private void RenderSkill()
@@ -152,19 +165,25 @@ public class CharInfoManager
         skillpointUI.GetComponent<Text>().text = skillpoints.ToString();
     }
 
-    public void UpdateAbility()
-    {
-
-    }
-
     public void UpdateLearnOrBuyButton()
     {
-
+        // TODO
     } 
     
-    public void UpdateEquipOrUnEquipButton()
+    public void UpdateEquipOrUnEquipItem(string equiped, string selected, bool equip)
     {
-        // Depend if selected is equip or not
+        if (selected == null) return;
+        if (equip)
+        {
+            equipedWeapon = selected;
+            abilityUI[selected].GetComponent<Image>().color = equipedColor;
+            if (equiped != null) abilityUI[equiped].GetComponent<Image>().color = defaultColor;
+        }
+        else
+        {
+            equipedWeapon = null;
+            abilityUI[equiped].GetComponent<Image>().color = defaultColor;
+        }
     }
 
     private GameObject CreateUIText(string value, int fontsize, float xPos, float yPos, GameObject contentHolder)
@@ -187,22 +206,20 @@ public class CharInfoManager
         uiButton.GetComponent<Button>().onClick.AddListener(() => func(id, value));
         return uiButton;
     }
-
-    private GameObject CreateUIPanel<T>(float right, float bottom, float xPos, float yPos, GameObject contentHolder, string id, T value, ButtonDelegate<T> func)
+    
+    private GameObject CreateUIPanel<T>(float left, float top, float right, float bottom, GameObject contentHolder, string id, T value, ButtonDelegate<T> func)
     {
         var uiPanel = DefaultControls.CreatePanel(uiResources);
         uiPanel.transform.SetParent(contentHolder.transform, false);
         
-        uiPanel.GetComponent<RectTransform>().offsetMin = new Vector2(100, 520 );//left-bottom;
-        uiPanel.GetComponent<RectTransform>().offsetMax = new Vector2(-100, -80);//right-top
-        Debug.Log(uiPanel.GetComponent<RectTransform>().offsetMax.x);
+        uiPanel.GetComponent<RectTransform>().offsetMin = new Vector2(left, bottom);//left-bottom;
+        uiPanel.GetComponent<RectTransform>().offsetMax = new Vector2(right, top);//right-top
 
-        uiPanel.GetComponent<RectTransform>().localPosition = new Vector2(xPos, yPos);
         uiPanel.GetComponent<Image>().color = defaultColor;
         var button = uiPanel.AddComponent<Button>();
         button.onClick.AddListener(() => func(id, value));
         var colorBlock = button.colors;
-        colorBlock.highlightedColor = selectedColor;
+        colorBlock.highlightedColor = defaultColor;
         button.colors = colorBlock;
         return uiPanel;
     }
