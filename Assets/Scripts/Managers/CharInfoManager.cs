@@ -55,8 +55,16 @@ public class CharInfoManager
 
     public void selectWeapon(string id, WeaponManager weaponManager)
     {
-        
+
         // set previous selected color to default
+        UpdateItemView(id);
+
+        // update content based on weapon manager
+        UpdateAbilityContent(weaponManager);
+    }
+
+    private void UpdateItemView(string id)
+    {
         if (selectedItem != null && equipedWeapon != selectedItem)
         {
             abilityUI[selectedItem].GetComponent<Image>().color = defaultColor;
@@ -68,13 +76,11 @@ public class CharInfoManager
         {
             // change button text to unequip;
             this.equipOrUnequip.GetComponent<Text>().text = "Unequip";
-        } else
+        }
+        else
         {
             this.equipOrUnequip.GetComponent<Text>().text = "Equip";
         }
-
-        // update content based on weapon manager
-        UpdateAbilityContent(weaponManager);
     }
 
     private void UpdateAbilityContent(WeaponManager selected)
@@ -178,11 +184,13 @@ public class CharInfoManager
             equipedWeapon = selected;
             abilityUI[selected].GetComponent<Image>().color = equipedColor;
             if (equiped != null) abilityUI[equiped].GetComponent<Image>().color = defaultColor;
+            this.equipOrUnequip.GetComponent<Text>().text = "Unequip";
         }
         else
         {
             equipedWeapon = null;
-            abilityUI[equiped].GetComponent<Image>().color = defaultColor;
+            abilityUI[equiped].GetComponent<Image>().color = selectedColor;
+            this.equipOrUnequip.GetComponent<Text>().text = "Equip";
         }
     }
 
