@@ -36,8 +36,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4736728050060452}
   m_Layer: 10
-  m_Name: ShotPosition
-  m_TagString: Untagged
+  m_Name: ShootPosition
+  m_TagString: ShootPosition
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -121,14 +121,23 @@ public abstract class BaseEnemy : MonoBehaviour {
                     rotateTransformY(-180f);
             }
             Debug.Log("In range to attack");
+            var childs = transform.GetComponentsInChildren<Transform>();
+            var distance = isInRange.transform.position - transform.position;
+            //var distance = Vector2.Distance(isInRange.transform.position, transform.position);
+            foreach (var child in childs)
+            {
+                if (child.gameObject.tag == "ShootPosition")
+                {
+                    Debug.Log(distance);
+                    child.eulerAngles = new Vector3(0, 0, distance.y);
+                }
+            }
         }
     }
 
     private void rotateTransformY(float degree)
     {
-        Vector3 currRotation = transform.eulerAngles;
-        currRotation.y += degree;
-        transform.eulerAngles = currRotation;
+        transform.eulerAngles = new Vector2 (0, degree);
     }
 
     void FixedUpdate()

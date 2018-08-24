@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Laser : BaseProjectile {
-   
+
+    private Rigidbody2D rb;
 	// Update is called once per frame
+
+    void Start ()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 	void Update ()
     {
-        transform.Translate(Vector2.up * xSpeed * (Time.deltaTime * 1.75f));
+        //transform.Translate(Vector2.up * xSpeed * (Time.deltaTime * 1.75f));
+        rb.AddRelativeForce(transform.eulerAngles * xSpeed);
     }
 
     void OnCollisionEnter2D(Collision2D col)

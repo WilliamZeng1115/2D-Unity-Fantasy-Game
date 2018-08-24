@@ -21,6 +21,7 @@ TagManager:
   - EnemyMeleeAtack
   - PlayerRangeAttack
   - PlayerMeleeAttack
+  - ShootPosition
   layers:
   - Default
   - TransparentFX

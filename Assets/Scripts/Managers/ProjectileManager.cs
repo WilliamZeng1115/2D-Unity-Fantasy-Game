@@ -5,13 +5,13 @@ using UnityEngine;
 public class ProjectileManager : WeaponManager {
     
     public GameObject projectile;
-    private Transform shotPos;
+    private Transform shootPos;
     private List<GameObject> projectiles;
     
     void Start()
     {
         anim = GetComponent<Animator>();
-        shotPos = transform.Find("ShotPosition");
+        shootPos = transform.Find("ShootPosition");
         stats = new Dictionary<string, float>();
         projectiles = new List<GameObject>();
     }
@@ -28,7 +28,7 @@ public class ProjectileManager : WeaponManager {
 
     private void newProjectile()
     {
-        var newProjectile = GameObject.Instantiate(projectile, shotPos.position, transform.parent.gameObject.transform.rotation);
+        var newProjectile = GameObject.Instantiate(projectile, shootPos.position, shootPos.rotation);
         newProjectile.transform.parent = transform;
         projectiles.Add(newProjectile);
     }
