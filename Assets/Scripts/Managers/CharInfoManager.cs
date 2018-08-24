@@ -17,8 +17,11 @@ public class CharInfoManager
     private Dictionary<string, GameObject> skillUI;
     private Dictionary<string, GameObject> abilityUI;
     private GameObject skillpointUI;
-    private GameObject selectedWeapon;
-    private GameObject equipedWeapon;
+    private string selectedItem;
+    private string equipedWeapon;
+    private Color selectedColor;
+    private Color equipedColor;
+    private Color defaultColor;
 
     private ButtonDelegate<int> methodOnClick;
     private ButtonDelegate<WeaponManager> methodOnClick_two;
@@ -31,6 +34,9 @@ public class CharInfoManager
         uiResources = new DefaultControls.Resources();
         skillUI = new Dictionary<string, GameObject>();
         abilityUI = new Dictionary<string, GameObject>();
+        selectedColor = Color.yellow;
+        equipedColor = Color.blue;
+        defaultColor = Color.white;
 
         // GameObject
         this.characterManager = characterManager;
@@ -45,8 +51,15 @@ public class CharInfoManager
 
     public void test(string id, WeaponManager weaponManager)
     {
-        // update ui of selected and equiped
-        selectedWeapon = abilityUI[id];
+        // update ui of selected and equiped -> already updated on button press
+        selectedItem = id;
+        if (selectedItem == equipedWeapon)
+        {
+            // change button text to unequip;
+        } else
+        {
+            // change button text to equip
+        }
 
         // update content based on weapon manager
         UpdateAbilityContent(weaponManager);
@@ -60,19 +73,23 @@ public class CharInfoManager
     private void RenderAbility()
     {
         var yPos = 140;
+        var panelBottom = 308;
         var weaponManagers = characterManager.getWeaponManagers();
         foreach (KeyValuePair<string, WeaponManager> weaponManager in weaponManagers)
         {
             var weapon = weaponManager.Value;
             var icon = weapon.getIcon();
-            var button = CreateUIButton<WeaponManager>("", 60, 60, -125, yPos, abilityContentHolder, weaponManager.Key, weaponManager.Value, methodOnClick_two);
             var newSprite = Sprite.Create(icon, new Rect(0.0f, 0.0f, icon.width, icon.height), new Vector2(0.5f, 0.5f), 100.0f);
-            button.GetComponent<Image>().sprite = newSprite;
-            abilityUI.Add(weaponManager.Key, button);
+
+            var panel = CreateUIPanel<WeaponManager>(390, panelBottom, 0, yPos, abilityContentHolder, weaponManager.Key, weaponManager.Value, methodOnClick_two);
+            var image = CreateUIImage(60, 60, -125, yPos, panel, newSprite);
+            var text = CreateUIText(weapon.getName(), 24, -125, yPos, panel);
+
+            abilityUI.Add(weaponManager.Key, panel);
             yPos -= 75;
+            panelBottom -= 75;
         }
-        var equipedWeaponName = characterManager.getSelectedWeapon().getName();
-        equipedWeapon = abilityUI[equipedWeaponName];
+        equipedWeapon = characterManager.getSelectedWeapon().getName();
     }
 
     private void RenderSkill()
@@ -86,9 +103,9 @@ public class CharInfoManager
         foreach (KeyValuePair<string, int> skill in skills)
         {
             // Create text
-            CreateUIText(skill.Key + ": ", 24, keyXPos, yPos);
+            CreateUIText(skill.Key + ": ", 24, keyXPos, yPos, skillContentHolder);
             // Added to skill ui to modify later on click
-            skillUI.Add(skill.Key, CreateUIText(skill.Value.ToString(), 24, textXPos, yPos));
+            skillUI.Add(skill.Key, CreateUIText(skill.Value.ToString(), 24, textXPos, yPos, skillContentHolder));
 
             // Create button
             CreateUIButton<int>("+", 20, 20, buttonAddXPos, yPos, skillContentHolder, skill.Key, 1, methodOnClick);
@@ -103,8 +120,8 @@ public class CharInfoManager
         var yPos = -50;
         var textXPos = -50;
         var valXPos = textXPos + 150;
-        CreateUIText("Skill Points: ", 24, textXPos, yPos);
-        skillpointUI = CreateUIText(characterManager.getSkillpoints().ToString(), 24, valXPos, yPos);
+        CreateUIText("Skill Points: ", 24, textXPos, yPos, skillContentHolder);
+        skillpointUI = CreateUIText(characterManager.getSkillpoints().ToString(), 24, valXPos, yPos, skillContentHolder);
     }
 
     // if ability already equiped then UI says Unequip
@@ -150,10 +167,10 @@ public class CharInfoManager
         // Depend if selected is equip or not
     }
 
-    private GameObject CreateUIText(string value, int fontsize, float xPos, float yPos)
+    private GameObject CreateUIText(string value, int fontsize, float xPos, float yPos, GameObject contentHolder)
     {
         var uiTextElement = DefaultControls.CreateText(uiResources);
-        uiTextElement.transform.SetParent(skillContentHolder.transform, false);
+        uiTextElement.transform.SetParent(contentHolder.transform, false);
         uiTextElement.GetComponent<RectTransform>().localPosition = new Vector2(xPos, yPos);
         uiTextElement.GetComponent<Text>().text = value;
         uiTextElement.GetComponent<Text>().fontSize = fontsize;
@@ -169,5 +186,34 @@ public class CharInfoManager
         uiButton.GetComponentInChildren<Text>().text = text;
         uiButton.GetComponent<Button>().onClick.AddListener(() => func(id, value));
         return uiButton;
+    }
+
+    private GameObject CreateUIPanel<T>(float right, float bottom, float xPos, float yPos, GameObject contentHolder, string id, T value, ButtonDelegate<T> func)
+    {
+        var uiPanel = DefaultControls.CreatePanel(uiResources);
+        uiPanel.transform.SetParent(contentHolder.transform, false);
+        
+        uiPanel.GetComponent<RectTransform>().offsetMin = new Vector2(100, 520 );//left-bottom;
+        uiPanel.GetComponent<RectTransform>().offsetMax = new Vector2(-100, -80);//right-top
+        Debug.Log(uiPanel.GetComponent<RectTransform>().offsetMax.x);
+
+        uiPanel.GetComponent<RectTransform>().localPosition = new Vector2(xPos, yPos);
+        uiPanel.GetComponent<Image>().color = defaultColor;
+        var button = uiPanel.AddComponent<Button>();
+        button.onClick.AddListener(() => func(id, value));
+        var colorBlock = button.colors;
+        colorBlock.highlightedColor = selectedColor;
+        button.colors = colorBlock;
+        return uiPanel;
+    }
+
+    private GameObject CreateUIImage(float xSize, float ySize, float xPos, float yPos, GameObject contentHolder, Sprite sprite)
+    {
+        var uiImage = DefaultControls.CreateImage(uiResources);
+        uiImage.transform.SetParent(contentHolder.transform, false);
+        uiImage.GetComponent<RectTransform>().sizeDelta = new Vector2(xSize, ySize);
+        uiImage.GetComponent<RectTransform>().localPosition = new Vector2(xPos, yPos);
+        uiImage.GetComponent<Image>().sprite = sprite;
+        return uiImage;
     }
 }
