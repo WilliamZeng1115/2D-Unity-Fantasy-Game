@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61218724802589448}
   - component: {fileID: 50125208346083820}
   - component: {fileID: 114273176501508190}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Laser_Projectile
   m_TagString: PlayerRangeAttack
   m_Icon: {fileID: 0}

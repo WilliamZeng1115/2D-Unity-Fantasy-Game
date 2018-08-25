@@ -14,7 +14,8 @@ public class Laser : BaseProjectile {
 	void Update ()
     {
         //transform.Translate(Vector2.up * xSpeed * (Time.deltaTime * 1.75f));
-        rb.AddRelativeForce(transform.eulerAngles * xSpeed);
+        rb.AddForce(transform.up * xSpeed);
+        //transform.Translate(transform.eulerAngles * xSpeed * (Time.deltaTime * 1.75f));
     }
 
     void OnCollisionEnter2D(Collision2D col)

@@ -104,32 +104,48 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
     }
 
+    float degreeMultipler = 1;
     protected void checkInAttackRange()
     {
-        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 20f, transform.position);
+        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 50f, new Vector2(0.1f,0.1f));
         if (isInRange && isInRange.transform.gameObject.tag == "Player")
         {
-            if (isInRange.transform.position.x - this.transform.position.x > 0)
-            {
-                // Rotate enemy object
-                if (transform.eulerAngles.y == 0)
-                    rotateTransformY(180f);
-            }
-            else
-            {
-                if (transform.eulerAngles.y == 180)
-                    rotateTransformY(-180f);
-            }
-            Debug.Log("In range to attack");
+            
             var childs = transform.GetComponentsInChildren<Transform>();
             var distance = isInRange.transform.position - transform.position;
-            //var distance = Vector2.Distance(isInRange.transform.position, transform.position);
             foreach (var child in childs)
             {
                 if (child.gameObject.tag == "ShootPosition")
                 {
-                    Debug.Log(distance);
-                    child.eulerAngles = new Vector3(0, 0, distance.y);
+                    float xPosDiff = isInRange.transform.position.x - this.transform.position.x;
+                    if (xPosDiff > 0)
+                    {
+                        // Rotate enemy object
+                        if (child.eulerAngles.y == 0f)
+                        {
+                            child.rotation = Quaternion.Euler(0, 180f, 0);
+                        }
+                    }
+                    else if (xPosDiff < 0)
+                    {
+                        if (child.eulerAngles.y == 180f)
+                        {
+                            child.rotation = Quaternion.Euler(0, 0f, 0);
+                        }
+
+                    }
+                    float hypotenuse = Mathf.Sqrt(Mathf.Pow(2, distance.x ) + Mathf.Pow(2, distance.y));
+                    float sineDistance = distance.y / hypotenuse;
+                    if (sineDistance > 1)
+                        sineDistance = Mathf.Floor(sineDistance);
+                    float zDegree = Mathf.Asin(distance.y / hypotenuse) * Mathf.Rad2Deg;
+                    if (zDegree <= 90)
+                        if (xPosDiff > 0)
+                        {
+                            zDegree *= -1;
+                        }
+                        child.rotation = Quaternion.Euler(0, 0, zDegree);
+                    //Debug.Log("rotation shoot:" + child.eulerAngles);
                 }
             }
         }
@@ -137,7 +153,7 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     private void rotateTransformY(float degree)
     {
-        transform.eulerAngles = new Vector2 (0, degree);
+        transform.rotation = Quaternion.Euler(0, degree, 0);
     }
 
     void FixedUpdate()
