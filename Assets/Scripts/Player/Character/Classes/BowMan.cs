@@ -14,8 +14,17 @@ public class BowMan : BaseClass {
         skills["Agility"] = 6;
         skills["Divine Sense"] = 4;
         skills["Dexterity"] = 8;
-        maxHealth = 100f;
+        maxHealth = 100000000f;
+        stamina = 100f;
         skillpoints = 5;
+        spiritStones = 0;
+        experience = 0;
+        maxExperience = 30;
+        levelUpExperienceRquiredMultiplier = 2f;
+        level = 1;
+        staminaRegeneration = 10;
+        staminaRegenerationWaitTime = 3f;
+        healthRegeneration = 10;
     }
 
     // override

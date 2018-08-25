@@ -14,6 +14,8 @@ public class CharacterManager : Manager
 
     // Attributes
     private float currHealth;
+    private float currStamina;
+    private int currScore;
     private int skillpoints;
     protected Dictionary<string, int> skills;
 
@@ -26,6 +28,7 @@ public class CharacterManager : Manager
         // Class attributes
         currentClass = new BowMan(gameObject);
         currHealth = currentClass.getMaxHealth();
+        currStamina = currentClass.getMaxStamina();
         skillpoints = currentClass.getSkillpoints();
         skills = new Dictionary<string, int>(currentClass.getSkills());
 
@@ -93,9 +96,74 @@ public class CharacterManager : Manager
         return currHealth;
     }
 
+    public float useStamina(float stamina)
+    {
+        currStamina -= stamina;
+        return currStamina;
+    }
+    
+    public float getStamina()
+    {
+        return currStamina;
+    }
+
     public float getMaxHealth()
     {
         return currentClass.getMaxHealth();
+    }
+
+    public float getMaxStamina()
+    {
+        return currentClass.getMaxStamina();
+    }
+
+    public bool onEnemyKill(int experience, int spiritStone, int score)
+    {
+        var isLevelUp = currentClass.addExperience(experience);
+        currentClass.addSpiritStone(spiritStone);
+        currScore += score;
+        return isLevelUp;
+    }
+
+    public void regenerateStamina()
+    {
+        var maxStamina = currentClass.getMaxStamina(); 
+        if (currStamina <= maxStamina)
+        {
+            var regenerationRate = currentClass.getStaminaRegenerationRate();
+            currStamina += regenerationRate;
+            currStamina = currStamina > maxStamina ? maxStamina : currStamina;
+        }
+    }
+
+    public float getRegenerationWaitTime()
+    {
+        return currentClass.getRegenerationWaitTime();
+    }
+
+    public int getScore()
+    {
+        return currScore;
+    }
+
+    public int getCurrentExperience()
+    {
+        return currentClass.getExperience();
+    }
+
+    public int getMaxExperience()
+    {
+        return currentClass.getMaxExperience();
+    }
+
+    public int getSpiritStone()
+    {
+        return currentClass.getSpiritStone();
+    }
+
+    public int getLevel()
+    {
+        return currentClass.getLevel();
     }
 
     public Dictionary<string, int> getSkills()
@@ -107,6 +175,7 @@ public class CharacterManager : Manager
     {
         return skillpoints;
     }
+    // Char Info Button stuff
 
     // These are called when button is clicked 
     public void ApplySkill()

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class BaseEnemy : MonoBehaviour {
 
     //protected CharacterManager player;
-    protected int health, energy, damage, difficultyMultipler, worth = 1;
+    protected int health, energy, damage, difficultyMultipler, score = 1, experience = 10, spiritStone = 50;
     protected bool isBoss;
     protected LevelManager levelManager;
 
@@ -42,9 +42,19 @@ public abstract class BaseEnemy : MonoBehaviour {
         return health;
     }
 
-    public int getWorth()
+    public int getScore()
     {
-        return worth;
+        return score;
+    }
+
+    public int getExperience()
+    {
+        return experience;
+    }
+
+    public int getSpiritStone()
+    {
+        return spiritStone;
     }
 
     protected void addEnergy(int energyAdd)
@@ -120,7 +130,6 @@ public abstract class BaseEnemy : MonoBehaviour {
                 if (transform.eulerAngles.y == 180)
                     rotateTransformY(-180f);
             }
-            Debug.Log("In range to attack");
             var childs = transform.GetComponentsInChildren<Transform>();
             var distance = isInRange.transform.position - transform.position;
             //var distance = Vector2.Distance(isInRange.transform.position, transform.position);
@@ -128,7 +137,6 @@ public abstract class BaseEnemy : MonoBehaviour {
             {
                 if (child.gameObject.tag == "ShootPosition")
                 {
-                    Debug.Log(distance);
                     child.eulerAngles = new Vector3(0, 0, distance.y);
                 }
             }

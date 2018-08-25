@@ -14,16 +14,31 @@ public class LevelManager : MonoBehaviour
     private KeyCode skillKey;
 
     // Display
+    // Health
     private Text healthDisplay;
     private Slider hpTransform;
+    // Stamina
+    private Text staminaDisplay;
+    private Slider staminaTransform;
+    // Experience
+    private Text experienceDisplay;
+    private Slider experienceTransform;
+    // Spirit Stones
+    private Text spiritStoneDisplay;
+    // Score
     private Text scoreDisplay;
+    // Level
+    private Text levelDisplay;
 
     // Variables
-    private int score;
     private GameObject spawnPoint;
 
     // Camera screen shake
     public ScreenShake screenShake;
+
+    // Timer
+    private float currStaminaRegenerationTime;
+    private float staminaRegenerationWaitTime;
 
     void Start()
     {
@@ -35,17 +50,32 @@ public class LevelManager : MonoBehaviour
         loadSpecialManagers();
 
         //Display
-        healthDisplay = GameObject.Find("HealthText").GetComponent<UnityEngine.UI.Text>();
+        // Health
+        healthDisplay = GameObject.Find("HealthText").GetComponent<Text>();
         hpTransform = GameObject.Find("Health").GetComponent<Slider>();
-        scoreDisplay = GameObject.Find("Score").GetComponent<UnityEngine.UI.Text>();
+        // Stamina
+        staminaDisplay = GameObject.Find("StaminaText").GetComponent<Text>();
+        staminaTransform = GameObject.Find("Stamina").GetComponent<Slider>();
+        // Experience
+        experienceDisplay = GameObject.Find("ExperienceText").GetComponent<Text>();
+        experienceTransform = GameObject.Find("Experience").GetComponent<Slider>();
+        // Spirit Stone
+        spiritStoneDisplay = GameObject.Find("SpiritStone").GetComponent<Text>();
+        // Score
+        scoreDisplay = GameObject.Find("Score").GetComponent<Text>();
+        // Level
+        levelDisplay = GameObject.Find("Level").GetComponent<Text>();
 
         // Keys
         charInfoKey = KeyCode.LeftBracket;
         skillKey = KeyCode.V;
 
         // Variables
-        score = 0;
         spawnPoint = GameObject.Find("SpawnPoint");
+
+        // Timer
+        currStaminaRegenerationTime = Time.deltaTime;
+        staminaRegenerationWaitTime = ((CharacterManager)managers["CharacterManager"]).getRegenerationWaitTime();
     }
 
     private void loadManagers()
@@ -64,12 +94,33 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
+        currStaminaRegenerationTime += Time.deltaTime;
         if (Input.GetKeyUp(charInfoKey)) ((PopupManager)managers["PopupManager"]).showhidePopup("CharInfo");
 
         if (Input.GetKeyDown(skillKey)) {
-            ((CharacterManager)managers["CharacterManager"]).Invoke("useAbility", 0.5f);
-            StartCoroutine(screenShake.Shake(0.4f, 0.2f));
+            var characterManager = ((CharacterManager)managers["CharacterManager"]);
+            var currStamina = characterManager.getStamina();
+            // hard coded ability cost to 10 TODO
+            var abilityCost = 10f;
+            if (currStamina >= abilityCost)
+            {
+                currStamina = characterManager.useStamina(abilityCost);
+                var maxStamina = characterManager.getMaxStamina();
+                updateStaminaDisplay(currStamina, maxStamina);
+                characterManager.Invoke("useAbility", 0.5f);
+                StartCoroutine(screenShake.Shake(0.4f, 0.2f));
+            }
+            currStaminaRegenerationTime = 0;
         };
+
+        // hard code for now TODO get the reneration time from class
+        if (currStaminaRegenerationTime - staminaRegenerationWaitTime > 0)
+        {
+            var characterManager = ((CharacterManager)managers["CharacterManager"]);
+            characterManager.regenerateStamina();
+            updateStaminaDisplay(characterManager.getStamina(), characterManager.getMaxStamina());
+            currStaminaRegenerationTime = 0;
+        }
     }
 
     // can load scene with data and pass it to new scene
@@ -93,7 +144,7 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(screenShake.Shake(0.1f, 0.5f));
             if (characterHealth <= 0)
             {
-               Destroy(character);
+               // Destroy(character); TODO maybe just set character to inactive
                LoadLevel("Loss");
             }
         }
@@ -107,7 +158,7 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(screenShake.Shake(0.1f, 0.5f));
             if (characterHealth <= 0)
             {
-                Destroy(character);
+                // Destroy(character); TODO maybe just set character to inactive
                 LoadLevel("Loss");
             }
         }
@@ -145,25 +196,42 @@ public class LevelManager : MonoBehaviour
 
     public void OnCollideForEnemy(GameObject enemy, GameObject o, BaseEnemy enemyClass)
     {
+        var characterManager = ((CharacterManager)managers["CharacterManager"]);
         if (o.tag == "PlayerRangeAttack")
         {
             var projectileScript = o.GetComponent<BaseProjectile>();
             var enemyHealth = enemyClass.takeDamage(projectileScript.getDamage());
             if (enemyHealth <= 0)
             {
-                score += enemyClass.getWorth();
-                updateScoreDisplay();
+                var score = enemyClass.getScore();
+                var experience = enemyClass.getExperience();
+                var spiritStone = enemyClass.getSpiritStone();
+                var isLevelUp = characterManager.onEnemyKill(experience, spiritStone, score);
+                if (isLevelUp) updateLevelDisplay(characterManager.getLevel());
+                updateDisplay(characterManager.getScore(), 
+                    characterManager.getCurrentExperience(),
+                    characterManager.getMaxExperience(),
+                    characterManager.getSpiritStone());
                 Destroy(enemy);
             }
         }
+
+        // TODO doesn't work right now... working one is in OnCollideForObjects
         if (o.tag == "PlayerMeleeAttack")
         {
             var meleeScript = o.GetComponent<MeleeManager>();
             var enemyHealth = enemyClass.takeDamage(meleeScript.getDamage());
             if (enemyHealth <= 0)
             {
-                score += enemyClass.getWorth();
-                updateScoreDisplay();
+                var score = enemyClass.getScore();
+                var experience = enemyClass.getExperience();
+                var spiritStone = enemyClass.getSpiritStone();
+                var isLevelUp = characterManager.onEnemyKill(experience, spiritStone, score);
+                if (isLevelUp) updateLevelDisplay(characterManager.getLevel());
+                updateDisplay(characterManager.getScore(),
+                    characterManager.getCurrentExperience(),
+                    characterManager.getMaxExperience(),
+                    characterManager.getSpiritStone());
                 Destroy(enemy);
             }
         }
@@ -172,6 +240,8 @@ public class LevelManager : MonoBehaviour
 
     public void OnCollideForObject(GameObject o1, GameObject o2)
     {
+        var characterManager = ((CharacterManager)managers["CharacterManager"]);
+        // Sword hitting Monster - TODO we have to refactor this into OnCollideForEnemy
         if (o2.tag == "Monster")
         {
             var meleeScript = o1.GetComponent<MeleeManager>();
@@ -179,8 +249,15 @@ public class LevelManager : MonoBehaviour
             var enemyHealth = enemyClass.takeDamage(meleeScript.getDamage());
             if (enemyHealth <= 0)
             {
-                score += enemyClass.getWorth();
-                updateScoreDisplay();
+                var score = enemyClass.getScore();
+                var experience = enemyClass.getExperience();
+                var spiritStone = enemyClass.getSpiritStone();
+                var isLevelUp = characterManager.onEnemyKill(experience, spiritStone, score);
+                if (isLevelUp) updateLevelDisplay(characterManager.getLevel());
+                updateDisplay(characterManager.getScore(),
+                    characterManager.getCurrentExperience(),
+                    characterManager.getMaxExperience(),
+                    characterManager.getSpiritStone());
                 Destroy(o2);
             }
         }
@@ -203,8 +280,39 @@ public class LevelManager : MonoBehaviour
         healthDisplay.text = (Mathf.Round(healthRatio * 100)) + "%";
     }
 
-    private void updateScoreDisplay()
+    private void updateStaminaDisplay(float currStamina, float maxStamina)
     {
-        scoreDisplay.text = score.ToString();
+        float staminaRatio = currStamina / maxStamina;
+        staminaTransform.value = 1 - staminaRatio;
+        staminaDisplay.text = (Mathf.Round(staminaRatio * 100)) + "%";
+    }
+
+    private void updateDisplay(int score, int experience, int maxExperience, int spiritStone)
+    {
+        updateScoreDisplay(score);
+        updateExperienceDisplay(experience, maxExperience);
+        updateSpiritStoneDisplay(spiritStone);
+    }
+
+    private void updateScoreDisplay(int score)
+    {
+        scoreDisplay.text = "Score: " + score.ToString();
+    }
+
+    private void updateExperienceDisplay(int experience, int maxExperience)
+    {
+        experienceDisplay.text = experience.ToString() + "/" + maxExperience.ToString();
+        float experienceRatio = experience / (float)maxExperience;
+        experienceTransform.value = experienceRatio;
+    }
+
+    private void updateSpiritStoneDisplay(int spiritStone)
+    {
+        spiritStoneDisplay.text = "Spirit Stones: " + spiritStone.ToString();
+    }
+
+    private void updateLevelDisplay(int level)
+    {
+        levelDisplay.text = "Level: " + level.ToString();
     }
 }
