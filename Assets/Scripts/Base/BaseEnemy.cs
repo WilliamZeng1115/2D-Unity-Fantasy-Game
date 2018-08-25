@@ -117,21 +117,9 @@ public abstract class BaseEnemy : MonoBehaviour {
     float degreeMultipler = 1;
     protected void checkInAttackRange()
     {
-        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 50f, new Vector2(0.1f,0.1f));
+        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(0.1f,0.1f));
         if (isInRange && isInRange.transform.gameObject.tag == "Player")
         {
-
-            if (isInRange.transform.position.x - this.transform.position.x > 0)
-            {
-                // Rotate enemy object
-                if (transform.eulerAngles.y == 0)
-                    rotateTransformY(180f);
-            }
-            else
-            {
-                if (transform.eulerAngles.y == 180)
-                    rotateTransformY(-180f);
-            }
 
             var childs = transform.GetComponentsInChildren<Transform>();
             var distance = isInRange.transform.position - transform.position;
@@ -160,15 +148,15 @@ public abstract class BaseEnemy : MonoBehaviour {
                     float sineDistance = distance.y / hypotenuse;
                     if (sineDistance > 1)
                         sineDistance = Mathf.Floor(sineDistance);
-                    float zDegree = Mathf.Asin(distance.y / hypotenuse) * Mathf.Rad2Deg;
-                    if (zDegree <= 90)
+                    float zDegree = Mathf.Asin(sineDistance) * Mathf.Rad2Deg;
+                    if (zDegree <= 90) {
                         if (xPosDiff > 0)
-                        {
                             zDegree *= -1;
-                        }
-                        child.rotation = Quaternion.Euler(0, 0, zDegree);
+                    }
+                    child.rotation = Quaternion.Euler(0, 0, zDegree);
+                    Debug.Log(zDegree);
                     //Debug.Log("rotation shoot:" + child.eulerAngles);
-                    child.eulerAngles = new Vector3(0, 0, distance.y);
+                    //child.eulerAngles = new Vector3(0, 0, distance.y);
                 }
             }
         }
