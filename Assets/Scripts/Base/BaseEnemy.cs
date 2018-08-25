@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class BaseEnemy : MonoBehaviour {
 
     //protected CharacterManager player;
-    protected int health, energy, damage, difficultyMultipler, worth = 1;
+    protected int health, energy, damage, difficultyMultipler, score = 1, experience = 10, spiritStone = 50;
     protected bool isBoss;
     protected LevelManager levelManager;
 
@@ -42,9 +42,19 @@ public abstract class BaseEnemy : MonoBehaviour {
         return health;
     }
 
-    public int getWorth()
+    public int getScore()
     {
-        return worth;
+        return score;
+    }
+
+    public int getExperience()
+    {
+        return experience;
+    }
+
+    public int getSpiritStone()
+    {
+        return spiritStone;
     }
 
     protected void addEnergy(int energyAdd)
@@ -110,7 +120,19 @@ public abstract class BaseEnemy : MonoBehaviour {
         RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 50f, new Vector2(0.1f,0.1f));
         if (isInRange && isInRange.transform.gameObject.tag == "Player")
         {
-            
+
+            if (isInRange.transform.position.x - this.transform.position.x > 0)
+            {
+                // Rotate enemy object
+                if (transform.eulerAngles.y == 0)
+                    rotateTransformY(180f);
+            }
+            else
+            {
+                if (transform.eulerAngles.y == 180)
+                    rotateTransformY(-180f);
+            }
+
             var childs = transform.GetComponentsInChildren<Transform>();
             var distance = isInRange.transform.position - transform.position;
             foreach (var child in childs)
@@ -146,6 +168,7 @@ public abstract class BaseEnemy : MonoBehaviour {
                         }
                         child.rotation = Quaternion.Euler(0, 0, zDegree);
                     //Debug.Log("rotation shoot:" + child.eulerAngles);
+                    child.eulerAngles = new Vector3(0, 0, distance.y);
                 }
             }
         }
