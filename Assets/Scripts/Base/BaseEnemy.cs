@@ -18,6 +18,10 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected Dictionary<string, WeaponManager> weaponManagers;
     protected WeaponManager selectedWeapon;
 
+    protected GameObject player;
+
+    public GameObject shootPosition;
+
     public abstract void abilityAttack();
     public abstract int touchAttack();
 
@@ -133,6 +137,16 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
     }
 
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Player") player = col.gameObject;
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Player") player = null;
+    }
+
     protected void checkInAttackRange()
     {
         RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(-0.1f,-0.1f));
@@ -202,7 +216,15 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (player != null)
+        {
+            var distance = player.transform.position - shootPosition.transform.position;
+            float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+            Debug.Log(angle);
+            shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 100f);
+        }
         checkPlatformEnd();
-        checkInAttackRange();
+        // checkInAttackRange();
     }
 }
