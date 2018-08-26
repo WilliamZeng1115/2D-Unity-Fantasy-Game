@@ -135,7 +135,7 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     protected void checkInAttackRange()
     {
-        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(0.1f,0.1f));
+        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(-0.1f,-0.1f));
         Collider2D hitCollider = Physics2D.OverlapCircle(transform.position, 10f, LayerMask.GetMask("Sword"));
         if (hitCollider)
         {
@@ -167,6 +167,10 @@ public abstract class BaseEnemy : MonoBehaviour {
                     //    }
 
                     //}
+                    if ((direction && distance.x < 0) || (!direction && distance.x > 0))
+                    {
+                        changeDirections();
+                    }
                     float hypotenuse = Mathf.Sqrt(Mathf.Pow(2, distance.x ) + Mathf.Pow(2, distance.y));
                     float sineDistance = distance.y / hypotenuse;
                     if (sineDistance > 1)
@@ -177,18 +181,14 @@ public abstract class BaseEnemy : MonoBehaviour {
                         if (xPosDiff > 0)
                             zDegree *= -1;
                     }
+
                     child.rotation = Quaternion.Euler(0, 0, zDegree);
-                    float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+                    //float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
                     //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                     //Debug.Log(angle);
                     //child.rotation = Quaternion.RotateTowards(child.rotation, rotation, Time.deltaTime * 50f);
                     //Debug.Log("rotation shoot:" + child.eulerAngles);
                     Debug.Log(zDegree);
-                    if ((direction && distance.x < 0) || (!direction && distance.x > 0))
-                    {
-                        changeDirections();
-                    }
-                    
                 }
             }
         }
