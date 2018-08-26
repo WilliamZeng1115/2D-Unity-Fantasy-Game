@@ -160,6 +160,12 @@ public class CharInfoManager
         textSkillElement.text = skill;
     }
 
+    public void UpdateSkillpoint(int sp)
+    {
+        var textSPElement = skillpointUI.GetComponent<Text>();
+        textSPElement.text = sp.ToString();
+    }
+
     // These are called when button is clicked 
     public void UpdateSkills(Dictionary<string, int> skills, int skillpoints)
     {
