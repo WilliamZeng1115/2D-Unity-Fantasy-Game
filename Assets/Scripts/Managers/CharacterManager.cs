@@ -31,12 +31,13 @@ public class CharacterManager : Manager
         currStamina = currentClass.getMaxStamina();
         skillpoints = currentClass.getSkillpoints();
         skills = new Dictionary<string, int>(currentClass.getSkills());
+        
+        // Managers -> These can be reloaded when scene change and new LevelManager, popups, ability
 
         // Weapons and current weapon
         weaponManagers = new Dictionary<string, GameObject>();
         loadWeaponManagers();
-
-        // Managers
+        
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
         var charInfo = GameObject.Find("Popups").transform.Find("CharInfo");
         var abilityUI = charInfo.transform.Find("Ability").gameObject;
