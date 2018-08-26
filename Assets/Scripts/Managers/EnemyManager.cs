@@ -24,53 +24,28 @@ public class EnemyManager : Manager
         enemyObjects = Resources.LoadAll<GameObject>(enemyFolder);
     }
 
-    public void spawnEnemies(int num, int type, GameObject map)
+    public void spawnEnemies(int num, int[] types, Transform spawn, Transform parent)
     {
-        //Use map width for the limiting range
-        //always start spawning from left side of map, then direction of map being spawned in doesnt matter
-        var spriteRenderer = map.GetComponent<SpriteRenderer>();
-        var mapWidth = spriteRenderer.bounds.size.x;
-        var mapHeight = spriteRenderer.bounds.size.y;
-        var platforms = getPlatforms(map);
-
-        //var mapWidth = direction ? renderer.bounds.size.x : -renderer.bounds.size.x;
-        var leftCornerX = map.transform.position.x - mapWidth / 2;
-        var rightCornerX = leftCornerX + mapWidth;
-        var topY = map.transform.position.y + mapHeight / 2;
-        
+        var numOfTypes = types.Length;
         for(var i = 0; i < num; i++)
         {
-            var randomPlatformNum = Random.Range(0, platforms.Count);
-            var randomPlatform = platforms[randomPlatformNum];
-            var platformCollider = randomPlatform.GetComponent<BoxCollider2D>();
-           
-            var randXPos = Random.Range(randomPlatform.transform.position.x, randomPlatform.transform.position.x + platformCollider.size.x);
-            var pos = new Vector2(randXPos, topY);
-            var enemy = Instantiate(enemyObjects[type], pos, enemyObjects[type].transform.rotation);
-            enemy.transform.parent = map.transform;
+            var index = Random.Range(0, numOfTypes);
+            var type = types[index];
+            var enemy = Instantiate(enemyObjects[type], spawn.position, enemyObjects[type].transform.rotation);
+            enemy.transform.parent = parent;
             enemies.Add(enemy);
         }
     }
-
-    // stub
-    public void spawnBoss(Vector2 position)
+    
+    public void spawnBoss(int[] types, Transform spawn, Transform parent)
     {
-        var boss = Instantiate(bossObjects[0], position, bossObjects[0].transform.rotation);
-        boss.transform.parent = transform;
-        bosses.Add(boss);
-    }
-
-    private List<Transform> getPlatforms(GameObject map)
-    {
-        var platforms = new List<Transform>();
-        foreach (Transform child in map.transform)
+        var numOfTypes = types.Length;
+        for (var i = 0; i < numOfTypes; i++)
         {
-            // if child type is platform add it
-            if (child.CompareTag("Ground"))
-            {
-                platforms.Add(child);
-            }
+            var type = types[i];
+            var boss = Instantiate(bossObjects[type], spawn.position, bossObjects[0].transform.rotation);
+            boss.transform.parent = parent;
+            bosses.Add(boss);
         }
-        return platforms;
     }
 }

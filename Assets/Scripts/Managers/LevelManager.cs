@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -29,16 +30,18 @@ public class LevelManager : MonoBehaviour
     private Text scoreDisplay;
     // Level
     private Text levelDisplay;
-
-    // Variables
-    private GameObject spawnPoint;
-
+    
     // Camera screen shake
     public ScreenShake screenShake;
 
     // Timer
     private float currStaminaRegenerationTime;
     private float staminaRegenerationWaitTime;
+
+    // Stage Management
+    private int currStage;
+    private Dictionary<int, int> enemyTypesAtStage;
+    private Dictionary<int, int> bossTypesAtStage;
 
     void Start()
     {
@@ -70,12 +73,18 @@ public class LevelManager : MonoBehaviour
         charInfoKey = KeyCode.LeftBracket;
         skillKey = KeyCode.V;
 
-        // Variables
-        spawnPoint = GameObject.Find("SpawnPoint");
-
         // Timer
         currStaminaRegenerationTime = Time.deltaTime;
         staminaRegenerationWaitTime = ((CharacterManager)managers["CharacterManager"]).getRegenerationWaitTime();
+
+        // Stage Management
+        currStage = 2; // TODO temp for now -> change to 1 later
+        enemyTypesAtStage = new Dictionary<int, int>();
+        // Add young master at stage 1
+        enemyTypesAtStage.Add(1, 0);
+        // Add ninja at stage 2
+        enemyTypesAtStage.Add(2, 1);
+        bossTypesAtStage = new Dictionary<int, int>();
     }
 
     private void loadManagers()
@@ -126,7 +135,6 @@ public class LevelManager : MonoBehaviour
     // can load scene with data and pass it to new scene
     public void LoadLevel(string name) {
         SceneManager.LoadScene(name);
-        spawnPoint = GameObject.Find("SpawnPoint");
     }
 
     public void OnCollideForCharacter(GameObject character, GameObject o)
@@ -170,28 +178,43 @@ public class LevelManager : MonoBehaviour
 
         if (o.tag.Contains("Checkpoint"))
         {
-            GameObject newMap = null;
-            
-            if ((character.transform.position.x - o.transform.position.x) < 0)
+            var parent = o.transform.parent;
+            var childs = o.transform.GetComponentsInChildren<Transform>();
+            foreach (var child in childs)
             {
-                if (o.tag == "Checkpoint")
+                if (child.CompareTag("Spawn"))
                 {
-                    newMap = mapManager.createMap(true);
+                    var types = enemyTypesAtStage.Where(e => e.Key <= currStage).Select(e => e.Value).ToArray();
+                    var bossTypes = bossTypesAtStage.Where(e => e.Key == currStage).Select(e => e.Value).ToArray();
+                    enemyManager.spawnEnemies(3, types, child, parent);
+                    enemyManager.spawnBoss(bossTypes, child, parent);
                 }
-            }
-            else if ((character.transform.position.x - o.transform.position.x) > 0)
-            {
-                if (o.tag == "Checkpoint")
-                {
-                    newMap = mapManager.createMap(false);
-                }
-            }
-
-            if (newMap != null)
-            {
-                enemyManager.spawnEnemies(3, 0, newMap);
             }
         }
+        //if (o.tag.Contains("Checkpoint"))
+        //{
+        //    GameObject newMap = null;
+            
+        //    if ((character.transform.position.x - o.transform.position.x) < 0)
+        //    {
+        //        if (o.tag == "Checkpoint")
+        //        {
+        //            newMap = mapManager.createMap(true);
+        //        }
+        //    }
+        //    else if ((character.transform.position.x - o.transform.position.x) > 0)
+        //    {
+        //        if (o.tag == "Checkpoint")
+        //        {
+        //            newMap = mapManager.createMap(false);
+        //        }
+        //    }
+
+        //    if (newMap != null)
+        //    {
+        //        enemyManager.spawnEnemies(3, 0, newMap);
+        //    }
+        //}
     }
 
     public void OnCollideForEnemy(GameObject enemy, GameObject o, BaseEnemy enemyClass)
@@ -267,11 +290,6 @@ public class LevelManager : MonoBehaviour
     {
 		Application.Quit();
 	}
-
-    public GameObject getSpawnPoint()
-    {
-        return spawnPoint;
-    }
     
     private void updateHealthDisplay(float currHealth, float maxHealth)
     {
