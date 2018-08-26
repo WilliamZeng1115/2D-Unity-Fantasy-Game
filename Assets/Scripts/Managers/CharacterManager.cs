@@ -123,6 +123,11 @@ public class CharacterManager : Manager
         var isLevelUp = currentClass.addExperience(experience);
         currentClass.addSpiritStone(spiritStone);
         currScore += score;
+        if (isLevelUp)
+        {
+            skillpoints = currentClass.getSkillpoints();
+            charInfoManager.UpdateSkillpoint(skillpoints);
+        }
         return isLevelUp;
     }
 
