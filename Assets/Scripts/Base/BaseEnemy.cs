@@ -8,11 +8,12 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected int health, energy, damage, difficultyMultipler, score = 1, experience = 10, spiritStone = 50;
     protected bool isBoss;
     protected LevelManager levelManager;
-
+    protected bool melee, ranged;
     // Enemy movement
     private bool direction = true;
     private float xSpeed = 3.0f;
     private float spriteWidth;
+    private Animator animator;
     // Weapon Manager
     protected Dictionary<string, WeaponManager> weaponManagers;
     protected WeaponManager selectedWeapon;
@@ -34,6 +35,12 @@ public abstract class BaseEnemy : MonoBehaviour {
                 }
             }
         }
+    }
+
+    void Start()
+    {
+        spriteWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
+        animator = GetComponent<Animator>();
     }
 
     public int takeDamage(int damageTaken)
@@ -88,6 +95,14 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected void changeDirections()
     {
         direction = !direction;
+        if (direction)
+        {
+            rotateTransformY(0);
+        }
+        else
+        {
+            rotateTransformY(180f);
+        }
     }
 
     protected void setDirection(bool newDirection)
@@ -95,10 +110,6 @@ public abstract class BaseEnemy : MonoBehaviour {
         direction = newDirection;
     }
 
-    void Start()
-    {
-        spriteWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
-    }
     public LayerMask EnemyMask;
 
     protected void checkPlatformEnd()
@@ -114,10 +125,22 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
     }
 
-    float degreeMultipler = 1;
+    void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.gameObject.tag == "Player" && melee) {
+            selectedWeapon.attack();
+            Debug.Log("player entered enemy trigger");
+        }
+    }
+
     protected void checkInAttackRange()
     {
         RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(0.1f,0.1f));
+        Collider2D hitCollider = Physics2D.OverlapCircle(transform.position, 10f, LayerMask.GetMask("Sword"));
+        if (hitCollider)
+        {
+            Debug.Log("!!!");
+        }
         if (isInRange && isInRange.transform.gameObject.tag == "Player")
         {
 
@@ -128,39 +151,49 @@ public abstract class BaseEnemy : MonoBehaviour {
                 if (child.gameObject.tag == "ShootPosition")
                 {
                     float xPosDiff = isInRange.transform.position.x - this.transform.position.x;
-                    if (xPosDiff > 0)
-                    {
-                        // Rotate enemy object
-                        if (child.eulerAngles.y == 0f)
-                        {
-                            child.rotation = Quaternion.Euler(0, 180f, 0);
-                        }
-                    }
-                    else if (xPosDiff < 0)
-                    {
-                        if (child.eulerAngles.y == 180f)
-                        {
-                            child.rotation = Quaternion.Euler(0, 0f, 0);
-                        }
+                    //if (xPosDiff > 0)
+                    //{
+                    //    // Rotate enemy object
+                    //    if (child.eulerAngles.y == 0f)
+                    //    {
+                    //        child.rotation = Quaternion.Euler(0, 180f, 0);
+                    //    }
+                    //}
+                    //else if (xPosDiff < 0)
+                    //{
+                    //    if (child.eulerAngles.y == 180f)
+                    //    {
+                    //        child.rotation = Quaternion.Euler(0, 0f, 0);
+                    //    }
 
-                    }
+                    //}
                     float hypotenuse = Mathf.Sqrt(Mathf.Pow(2, distance.x ) + Mathf.Pow(2, distance.y));
                     float sineDistance = distance.y / hypotenuse;
                     if (sineDistance > 1)
                         sineDistance = Mathf.Floor(sineDistance);
                     float zDegree = Mathf.Asin(sineDistance) * Mathf.Rad2Deg;
-                    if (zDegree <= 90) {
+                    if (zDegree <= 90)
+                    {
                         if (xPosDiff > 0)
                             zDegree *= -1;
                     }
                     child.rotation = Quaternion.Euler(0, 0, zDegree);
-                    Debug.Log(zDegree);
+                    float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+                    //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                    //Debug.Log(angle);
+                    //child.rotation = Quaternion.RotateTowards(child.rotation, rotation, Time.deltaTime * 50f);
                     //Debug.Log("rotation shoot:" + child.eulerAngles);
-                    //child.eulerAngles = new Vector3(0, 0, distance.y);
+                    Debug.Log(zDegree);
+                    if ((direction && distance.x < 0) || (!direction && distance.x > 0))
+                    {
+                        changeDirections();
+                    }
+                    
                 }
             }
         }
     }
+
 
     private void rotateTransformY(float degree)
     {
