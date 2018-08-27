@@ -165,22 +165,6 @@ public abstract class BaseEnemy : MonoBehaviour {
                 if (child.gameObject.tag == "ShootPosition")
                 {
                     float xPosDiff = isInRange.transform.position.x - this.transform.position.x;
-                    //if (xPosDiff > 0)
-                    //{
-                    //    // Rotate enemy object
-                    //    if (child.eulerAngles.y == 0f)
-                    //    {
-                    //        child.rotation = Quaternion.Euler(0, 180f, 0);
-                    //    }
-                    //}
-                    //else if (xPosDiff < 0)
-                    //{
-                    //    if (child.eulerAngles.y == 180f)
-                    //    {
-                    //        child.rotation = Quaternion.Euler(0, 0f, 0);
-                    //    }
-
-                    //}
                     if ((direction && distance.x < 0) || (!direction && distance.x > 0))
                     {
                         changeDirections();
@@ -197,11 +181,6 @@ public abstract class BaseEnemy : MonoBehaviour {
                     }
 
                     child.rotation = Quaternion.Euler(0, 0, zDegree);
-                    //float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
-                    //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                    //Debug.Log(angle);
-                    //child.rotation = Quaternion.RotateTowards(child.rotation, rotation, Time.deltaTime * 50f);
-                    //Debug.Log("rotation shoot:" + child.eulerAngles);
                     Debug.Log(zDegree);
                 }
             }
@@ -219,10 +198,14 @@ public abstract class BaseEnemy : MonoBehaviour {
         if (player != null)
         {
             var distance = player.transform.position - shootPosition.transform.position;
+            if ((direction && distance.x < 0) || (!direction && distance.x > 0))
+            {
+                changeDirections();
+            }
             float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
             Debug.Log(angle);
-            shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 100f);
+            shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 1000f);
         }
         checkPlatformEnd();
         // checkInAttackRange();

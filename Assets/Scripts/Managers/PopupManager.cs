@@ -34,5 +34,20 @@ public class PopupManager : Manager
     {
         popups[popup].gameObject.SetActive(popupsEnable[popup]);
         popupsEnable[popup] = !popupsEnable[popup];
+        if (!popupsEnable[popup])
+        {
+            Debug.Log("false!Q");
+            Time.timeScale = 0f;
+        } else 
+        {
+            bool resume = true;
+            foreach (KeyValuePair<string, bool> popups in popupsEnable)
+            {
+                Debug.Log(popups.Key);
+                Debug.Log(popups.Value);
+                resume = resume && popups.Value;
+            }
+            if (resume) Time.timeScale = 1f;
+        }
     }
 }
