@@ -38,10 +38,8 @@ public class LevelManager : MonoBehaviour
     private float currStaminaRegenerationTime;
     private float staminaRegenerationWaitTime;
 
-    // Stage Management
-    private int currStage;
-    private Dictionary<int, int> enemyTypesAtStage;
-    private Dictionary<int, int> bossTypesAtStage;
+    // GameObjects that will be set off and on
+    private List<GameObject> gameObjects;
 
     void Start()
     {
@@ -77,14 +75,13 @@ public class LevelManager : MonoBehaviour
         currStaminaRegenerationTime = Time.deltaTime;
         staminaRegenerationWaitTime = ((CharacterManager)managers["CharacterManager"]).getRegenerationWaitTime();
 
-        // Stage Management
-        currStage = 2; // TODO temp for now -> change to 1 later
-        enemyTypesAtStage = new Dictionary<int, int>();
-        // Add young master at stage 1
-        enemyTypesAtStage.Add(1, 0);
-        // Add ninja at stage 2
-        enemyTypesAtStage.Add(2, 1);
-        bossTypesAtStage = new Dictionary<int, int>();
+        // add the game objects that will be set active and inactive
+        addGameObjects();
+
+        // Rendering
+        ((StageManager)managers["StageManager"]).RenderStages();
+        ((StageManager)managers["StageManager"]).RenderDescription();
+        SetActiveOrInActiveStageTransition(false);
     }
 
     private void loadManagers()
@@ -101,10 +98,30 @@ public class LevelManager : MonoBehaviour
         managers.Add("CharacterManager", GameObject.Find("Player").GetComponent<CharacterManager>());
     }
 
+    // Find a better way to add these game objects without hard coding
+    private void addGameObjects()
+    {
+        gameObjects = new List<GameObject>();
+        gameObjects.Add(GameObject.Find("Player"));
+        gameObjects.Add(GameObject.Find("Popups"));
+        gameObjects.Add(GameObject.Find("MapManager"));
+        gameObjects.Add(GameObject.Find("GUI"));
+        gameObjects.Add(GameObject.Find("StageTransition"));
+    }
+
+    private void SetActiveOrInActiveStageTransition(bool isActive)
+    {
+        gameObjects.Where(e => e.name != "StageTransition").ToList().ForEach(e => e.SetActive(!isActive));
+        gameObjects.Where(e => e.name == "StageTransition").First().SetActive(isActive);
+    }
+
     void Update()
     {
         currStaminaRegenerationTime += Time.deltaTime;
         if (Input.GetKeyUp(charInfoKey)) ((PopupManager)managers["PopupManager"]).showhidePopup("CharInfo");
+
+        // Temp for testing purposes TODO
+        if (Input.GetKeyUp(KeyCode.P)) SetActiveOrInActiveStageTransition(true);
 
         if (Input.GetKeyDown(skillKey)) {
             var characterManager = ((CharacterManager)managers["CharacterManager"]);
@@ -142,6 +159,7 @@ public class LevelManager : MonoBehaviour
         var characterManager = ((CharacterManager)managers["CharacterManager"]);
         var mapManager = ((MapManager)managers["MapManager"]);
         var enemyManager = ((EnemyManager)managers["EnemyManager"]);
+        var stageManager = ((StageManager)managers["StageManager"]);
 
         // When running into/touching the enemy take damage
         if (o.tag == "Monster")
@@ -184,8 +202,8 @@ public class LevelManager : MonoBehaviour
             {
                 if (child.CompareTag("Spawn"))
                 {
-                    var types = enemyTypesAtStage.Where(e => e.Key <= currStage).Select(e => e.Value).ToArray();
-                    var bossTypes = bossTypesAtStage.Where(e => e.Key == currStage).Select(e => e.Value).ToArray();
+                    var types = stageManager.getEnemyBasedOnStage();
+                    var bossTypes = stageManager.getBossBasedOnStage();
                     enemyManager.spawnEnemies(3, types, child, parent);
                     enemyManager.spawnBoss(bossTypes, child, parent);
                 }
@@ -332,5 +350,22 @@ public class LevelManager : MonoBehaviour
     private void updateLevelDisplay(int level)
     {
         levelDisplay.text = "Level: " + level.ToString();
+    }
+
+    public int getNumOfStages()
+    {
+        return ((MapManager)managers["MapManager"]).getNumOfStages();
+    }
+
+    public void switchToStageTransition()
+    {
+
+    }
+
+    public void selectStage()
+    {
+        var stage = ((StageManager)managers["StageManager"]).getCurrentStage();
+        ((MapManager)managers["MapManager"]).setStageActive(stage);
+        SetActiveOrInActiveStageTransition(false);
     }
 }

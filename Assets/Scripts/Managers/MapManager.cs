@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class MapManager : Manager
 {
@@ -72,11 +73,11 @@ public class MapManager : Manager
     // Minimum 2 maps per stage
     private void LoadStage(int stage)
     {
-        var maps = Resources.LoadAll<GameObject>("Prefabs/Maps/Area-" + area + "/Stage-" + stage);
+        var maps = Resources.LoadAll<GameObject>("Prefabs/Maps/Area-" + area + "/Stage-" +(stage + 1));
         var numOfMaps = maps.Length;
 
         var newStage = new GameObject();
-        newStage.name = "Stage-" + stage;
+        newStage.name = "Stage-" + (stage + 1);
         newStage.transform.parent = transform;
         stages.Add(stage, newStage);
 
@@ -123,7 +124,7 @@ public class MapManager : Manager
 
     private void LoadAllStage()
     {
-        for(var i = 1; i <= numOfStages; i++)
+        for(var i = 0; i < numOfStages; i++)
         {
             LoadStage(i);
         }
@@ -154,9 +155,10 @@ public class MapManager : Manager
         return newGameObject;
     }
 
-    public void setStageActive(int stage, bool active)
+    public void setStageActive(int stage)
     {
-        stages[stage].SetActive(active);
+        stages.Where(e => e.Key != stage).Select(e => e.Value).ToList().ForEach(e => e.SetActive(false));
+        stages[stage].SetActive(true);
     }
 
     public GameObject getStage(int stage)
@@ -172,5 +174,10 @@ public class MapManager : Manager
     public GameObject getGoal()
     {
         return goal;
+    }
+
+    public int getNumOfStages()
+    {
+        return numOfStages;
     }
 }
