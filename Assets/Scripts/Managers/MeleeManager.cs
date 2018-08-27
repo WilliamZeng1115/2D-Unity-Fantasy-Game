@@ -8,7 +8,7 @@ public class MeleeManager : WeaponManager {
     public override void attack()
     {
         base.attack();
-        anim.SetFloat("AttackSpeed", stats["Dexterity"]);
+        //anim.SetFloat("AttackSpeed", stats["Dexterity"]);
         anim.Play(animationName);
     }
    

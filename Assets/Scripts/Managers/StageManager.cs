@@ -44,10 +44,11 @@ public class StageManager : Manager {
         // Attributes
         currStage = 0; 
         enemyTypesAtStage = new Dictionary<int, int>();
+        // <stage + 1,prefab index>
         // Add young master at stage 1
         enemyTypesAtStage.Add(0, 0);
         // Add ninja at stage 2
-        enemyTypesAtStage.Add(1, 1);
+        enemyTypesAtStage.Add(1, 2);
         bossTypesAtStage = new Dictionary<int, int>();
         // temp... maybe find a better way to refactor this to be more abstract TODO
         descriptions = new Dictionary<int, string>();

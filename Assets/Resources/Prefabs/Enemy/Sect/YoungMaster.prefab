@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 114644701316043076}
   - component: {fileID: 50406182135817380}
   - component: {fileID: 95003977715160708}
+  - component: {fileID: 58489519429513332}
   m_Layer: 10
   m_Name: YoungMaster
   m_TagString: Monster
@@ -99,7 +100,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1143801491687848}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.19999981, y: 10.099997, z: 0}
+  m_LocalPosition: {x: 0.2, y: 9.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4413474905014916}
@@ -111,7 +112,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1272751748689808}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.1747484, y: -2.392427, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_Children:
@@ -119,7 +120,7 @@ Transform:
   - {fileID: 4413474905014916}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4973420283999468
 Transform:
   m_ObjectHideFlags: 1
@@ -153,6 +154,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!58 &58489519429513332
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1272751748689808}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 54.9}
+  serializedVersion: 2
+  m_Radius: 60
 --- !u!61 &61720909619626076
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -223,6 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16553184f619e648ab8a1a2f11cd5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootPosition: {fileID: 1143801491687848}
   EnemyMask:
     serializedVersion: 2
     m_Bits: 4294966015

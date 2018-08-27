@@ -21,6 +21,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected GameObject player;
 
     public GameObject shootPosition;
+    private bool targeting = false;
 
     public abstract void abilityAttack();
     public abstract int touchAttack();
@@ -120,10 +121,9 @@ public abstract class BaseEnemy : MonoBehaviour {
     {
 
         Vector2 lineCastPos = transform.position - transform.up * spriteWidth;
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down);
-        bool isPlatform = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down, LayerMask.GetMask("Default"));
-
-        if (!isPlatform)
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 2);
+        bool isPlatform = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 2, LayerMask.GetMask("Default"));
+        if (!isPlatform && !targeting)
         {
             changeDirections();
         }
@@ -133,28 +133,31 @@ public abstract class BaseEnemy : MonoBehaviour {
     {
         if (col.gameObject.tag == "Player" && melee) {
             selectedWeapon.attack();
-            Debug.Log("player entered enemy trigger");
         }
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player") player = col.gameObject;
-    }
+        if (col.gameObject.tag == "Player")
+        {
+            player = col.gameObject;
+            targeting = true;
+        }
+
+     }
 
     void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player") player = null;
+        if (col.gameObject.tag == "Player")
+        {
+            player = null;
+            targeting = false;
+        }
     }
 
     protected void checkInAttackRange()
     {
         RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(-0.1f,-0.1f));
-        Collider2D hitCollider = Physics2D.OverlapCircle(transform.position, 10f, LayerMask.GetMask("Sword"));
-        if (hitCollider)
-        {
-            Debug.Log("!!!");
-        }
         if (isInRange && isInRange.transform.gameObject.tag == "Player")
         {
 
@@ -181,12 +184,10 @@ public abstract class BaseEnemy : MonoBehaviour {
                     }
 
                     child.rotation = Quaternion.Euler(0, 0, zDegree);
-                    Debug.Log(zDegree);
                 }
             }
         }
     }
-
 
     private void rotateTransformY(float degree)
     {
@@ -197,15 +198,26 @@ public abstract class BaseEnemy : MonoBehaviour {
     {
         if (player != null)
         {
-            var distance = player.transform.position - shootPosition.transform.position;
+            var distance = new Vector3(0,0,0);
+            if (melee) {
+                distance = player.transform.position - transform.transform.position;
+            } else
+            {
+                distance = player.transform.position - shootPosition.transform.position;
+            }
+            
             if ((direction && distance.x < 0) || (!direction && distance.x > 0))
             {
                 changeDirections();
             }
-            float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-            Debug.Log(angle);
-            shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 1000f);
+
+            if (ranged)
+            {
+                float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
+                Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+                //Debug.Log(angle);
+                shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 1000f);
+            }
         }
         checkPlatformEnd();
         // checkInAttackRange();
