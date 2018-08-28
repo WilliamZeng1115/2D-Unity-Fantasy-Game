@@ -21,6 +21,7 @@ public class CharacterManager : Manager
 
     // Manager
     private CharInfoManager charInfoManager;
+    private BagManager bagManager;
 
     // Use this for initialization
     void Start()
@@ -44,6 +45,9 @@ public class CharacterManager : Manager
         var skillUI = charInfo.transform.Find("Skill").gameObject;
         charInfoManager = new CharInfoManager(this, abilityUI, skillUI);
         charInfoManager.UpdateEquipOrUnEquipItem(null, equipedWeapon, true);
+
+        var bagOfHolding = GameObject.Find("BagOfHolding");
+        bagManager = new BagManager(bagOfHolding);
     }
 
     void loadWeaponManagers()

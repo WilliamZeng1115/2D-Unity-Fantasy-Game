@@ -125,6 +125,8 @@ public class LevelManager : MonoBehaviour
         // Temp for testing purposes TODO
         if (Input.GetKeyUp(KeyCode.P)) SetActiveOrInActiveStageTransition(true);
 
+        if (Input.GetKeyUp(KeyCode.B)) ((PopupManager)managers["PopupManager"]).showhidePopup("BagOfHolding");
+
         if (Input.GetKeyDown(skillKey)) {
             var characterManager = ((CharacterManager)managers["CharacterManager"]);
             var currStamina = characterManager.getStamina();
