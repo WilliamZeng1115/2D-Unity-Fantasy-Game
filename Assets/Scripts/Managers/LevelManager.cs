@@ -40,6 +40,7 @@ public class LevelManager : MonoBehaviour
 
     // GameObjects that will be set off and on
     private List<GameObject> gameObjects;
+    private GameObject player;
 
     void Start()
     {
@@ -102,14 +103,15 @@ public class LevelManager : MonoBehaviour
     private void addGameObjects()
     {
         gameObjects = new List<GameObject>();
-        gameObjects.Add(GameObject.Find("Player"));
+        player = GameObject.Find("Player");
+        gameObjects.Add(player);
         gameObjects.Add(GameObject.Find("Popups"));
         gameObjects.Add(GameObject.Find("MapManager"));
         gameObjects.Add(GameObject.Find("GUI"));
         gameObjects.Add(GameObject.Find("StageTransition"));
     }
 
-    private void SetActiveOrInActiveStageTransition(bool isActive)
+    public void SetActiveOrInActiveStageTransition(bool isActive)
     {
         gameObjects.Where(e => e.name != "StageTransition").ToList().ForEach(e => e.SetActive(!isActive));
         gameObjects.Where(e => e.name == "StageTransition").First().SetActive(isActive);
@@ -366,6 +368,13 @@ public class LevelManager : MonoBehaviour
     {
         var stage = ((StageManager)managers["StageManager"]).getCurrentStage();
         ((MapManager)managers["MapManager"]).setStageActive(stage);
+        var spawn = ((MapManager)managers["MapManager"]).getSpawn(stage);
+
+        // TODO temp for now till we fix the collision box on platforms
+        var position = spawn.transform.position;
+        position.y = position.y + 5;
+
+        player.transform.position = position;
         SetActiveOrInActiveStageTransition(false);
     }
 }

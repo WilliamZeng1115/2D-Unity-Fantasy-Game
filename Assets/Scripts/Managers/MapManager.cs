@@ -11,8 +11,8 @@ public class MapManager : Manager
     public int numOfMapPerStage;
     public int area;
     private Dictionary<int, GameObject> stages;
-    private GameObject spawn;
-    private GameObject goal;
+    private Dictionary<int, GameObject> spawns;
+    private Dictionary<int, GameObject> goals;
     // private GameObject[] maps;
 
     // temp for now... until we figure out how big a map we want so we can just set a default map width like
@@ -23,6 +23,8 @@ public class MapManager : Manager
 	void Start () {
         numOfMapPerStage = 5;
         stages = new Dictionary<int, GameObject>();
+        spawns = new Dictionary<int, GameObject>();
+        goals = new Dictionary<int, GameObject>();
         LoadAllStage();
         // maps = Resources.LoadAll<GameObject>("Prefabs/Maps");
 
@@ -90,9 +92,10 @@ public class MapManager : Manager
         var currMap = Instantiate(maps[index], position, Quaternion.identity);
         currMap.transform.parent = newStage.transform;
 
-        spawn = CreateGameObject(currMap);
+        var spawn = CreateGameObject(currMap);
         spawn.name = "Spawn";
         spawn.transform.parent = newStage.transform;
+        spawns.Add(stage, spawn);
 
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -113,10 +116,21 @@ public class MapManager : Manager
         currMap = Instantiate(maps[index], position, Quaternion.identity);
         currMap.transform.parent = newStage.transform;
 
-        goal = CreateGameObject(currMap);
+        var goal = CreateGameObject(currMap);
         goal.name = "Goal";
         goal.transform.parent = newStage.transform;
+        goal.AddComponent<SpriteRenderer>();
+        goal.AddComponent<BoxCollider2D>();
+        goal.AddComponent<GoalManager>();
+        goal.GetComponent<BoxCollider2D>().isTrigger = true;
 
+        // temp now TODO
+        var goalSprite = Resources.Load("Prefabs/Goal") as Texture2D;
+        var newSprite = Sprite.Create(goalSprite, new Rect(0.0f, 0.0f, goalSprite.width, goalSprite.height), new Vector2(0.5f, 0.5f), 100.0f);
+        goal.GetComponent<SpriteRenderer>().sprite = newSprite;
+        // temp now TODO
+        goal.GetComponent<SpriteRenderer>().sortingOrder = 5;
+        goals.Add(stage, goal);
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         newStage.SetActive(false);
@@ -130,6 +144,7 @@ public class MapManager : Manager
         }
     }
 
+    // Fix the collision box on the platforms TODO
     private GameObject CreateGameObject(GameObject map)
     {
         var grounds = new List<GameObject>();
@@ -148,7 +163,8 @@ public class MapManager : Manager
         var platformHeight = platform.GetComponent<BoxCollider2D>().size.y;
 
         var newPosition = platform.transform.position;
-        newPosition.y = platformHeight + newPosition.y;
+        // TODO temp with + 5
+        newPosition.y = platformHeight + newPosition.y + 5;
         newPosition.x = platformWidth / 2 + newPosition.x;
 
         newGameObject.transform.position = newPosition;
@@ -166,14 +182,14 @@ public class MapManager : Manager
         return stages[stage];
     }
 
-    public GameObject getSpawn()
+    public GameObject getSpawn(int stage)
     {
-        return spawn;
+        return spawns[stage];
     }
 
-    public GameObject getGoal()
+    public GameObject getGoal(int stage)
     {
-        return goal;
+        return goals[stage];
     }
 
     public int getNumOfStages()
