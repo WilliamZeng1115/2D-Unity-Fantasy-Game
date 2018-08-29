@@ -101,7 +101,8 @@ public class StageManager : Manager {
     public void RenderDescription()
     {
         var currentDescription = descriptions[currStage];
-        var panel = CreateUIPanel(50, -150, -50, 75, parent);
+        //var panel = CreateUIPanel(50, -150, -50, 75, parent);
+        var panel = CreateUIPanel(0, 0, 0, 0, parent);
         var verticalGroup = panel.AddComponent<VerticalLayoutGroup>();
         verticalGroup.childControlHeight = true;
         verticalGroup.childControlWidth = true;
@@ -109,6 +110,10 @@ public class StageManager : Manager {
         verticalGroup.childForceExpandWidth = true;
         var text = CreateUIText(currentDescription, 16, 0, 0, panel);
         text.GetComponent<Text>().color = Color.white;
+
+        //2018-08-29
+        panel.GetComponent<RectTransform>().anchorMax = new Vector2(0.9574512f, 0.739f);
+        panel.GetComponent<RectTransform>().anchorMin = new Vector2(0.04254886f, 0.138f);
 
         description = panel;
     }

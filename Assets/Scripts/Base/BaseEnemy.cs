@@ -142,7 +142,7 @@ public abstract class BaseEnemy : MonoBehaviour {
         {
             player = col.gameObject;
             targeting = true;
-            if (ranged) InvokeRepeating("abilityAttack", 0.3f, 1.0f);
+            if (ranged) InvokeRepeating("abilityAttack", 0.3f, 1.5f);
         }
 
      }
