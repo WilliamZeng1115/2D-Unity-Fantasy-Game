@@ -19,7 +19,7 @@ public class ArrogantYoungMaster : BaseEnemy {
         melee = false;
         ranged = true;
 
-        InvokeRepeating("abilityAttack", 2.0f, 1.0f); //Using enemy animation even trigger instead
+        //InvokeRepeating("abilityAttack", 2.0f, 1.0f); //Using enemy animation even trigger instead
         //InvokeRepeating("changeDirections", 2.0f, 3.0f); //Changes direction of enemy every 3 seconds
     }
 

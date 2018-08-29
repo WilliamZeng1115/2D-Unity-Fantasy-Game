@@ -69,13 +69,32 @@ public class StageManager : Manager {
         var left = 50;
         var right = -800;
         var numOfStages = levelManager.getNumOfStages();
+        var stageNames = new GameObject(); //2018-08-28
+        stageNames.transform.parent = GameObject.Find("StageTransition").transform;
+        stageNames.name = "StageNames";
+        stageNames.AddComponent<HorizontalLayoutGroup>();
+        //DON'T DELETE!!!
+        //stageNames.GetComponent<RectTransform>().anchoredPosition = new Vector2(100f, 187.2f);
+        //stageNames.GetComponent<RectTransform>().anchorMax = new Vector2(1, 0.5f);
+        //stageNames.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0.5f);
+        stageNames.GetComponent<RectTransform>().anchorMax = new Vector2(0.9574512f, 0.8524349f);
+        stageNames.GetComponent<RectTransform>().anchorMin = new Vector2(0.04254886f, 0.739f);
+        //stageNames.GetComponent<RectTransform>().offsetMin = new Vector2(50, 50f);
+        //stageNames.GetComponent<RectTransform>().offsetMax = new Vector2(-50, 200f);
+        stageNames.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0f);
+        stageNames.GetComponent<RectTransform>().offsetMax = new Vector2(0, 0);
         for (var i = 0; i < numOfStages; i++)
         {
             var panel = CreateUIPanelWithFunction<int>(left, -20, right, 410, parent, i, methodOnClick);
             var text = CreateUIText("Stage-" + (i + 1), 14, 50, 0, panel);
+            text.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
             stages.Add(i, panel);
             left += 150;
             right += 150;
+            panel.transform.parent = stageNames.transform; //2018-08-28
+            var layoutElement = panel.AddComponent<LayoutElement>();
+            layoutElement.flexibleWidth = 0;
+            var childHLG = panel.AddComponent<HorizontalLayoutGroup>();
         }
     }
 
