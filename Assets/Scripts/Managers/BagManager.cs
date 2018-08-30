@@ -3,32 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BagManager : Manager {
+public class BagManager {
 
     private GameObject bagOfHoldingContainer;
-
-    public GameObject prefab; // This is our prefab object that will be exposed in the inspector
-
-    public int numberToCreate; // number of objects to create. Exposed in inspector
-
+    private Dictionary<string, GameObject> itemTemplates;
+    private List<string> playerItems;
+    private GameObject selected;
+  
     public BagManager(GameObject bagOfHoldingContainer)
     {
         this.bagOfHoldingContainer = bagOfHoldingContainer;
-        Populate();
+        itemTemplates = new Dictionary<string, GameObject>();
+        playerItems = new List<string>();
+
+        LoadTemplateItems();
+        LoadPlayerItems();
     }
 
-    void Populate()
+    private void LoadTemplateItems()
     {
-        GameObject newObj; // Create GameObject instance
-
-        for (int i = 0; i < numberToCreate; i++)
+        var items = Resources.LoadAll<GameObject>("Prefabs/Item");
+        foreach (var item in items)
         {
-            // Create new instances of our prefab until we've created as many as we specified
-            newObj = (GameObject)Instantiate(prefab, transform);
-
-            // Randomize the color of our image
-            newObj.GetComponent<Image>().color = Color.gray;
+            itemTemplates.Add(item.name, item);
         }
+    }
 
+    private void LoadPlayerItems()
+    {
+        var childs = bagOfHoldingContainer.transform.GetComponentsInChildren<Transform>();
+        foreach (var child in childs)
+        {
+            if (child.CompareTag("Item"))
+            {
+                playerItems.Add(child.name);
+            }
+        }
+    }
+
+    // Attach button Use and Drop to these two functions
+    public BaseItem Drop()
+    {
+        if (selected == null) return null;
+        var itemScript = selected.GetComponent<BaseItem>();
+        return itemScript;
+    }
+
+    // Call level manager with item script component to get item effect.
+    // Delete item or deduct usage
+    public BaseItem Use()
+    {
+        if (selected == null) return null;
+        var itemScript = selected.GetComponent<BaseItem>();
+        return itemScript;
+    }
+
+    // Calls on buy item in shop or sell item in shop
+    // Add or Drop item (UI)
+    // Update player list as well (Date)
+    public void UpdateBagOfHolding()
+    {
+
+    }
+
+    public void SelectItem(GameObject selected)
+    {
+        this.selected = selected;
     }
 }

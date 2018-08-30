@@ -23,6 +23,7 @@ TagManager:
   - PlayerMeleeAttack
   - ShootPosition
   - Spawn
+  - Item
   layers:
   - Default
   - TransparentFX

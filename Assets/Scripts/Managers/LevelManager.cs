@@ -403,4 +403,15 @@ public class LevelManager : MonoBehaviour
         player.transform.position = position;
         SetActiveOrInActiveStageTransition(false);
     }
+
+    // Bag Manager
+    public void applyItemToCharacter(BaseItem selected)
+    {
+        var characterManager = ((CharacterManager)managers["CharacterManager"]);
+        if (selected.GetType() == typeof(HealthPotion))
+        {
+            var currentHealth = characterManager.heal(selected.getValue());
+            updateHealthDisplay(currentHealth, characterManager.getMaxHealth());
+        }
+    }
 }

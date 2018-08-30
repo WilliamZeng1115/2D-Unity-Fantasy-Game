@@ -48,7 +48,7 @@ public class CharacterManager : Manager
         charInfoManager = new CharInfoManager(this, abilityUI, skillUI);
         charInfoManager.UpdateEquipOrUnEquipItem(null, equipedWeapon, true);
 
-        var bagOfHolding = GameObject.Find("BagOfHolding");
+        var bagOfHolding = GameObject.Find("Popups").transform.Find("BagOfHolding").gameObject;
         bagManager = new BagManager(bagOfHolding);
 
         anim = GetComponent<Animator>();
@@ -105,6 +105,13 @@ public class CharacterManager : Manager
     {
         currHealth -= damage;
         return currHealth;
+    }
+
+    public float heal(float health)
+    {
+        currHealth += health;
+        if (currHealth > getMaxHealth()) currHealth = getMaxHealth();
+        return currHealth; 
     }
 
     public float useStamina(float stamina)
@@ -295,5 +302,26 @@ public class CharacterManager : Manager
         Debug.Log(weaponManagers[equipedWeapon]);
         weaponManagers[equipedWeapon].GetComponent<BoxCollider2D>().enabled = false;
         anim.ResetTrigger("noAttack");
+    }
+
+    public void UseItem()
+    {
+        var item = bagManager.Use();
+        if (item == null) return;
+        levelManager.applyItemToCharacter(item);
+        item.use();
+    }
+
+    public void DropItem()
+    {
+        var item = bagManager.Drop();
+        if (item == null) return;
+        levelManager.applyItemToCharacter(item);
+        item.drop();
+    }
+
+    public void SelectItem(GameObject selected)
+    {
+        bagManager.SelectItem(selected);
     }
 }
