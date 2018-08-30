@@ -294,6 +294,7 @@ public class CharacterManager : Manager
     public void UseItem()
     {
         var item = bagManager.Use();
+        if (item == null) return;
         levelManager.applyItemToCharacter(item);
         item.use();
     }
@@ -301,6 +302,7 @@ public class CharacterManager : Manager
     public void DropItem()
     {
         var item = bagManager.Drop();
+        if (item == null) return;
         levelManager.applyItemToCharacter(item);
         item.drop();
     }
