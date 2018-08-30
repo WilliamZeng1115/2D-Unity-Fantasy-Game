@@ -23,6 +23,8 @@ public class CharacterManager : Manager
     private CharInfoManager charInfoManager;
     private BagManager bagManager;
 
+    private Animator anim;
+
     // Use this for initialization
     void Start()
     {
@@ -48,6 +50,8 @@ public class CharacterManager : Manager
 
         var bagOfHolding = GameObject.Find("BagOfHolding");
         bagManager = new BagManager(bagOfHolding);
+
+        anim = GetComponent<Animator>();
     }
 
     void loadWeaponManagers()
@@ -79,7 +83,7 @@ public class CharacterManager : Manager
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        levelManager.OnCollideForCharacter(gameObject, other.gameObject);
+        levelManager.OnTriggerForCharacter(gameObject, other.gameObject);
     }
 
     public BaseClass getClass()
@@ -93,6 +97,8 @@ public class CharacterManager : Manager
         if (equipedWeapon == null) return;
         var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
         weaponManager.attack();
+        weaponManager.GetComponent<BoxCollider2D>().enabled = true;
+        anim.SetTrigger("noAttack");
     }
 
     public float takeDamage(float damage)
@@ -282,5 +288,12 @@ public class CharacterManager : Manager
     {
         selectedWeapon = id;
         charInfoManager.selectWeapon(id, weaponManager);
+    }
+
+    private void disableSwordCollider()
+    {
+        Debug.Log(weaponManagers[equipedWeapon]);
+        weaponManagers[equipedWeapon].GetComponent<BoxCollider2D>().enabled = false;
+        anim.ResetTrigger("noAttack");
     }
 }

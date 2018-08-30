@@ -153,7 +153,7 @@ public abstract class BaseEnemy : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             player = col.gameObject;
-            if (ranged) InvokeRepeating("abilityAttack", 0.3f, 1.5f);
+            if (ranged) InvokeRepeating("abilityAttack", 5f, 1.5f);
         }
 
      }
@@ -228,7 +228,6 @@ public abstract class BaseEnemy : MonoBehaviour {
             {
                 float angle = Mathf.Atan2(distance.y, distance.x) * Mathf.Rad2Deg;
                 Quaternion rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-                //Debug.Log(angle);
                 shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 1000f);
             }
         }

@@ -198,21 +198,21 @@ public class LevelManager : MonoBehaviour
 
         }
 
-        if (o.tag.Contains("Checkpoint"))
-        {
-            var parent = o.transform.parent;
-            var childs = o.transform.GetComponentsInChildren<Transform>();
-            foreach (var child in childs)
-            {
-                if (child.CompareTag("Spawn"))
-                {
-                    var types = stageManager.getEnemyBasedOnStage();
-                    var bossTypes = stageManager.getBossBasedOnStage();
-                    enemyManager.spawnEnemies(3, types, child, parent);
-                    enemyManager.spawnBoss(bossTypes, child, parent);
-                }
-            }
-        }
+        //if (o.tag.Contains("Checkpoint"))
+        //{
+        //    var parent = o.transform.parent;
+        //    var childs = o.transform.GetComponentsInChildren<Transform>();
+        //    foreach (var child in childs)
+        //    {
+        //        if (child.CompareTag("Spawn"))
+        //        {
+        //            var types = stageManager.getEnemyBasedOnStage();
+        //            var bossTypes = stageManager.getBossBasedOnStage();
+        //            enemyManager.spawnEnemies(3, types, child, parent);
+        //            enemyManager.spawnBoss(bossTypes, child, parent);
+        //        }
+        //    }
+        //}
         //if (o.tag.Contains("Checkpoint"))
         //{
         //    GameObject newMap = null;
@@ -237,6 +237,30 @@ public class LevelManager : MonoBehaviour
         //        enemyManager.spawnEnemies(3, 0, newMap);
         //    }
         //}
+    }
+
+    public void OnTriggerForCharacter(GameObject character, GameObject o)
+    {
+        var characterManager = ((CharacterManager)managers["CharacterManager"]);
+        var mapManager = ((MapManager)managers["MapManager"]);
+        var enemyManager = ((EnemyManager)managers["EnemyManager"]);
+        var stageManager = ((StageManager)managers["StageManager"]);
+
+        if (o.tag.Contains("Checkpoint"))
+        {
+            var parent = o.transform.parent;
+            var childs = o.transform.GetComponentsInChildren<Transform>();
+            foreach (var child in childs)
+            {
+                if (child.CompareTag("Spawn"))
+                {
+                    var types = stageManager.getEnemyBasedOnStage();
+                    var bossTypes = stageManager.getBossBasedOnStage();
+                    enemyManager.spawnEnemies(3, types, child, parent);
+                    enemyManager.spawnBoss(bossTypes, child, parent);
+                }
+            }
+        }
     }
 
     public void OnCollideForEnemy(GameObject enemy, GameObject o, BaseEnemy enemyClass)
