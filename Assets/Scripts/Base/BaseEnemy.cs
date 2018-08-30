@@ -12,8 +12,9 @@ public abstract class BaseEnemy : MonoBehaviour {
     // Enemy movement
     private bool direction = true;
     private float xSpeed = 3.0f;
-    private float spriteWidth;
+    protected float spriteWidth;
     private Animator animator;
+    protected bool disableMovement = false;
     // Weapon Manager
     protected Dictionary<string, WeaponManager> weaponManagers;
     protected WeaponManager selectedWeapon;
@@ -21,7 +22,6 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected GameObject player;
 
     public GameObject shootPosition;
-    private bool targeting = false;
 
     public abstract void abilityAttack();
     public abstract int touchAttack();
@@ -44,7 +44,6 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     void Start()
     {
-        spriteWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
         animator = GetComponent<Animator>();
     }
 
@@ -119,13 +118,26 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     protected void checkPlatformEnd()
     {
-
         Vector2 lineCastPos = transform.position - transform.up * spriteWidth;
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 2);
-        bool isPlatform = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 2, LayerMask.GetMask("Default"));
-        if (!isPlatform && !targeting)
+        if (direction)
         {
-            changeDirections();
+            lineCastPos += new Vector2(spriteWidth, 0);
+        } else
+        {
+            lineCastPos -= new Vector2(spriteWidth, 0);
+        }
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 3);
+        bool isPlatform = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 2, LayerMask.GetMask("Default"));
+        if (!isPlatform)
+        {
+            if (!player)
+            {
+                changeDirections();
+            }
+            else
+            {
+                disableMovement = true;
+            }
         }
     }
 
@@ -141,7 +153,6 @@ public abstract class BaseEnemy : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             player = col.gameObject;
-            targeting = true;
             if (ranged) InvokeRepeating("abilityAttack", 0.3f, 1.5f);
         }
 
@@ -152,8 +163,8 @@ public abstract class BaseEnemy : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             player = null;
-            targeting = false;
             if (ranged) CancelInvoke("abilityAttack");
+            disableMovement = false;
         }
     }
 
