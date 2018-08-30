@@ -18,7 +18,7 @@ public class ArrogantYoungMaster : BaseEnemy {
         //hardcoded for now
         melee = false;
         ranged = true;
-
+        spriteWidth = GetComponent<SpriteRenderer>().bounds.extents.x;
         //InvokeRepeating("abilityAttack", 2.0f, 1.0f); //Using enemy animation even trigger instead
         //InvokeRepeating("changeDirections", 2.0f, 3.0f); //Changes direction of enemy every 3 seconds
     }
@@ -38,6 +38,6 @@ public class ArrogantYoungMaster : BaseEnemy {
 
     void Update()
     {
-        enemyMovement();
+        if (!disableMovement) enemyMovement();
     }
 }

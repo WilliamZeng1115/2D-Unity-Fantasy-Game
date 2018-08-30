@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 114644701316043076}
   - component: {fileID: 50406182135817380}
   - component: {fileID: 95003977715160708}
-  - component: {fileID: 58489519429513332}
+  - component: {fileID: 61171913717000514}
   m_Layer: 10
   m_Name: YoungMaster
   m_TagString: Monster
@@ -154,8 +154,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &58489519429513332
-CircleCollider2D:
+--- !u!61 &61171913717000514
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -166,9 +166,19 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 54.9}
+  m_Offset: {x: -0.2806015, y: 34.96419}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10, y: 10}
+    newSize: {x: 10, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 60
+  m_Size: {x: 78.0975, y: 79.9284}
+  m_EdgeRadius: 0
 --- !u!61 &61720909619626076
 BoxCollider2D:
   m_ObjectHideFlags: 1

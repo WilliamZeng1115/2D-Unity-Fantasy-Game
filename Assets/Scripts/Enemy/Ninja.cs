@@ -14,7 +14,7 @@ public class Ninja : BaseEnemy
         difficultyMultipler = 1;
         isBoss = false;
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-
+        spriteWidth = GetComponent<BoxCollider2D>().bounds.extents.x;
         weaponManagers = new Dictionary<string, WeaponManager>();
         loadWeaponManagers();
         //hardcoded for now
@@ -42,6 +42,6 @@ public class Ninja : BaseEnemy
 
     void Update()
     {
-        enemyMovement();
+        if (!disableMovement) enemyMovement();
     }
 }
