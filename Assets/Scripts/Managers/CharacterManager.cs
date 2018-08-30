@@ -297,9 +297,8 @@ public class CharacterManager : Manager
         charInfoManager.selectWeapon(id, weaponManager);
     }
 
-    private void disableSwordCollider()
+    public void disableSwordCollider()
     {
-        Debug.Log(weaponManagers[equipedWeapon]);
         weaponManagers[equipedWeapon].GetComponent<BoxCollider2D>().enabled = false;
         anim.ResetTrigger("noAttack");
     }
