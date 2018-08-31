@@ -14,7 +14,7 @@ public class BowMan : BaseClass {
         skills["Agility"] = 6;
         skills["Divine Sense"] = 4;
         skills["Dexterity"] = 8;
-        maxHealth = 100f;
+        maxHealth = 1000f;
         stamina = 100f;
         skillpoints = 5;
         spiritStones = 0;

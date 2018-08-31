@@ -227,7 +227,6 @@ public class LevelManager : MonoBehaviour
 
     public void OnTriggerForCharacter(GameObject character, GameObject o)
     {
-        Debug.Log("hit");
         var characterManager = ((CharacterManager)managers["CharacterManager"]);
         var mapManager = ((MapManager)managers["MapManager"]);
         var enemyManager = ((EnemyManager)managers["EnemyManager"]);

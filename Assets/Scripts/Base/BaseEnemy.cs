@@ -143,16 +143,17 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player" && melee) {
+        if (col.gameObject.tag == "Body" && melee) {
             selectedWeapon.attack();
         }
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Body")
         {
-            player = col.gameObject;
+            Debug.Log(ranged);
+            player = col.transform.parent.gameObject;
             if (ranged) InvokeRepeating("abilityAttack", 5f, 1.5f);
         }
 
@@ -160,7 +161,7 @@ public abstract class BaseEnemy : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D col)
     {
-        if (col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Body")
         {
             player = null;
             if (ranged) CancelInvoke("abilityAttack");
