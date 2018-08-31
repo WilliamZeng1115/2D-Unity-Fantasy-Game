@@ -152,9 +152,8 @@ public abstract class BaseEnemy : MonoBehaviour {
     {
         if (col.gameObject.tag == "Body")
         {
-            Debug.Log(ranged);
             player = col.transform.parent.gameObject;
-            if (ranged) InvokeRepeating("abilityAttack", 0.5f, 2f);
+            if (ranged) InvokeRepeating("abilityAttack", 1f, 2f);
         }
 
      }
