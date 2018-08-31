@@ -24,6 +24,7 @@ TagManager:
   - ShootPosition
   - Spawn
   - Item
+  - Body
   layers:
   - Default
   - TransparentFX

@@ -25,7 +25,7 @@ public class ArrogantYoungMaster : BaseEnemy {
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        levelManager.OnCollideForEnemy(gameObject, other.gameObject, this);
+        levelManager.OnCollideForEnemy(gameObject, other.contacts[0].collider.gameObject, this);
     }
 
     public override int touchAttack() {

@@ -175,6 +175,16 @@ public class MapManager : Manager
     {
         stages.Where(e => e.Key != stage).Select(e => e.Value).ToList().ForEach(e => e.SetActive(false));
         stages[stage].SetActive(true);
+        setCheckpointActive(stages[stage].transform);
+    }
+
+    private void setCheckpointActive(Transform parent)
+    {
+        foreach(Transform child in parent)
+        {
+            if (child.tag == "Checkpoint") child.gameObject.SetActive(true);
+            setCheckpointActive(child);
+        }
     }
 
     public GameObject getStage(int stage)

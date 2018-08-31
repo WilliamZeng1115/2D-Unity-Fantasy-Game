@@ -24,17 +24,24 @@ public class EnemyManager : Manager
         enemyObjects = Resources.LoadAll<GameObject>(enemyFolder);
     }
 
-    public void spawnEnemies(int num, int[] types, Transform spawn, Transform parent)
+    public IEnumerator spawnCoroutine(int num, int[] types, Transform spawn, Transform parent)
     {
         var numOfTypes = types.Length;
-        for(var i = 0; i < num; i++)
+        for (var i = 0; i < num; i++)
         {
             var index = Random.Range(0, numOfTypes);
             var type = types[index];
             var enemy = Instantiate(enemyObjects[type], spawn.position, enemyObjects[type].transform.rotation);
             enemy.transform.parent = parent;
             enemies.Add(enemy);
+            yield return new WaitForSeconds(3);
         }
+    }
+
+    public void spawnEnemies(int num, int[] types, Transform spawn, Transform parent)
+    {
+        var coroutine = spawnCoroutine(num, types, spawn, parent);
+        StartCoroutine(coroutine);
     }
     
     public void spawnBoss(int[] types, Transform spawn, Transform parent)

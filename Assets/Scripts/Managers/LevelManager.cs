@@ -164,20 +164,6 @@ public class LevelManager : MonoBehaviour
         var mapManager = ((MapManager)managers["MapManager"]);
         var enemyManager = ((EnemyManager)managers["EnemyManager"]);
         var stageManager = ((StageManager)managers["StageManager"]);
-
-        // When running into/touching the enemy take damage
-        if (o.tag == "Monster")
-        {
-            var monsterScript = o.GetComponent<BaseEnemy>();
-            var characterHealth = characterManager.takeDamage(monsterScript.touchAttack());
-            updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
-            StartCoroutine(screenShake.Shake(0.1f, 0.5f));
-            if (characterHealth <= 0)
-            {
-               // Destroy(character); TODO maybe just set character to inactive
-               LoadLevel("Loss");
-            }
-        }
         
         // one for melee and one for projectile
         if (o.tag == "EnemyRangeAttack")
@@ -241,6 +227,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnTriggerForCharacter(GameObject character, GameObject o)
     {
+        Debug.Log("hit");
         var characterManager = ((CharacterManager)managers["CharacterManager"]);
         var mapManager = ((MapManager)managers["MapManager"]);
         var enemyManager = ((EnemyManager)managers["EnemyManager"]);
@@ -260,12 +247,28 @@ public class LevelManager : MonoBehaviour
                     enemyManager.spawnBoss(bossTypes, child, parent);
                 }
             }
+            o.SetActive(false);
+        }
+        if (o.name == "Goal")
+        {
+            SetActiveOrInActiveStageTransition(true);
         }
     }
 
     public void OnCollideForEnemy(GameObject enemy, GameObject o, BaseEnemy enemyClass)
     {
         var characterManager = ((CharacterManager)managers["CharacterManager"]);
+        if (o.tag == "Body")
+        {
+            var characterHealth = characterManager.takeDamage(enemyClass.touchAttack());
+            updateHealthDisplay(characterHealth, characterManager.getMaxHealth());
+            StartCoroutine(screenShake.Shake(0.1f, 0.5f));
+            if (characterHealth <= 0)
+            {
+               // Destroy(character); TODO maybe just set character to inactive
+               LoadLevel("Loss");
+            }
+        }
         if (o.tag == "PlayerRangeAttack")
         {
             var projectileScript = o.GetComponent<BaseProjectile>();
