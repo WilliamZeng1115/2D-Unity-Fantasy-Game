@@ -97,8 +97,11 @@ public class CharacterManager : Manager
         if (equipedWeapon == null) return;
         var weaponManager = weaponManagers[equipedWeapon].GetComponent<WeaponManager>();
         weaponManager.attack();
-        if (equipedWeapon != "FireBow") weaponManager.GetComponent<BoxCollider2D>().enabled = true;
-        anim.SetTrigger("noAttack");
+        if (equipedWeapon != "FireBow")
+        {
+            weaponManager.GetComponent<BoxCollider2D>().enabled = true;
+            anim.SetTrigger("noAttack");
+        }
     }
 
     public float takeDamage(float damage)
