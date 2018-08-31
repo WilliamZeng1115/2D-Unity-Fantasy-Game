@@ -227,6 +227,7 @@ public class LevelManager : MonoBehaviour
 
     public void OnTriggerForCharacter(GameObject character, GameObject o)
     {
+        Debug.Log(o.name);
         var characterManager = ((CharacterManager)managers["CharacterManager"]);
         var mapManager = ((MapManager)managers["MapManager"]);
         var enemyManager = ((EnemyManager)managers["EnemyManager"]);
@@ -248,6 +249,7 @@ public class LevelManager : MonoBehaviour
             }
             o.SetActive(false);
         }
+
         if (o.name == "Goal")
         {
             SetActiveOrInActiveStageTransition(true);

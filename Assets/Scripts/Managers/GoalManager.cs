@@ -11,6 +11,7 @@ public class GoalManager : Manager {
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.tag == "Player")
         {
             levelManager.SetActiveOrInActiveStageTransition(true);

@@ -121,7 +121,6 @@ public class MapManager : Manager
         goal.transform.parent = newStage.transform;
         goal.AddComponent<SpriteRenderer>();
         goal.AddComponent<BoxCollider2D>();
-        goal.AddComponent<GoalManager>();
         goal.GetComponent<BoxCollider2D>().isTrigger = true;
 
         // temp now TODO
@@ -129,6 +128,7 @@ public class MapManager : Manager
         var newSprite = Sprite.Create(goalSprite, new Rect(0.0f, 0.0f, goalSprite.width, goalSprite.height), new Vector2(0.5f, 0.5f), 100.0f);
         goal.GetComponent<SpriteRenderer>().sprite = newSprite;
         // temp now TODO
+        goal.GetComponent<BoxCollider2D>().size = new Vector2(1.13f, 1.08f);
         goal.GetComponent<SpriteRenderer>().sortingOrder = 5;
         goals.Add(stage, goal);
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
