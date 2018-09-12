@@ -33,7 +33,6 @@ public class ArrogantYoungMaster : BaseEnemy {
     }
 
     public override void abilityAttack() {
-        Debug.Log("!!!");
         selectedWeapon.attack();
     }
 

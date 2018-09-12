@@ -22,6 +22,7 @@ public abstract class BaseEnemy : MonoBehaviour {
     protected GameObject player;
 
     public GameObject shootPosition;
+    public LayerMask EnemyMask;
 
     public abstract void abilityAttack();
     public abstract int touchAttack();
@@ -114,8 +115,6 @@ public abstract class BaseEnemy : MonoBehaviour {
         direction = newDirection;
     }
 
-    public LayerMask EnemyMask;
-
     protected void checkPlatformEnd()
     {
         Vector2 lineCastPos = transform.position - transform.up * spriteWidth;
@@ -141,21 +140,12 @@ public abstract class BaseEnemy : MonoBehaviour {
         }
     }
 
-    void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Player" && melee) {
-            selectedWeapon.attack();
-            
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "Player")
         {
             player = col.gameObject;
-            //player = col.transform.parent.gameObject;
-            if (ranged) InvokeRepeating("abilityAttack", 1f, 2f);
+            InvokeRepeating("abilityAttack", 0.3f, 2f);
         }
 
      }
@@ -165,62 +155,25 @@ public abstract class BaseEnemy : MonoBehaviour {
         if (col.gameObject.tag == "Player")
         {
             player = null;
-            if (ranged) CancelInvoke("abilityAttack");
+            CancelInvoke("abilityAttack");
             disableMovement = false;
         }
     }
 
     protected void checkInAttackRange()
     {
-        RaycastHit2D isInRange = Physics2D.CircleCast(transform.position, 75f, new Vector2(-0.1f,-0.1f));
-        if (isInRange && isInRange.transform.gameObject.tag == "Player")
-        {
-
-            var childs = transform.GetComponentsInChildren<Transform>();
-            var distance = isInRange.transform.position - transform.position;
-            foreach (var child in childs)
-            {
-                if (child.gameObject.tag == "ShootPosition")
-                {
-                    float xPosDiff = isInRange.transform.position.x - this.transform.position.x;
-                    if ((direction && distance.x < 0) || (!direction && distance.x > 0))
-                    {
-                        changeDirections();
-                    }
-                    float hypotenuse = Mathf.Sqrt(Mathf.Pow(2, distance.x ) + Mathf.Pow(2, distance.y));
-                    float sineDistance = distance.y / hypotenuse;
-                    if (sineDistance > 1)
-                        sineDistance = Mathf.Floor(sineDistance);
-                    float zDegree = Mathf.Asin(sineDistance) * Mathf.Rad2Deg;
-                    if (zDegree <= 90)
-                    {
-                        if (xPosDiff > 0)
-                            zDegree *= -1;
-                    }
-
-                    child.rotation = Quaternion.Euler(0, 0, zDegree);
-                }
-            }
-        }
-    }
-
-    private void rotateTransformY(float degree)
-    {
-        transform.rotation = Quaternion.Euler(0, degree, 0);
-    }
-
-    void FixedUpdate()
-    {
         if (player != null)
         {
-            var distance = new Vector3(0,0,0);
-            if (melee) {
+            var distance = new Vector3(0, 0, 0);
+            if (melee)
+            {
                 distance = player.transform.position - transform.transform.position;
-            } else
+            }
+            else
             {
                 distance = player.transform.position - shootPosition.transform.position;
             }
-            
+
             if ((direction && distance.x < 0) || (!direction && distance.x > 0))
             {
                 changeDirections();
@@ -233,7 +186,16 @@ public abstract class BaseEnemy : MonoBehaviour {
                 shootPosition.transform.rotation = Quaternion.RotateTowards(shootPosition.transform.rotation, rotation, Time.deltaTime * 1000f);
             }
         }
+    }
+
+    private void rotateTransformY(float degree)
+    {
+        transform.rotation = Quaternion.Euler(0, degree, 0);
+    }
+
+    void FixedUpdate()
+    {
         checkPlatformEnd();
-        // checkInAttackRange();
+        checkInAttackRange();
     }
 }
